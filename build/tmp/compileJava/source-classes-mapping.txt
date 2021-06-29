@@ -1,2 +1,16 @@
-Main.java
- Main
+administration/resources/Drone.java
+ administration.resources.Drone
+administration/ClientAdministrator.java
+ administration.ClientAdministrator
+administration/services/SmartCityService.java
+ administration.services.SmartCityService
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
+administration/resources/Statistics.java
+ administration.resources.Statistics
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
+administration/tools/Position.java
+ administration.tools.Position
+administration/ServerAdministrator.java
+ administration.ServerAdministrator
