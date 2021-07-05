@@ -1,2 +1,5 @@
-# Distributed and pervasive systems's project
+# Distributed and pervasive systems project
+
+DA FARE:
+    - TESTARE SINCRONIZZAZIONE IN FASE DI INSERIMENTO NELLA SMARTCITY
 

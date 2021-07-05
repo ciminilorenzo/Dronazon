@@ -1,7 +1,9 @@
-administration/resources/Drone.java
- administration.resources.Drone
-administration/ClientAdministrator.java
- administration.ClientAdministrator
+administration/tools/ServerResponse.java
+ administration.tools.ServerResponse
+administration/ServerAdministrator.java
+ administration.ServerAdministrator
+administration/resources/drone/Drone.java
+ administration.resources.drone.Drone
 administration/services/SmartCityService.java
  administration.services.SmartCityService
 administration/services/StatisticsService.java
@@ -12,5 +14,5 @@ administration/resources/SmartCity.java
  administration.resources.SmartCity
 administration/tools/Position.java
  administration.tools.Position
-administration/ServerAdministrator.java
- administration.ServerAdministrator
+administration/ClientAdministrator.java
+ administration.ClientAdministrator
