@@ -11,9 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-/**
- * This class should contain the list of drones
- */
+
 
 @XmlRootElement(name="smartcity")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -21,11 +19,8 @@ public class SmartCity
 {
     private static SmartCity smartCity = null;
 
-    public void setDrones(ArrayList<Drone> drones) {
-        this.drones = drones;
-    }
 
-    @XmlElement
+    @XmlElement(name="drones")
     private ArrayList<Drone> drones;
 
     private SmartCity(){
@@ -40,18 +35,24 @@ public class SmartCity
     }
 
     public ArrayList<Drone> getDrones(){
-        return getInstance().drones;
+        return this.drones;
     }
 
+    public void setDrones(ArrayList<Drone> drones) {
+        this.drones = drones;
+    }
+
+
+
+
     /**
-     * @param drone new drone that wants to enter in the smart city
-     * @return 'ok' if the operation is successful else 'NOT_UNIQUE'
-     */
-
-    /*
-
+     *  Simply checking that the drone who wants to enter has unique ID and unique PORT number.
+     *  If the assumptions are true method is gonna return a ServerResponse object composed by: drones already in
+     *  - without himself -, acquired position and a flag used to understand if the insertion has been successful.
+     *
+        @param drone who wants to enter into the smartcity.
         TODO: CONCURRENCY CHECK HERE MUST BE DONE
-        TODO: JAVADOC
+
      */
     public synchronized ServerResponse insertDrone(Drone drone) {
         final ArrayList<Drone> listToReturn = new ArrayList<>(drones);
@@ -68,7 +69,6 @@ public class SmartCity
         drones.add(drone);
         return response;
     }
-
 
     public String toString(){
         String result = "[PRINTING SMART CITY POPULATION]";

@@ -1,18 +1,64 @@
+administration/resources/drone/Delivery.java
+ administration.resources.drone.Delivery
+administration/tools/DronesServerResponse.java
+ administration.tools.DronesServerResponse
 administration/tools/ServerResponse.java
  administration.tools.ServerResponse
 administration/ServerAdministrator.java
  administration.ServerAdministrator
+administration/resources/statistics/GlobalStatistic.java
+ administration.resources.statistics.GlobalStatistic
+administration/resources/drone/QuitThread.java
+ administration.resources.drone.QuitThread
+administration/resources/statistics/StatisticsContainer.java
+ administration.resources.statistics.StatisticsContainer
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
+grpc/ChattingGrpc.java
+ grpc.ChattingGrpc
+ grpc.ChattingGrpc$1
+ grpc.ChattingGrpc$ChattingBaseDescriptorSupplier
+ grpc.ChattingGrpc$ChattingBlockingStub
+ grpc.ChattingGrpc$ChattingFileDescriptorSupplier
+ grpc.ChattingGrpc$ChattingFutureStub
+ grpc.ChattingGrpc$ChattingImplBase
+ grpc.ChattingGrpc$ChattingMethodDescriptorSupplier
+ grpc.ChattingGrpc$ChattingStub
+ grpc.ChattingGrpc$MethodHandlers
+administration/tools/CityMap.java
+ administration.tools.CityMap
+grpc/Services.java
+ grpc.Services
+ grpc.Services$1
+ grpc.Services$SimpleGreetingRequest
+ grpc.Services$SimpleGreetingRequest$1
+ grpc.Services$SimpleGreetingRequest$Builder
+ grpc.Services$SimpleGreetingRequest$Position
+ grpc.Services$SimpleGreetingRequest$Position$1
+ grpc.Services$SimpleGreetingRequest$Position$Builder
+ grpc.Services$SimpleGreetingRequest$PositionOrBuilder
+ grpc.Services$SimpleGreetingRequestOrBuilder
+ grpc.Services$SimpleGreetingResponse
+ grpc.Services$SimpleGreetingResponse$1
+ grpc.Services$SimpleGreetingResponse$Builder
+ grpc.Services$SimpleGreetingResponseOrBuilder
+administration/tools/StatisticsServerResponse.java
+ administration.tools.StatisticsServerResponse
+administration/tools/Position.java
+ administration.tools.Position
+administration/resources/drone/DataPrinter.java
+ administration.resources.drone.DataPrinter
 administration/resources/drone/Drone.java
  administration.resources.drone.Drone
 administration/services/SmartCityService.java
  administration.services.SmartCityService
-administration/services/StatisticsService.java
- administration.services.StatisticsService
-administration/resources/Statistics.java
- administration.resources.Statistics
+administration/tools/Ring.java
+ administration.tools.Ring
+administration/resources/drone/CommunicationModule.java
+ administration.resources.drone.CommunicationModule
 administration/resources/SmartCity.java
  administration.resources.SmartCity
-administration/tools/Position.java
- administration.tools.Position
+administration/resources/drone/GreetingServiceImplementation.java
+ administration.resources.drone.GreetingServiceImplementation
 administration/ClientAdministrator.java
  administration.ClientAdministrator

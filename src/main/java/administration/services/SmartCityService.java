@@ -20,8 +20,7 @@ public class SmartCityService
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response insertDroneIntoTheSmartCity(Drone drone) throws InterruptedException {
-        System.out.println(Thread.currentThread());
+    public Response insertDroneIntoTheSmartCity(Drone drone) {
         System.out.println("[SMARTCITY SERVICE INFO] Drone with ID: " + drone.getID() + " is trying to enter into the city!");
         ServerResponse response = SmartCity.getInstance().insertDrone(drone);
 
@@ -36,13 +35,7 @@ public class SmartCityService
     }
 
     /**
-     *
-     * @return the whole smartcity's population
+     * TODO: IMPLEMENTARE RIMOZIONE DRONE DA SMARTCITY ATTRAVERSO DELETE
      */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPopulation(){
-        return Response.ok(SmartCity.getInstance().getDrones()).build();
-    }
 
 }

@@ -1,0 +1,23 @@
+package grpc;
+
+message SimpleGreetingRequest
+{
+  required string id = 1;
+  required int32 port = 2;
+
+  message Position{
+    required int32 x = 1;
+    required int32 y = 2;
+  }
+
+  required Position position = 3;
+}
+
+message SimpleGreetingResponse
+{
+  required bool master = 1;
+}
+
+service Chatting{
+  rpc SimpleGreeting(SimpleGreetingRequest) returns (SimpleGreetingResponse) {}
+}
