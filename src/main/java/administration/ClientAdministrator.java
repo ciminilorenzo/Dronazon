@@ -1,9 +1,9 @@
 package administration;
 
-import administration.resources.drone.Drone;
+import drone.Drone;
 import administration.services.StatisticsService;
-import administration.tools.DronesServerResponse;
-import administration.tools.StatisticsServerResponse;
+import tools.DronesServerResponse;
+import tools.StatisticsServerResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;

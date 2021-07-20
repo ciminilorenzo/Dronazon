@@ -1,8 +1,8 @@
 package administration.services;
 
-import administration.resources.drone.Drone;
+import drone.Drone;
 import administration.resources.SmartCity;
-import administration.tools.ServerResponse;
+import tools.ServerResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

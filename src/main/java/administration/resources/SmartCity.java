@@ -1,9 +1,9 @@
 package administration.resources;
 
 
-import administration.resources.drone.Drone;
-import administration.tools.Position;
-import administration.tools.ServerResponse;
+import drone.Drone;
+import tools.Position;
+import tools.ServerResponse;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -64,7 +64,7 @@ public class SmartCity
             }
         }
 
-        ServerResponse response = new ServerResponse(positionToReturn, listToReturn, false);
+        ServerResponse response = new ServerResponse(positionToReturn,listToReturn, false);
         drone.setPosition(positionToReturn);
         drones.add(drone);
         return response;

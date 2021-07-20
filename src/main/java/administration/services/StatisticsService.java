@@ -3,8 +3,8 @@ package administration.services;
 import administration.resources.SmartCity;
 import administration.resources.statistics.GlobalStatistic;
 import administration.resources.statistics.StatisticsContainer;
-import administration.tools.DronesServerResponse;
-import administration.tools.StatisticsServerResponse;
+import tools.DronesServerResponse;
+import tools.StatisticsServerResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
