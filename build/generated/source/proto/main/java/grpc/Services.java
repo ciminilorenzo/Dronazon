@@ -47,19 +47,19 @@ public final class Services {
     int getPort();
 
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      * @return Whether the position field is set.
      */
     boolean hasPosition();
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      * @return The position.
      */
-    grpc.Services.SimpleGreetingRequest.Position getPosition();
+    grpc.Services.Position getPosition();
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      */
-    grpc.Services.SimpleGreetingRequest.PositionOrBuilder getPositionOrBuilder();
+    grpc.Services.PositionOrBuilder getPositionOrBuilder();
   }
   /**
    * Protobuf type {@code grpc.SimpleGreetingRequest}
@@ -120,11 +120,11 @@ public final class Services {
               break;
             }
             case 26: {
-              grpc.Services.SimpleGreetingRequest.Position.Builder subBuilder = null;
+              grpc.Services.Position.Builder subBuilder = null;
               if (((bitField0_ & 0x00000004) != 0)) {
                 subBuilder = position_.toBuilder();
               }
-              position_ = input.readMessage(grpc.Services.SimpleGreetingRequest.Position.PARSER, extensionRegistry);
+              position_ = input.readMessage(grpc.Services.Position.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(position_);
                 position_ = subBuilder.buildPartial();
@@ -162,634 +162,6 @@ public final class Services {
       return grpc.Services.internal_static_grpc_SimpleGreetingRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               grpc.Services.SimpleGreetingRequest.class, grpc.Services.SimpleGreetingRequest.Builder.class);
-    }
-
-    public interface PositionOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:grpc.SimpleGreetingRequest.Position)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>required int32 x = 1;</code>
-       * @return Whether the x field is set.
-       */
-      boolean hasX();
-      /**
-       * <code>required int32 x = 1;</code>
-       * @return The x.
-       */
-      int getX();
-
-      /**
-       * <code>required int32 y = 2;</code>
-       * @return Whether the y field is set.
-       */
-      boolean hasY();
-      /**
-       * <code>required int32 y = 2;</code>
-       * @return The y.
-       */
-      int getY();
-    }
-    /**
-     * Protobuf type {@code grpc.SimpleGreetingRequest.Position}
-     */
-    public  static final class Position extends
-        com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:grpc.SimpleGreetingRequest.Position)
-        PositionOrBuilder {
-    private static final long serialVersionUID = 0L;
-      // Use Position.newBuilder() to construct.
-      private Position(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-      }
-      private Position() {
-      }
-
-      @java.lang.Override
-      @SuppressWarnings({"unused"})
-      protected java.lang.Object newInstance(
-          UnusedPrivateParameter unused) {
-        return new Position();
-      }
-
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
-      private Position(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                bitField0_ |= 0x00000001;
-                x_ = input.readInt32();
-                break;
-              }
-              case 16: {
-                bitField0_ |= 0x00000002;
-                y_ = input.readInt32();
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return grpc.Services.internal_static_grpc_SimpleGreetingRequest_Position_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return grpc.Services.internal_static_grpc_SimpleGreetingRequest_Position_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                grpc.Services.SimpleGreetingRequest.Position.class, grpc.Services.SimpleGreetingRequest.Position.Builder.class);
-      }
-
-      private int bitField0_;
-      public static final int X_FIELD_NUMBER = 1;
-      private int x_;
-      /**
-       * <code>required int32 x = 1;</code>
-       * @return Whether the x field is set.
-       */
-      public boolean hasX() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required int32 x = 1;</code>
-       * @return The x.
-       */
-      public int getX() {
-        return x_;
-      }
-
-      public static final int Y_FIELD_NUMBER = 2;
-      private int y_;
-      /**
-       * <code>required int32 y = 2;</code>
-       * @return Whether the y field is set.
-       */
-      public boolean hasY() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required int32 y = 2;</code>
-       * @return The y.
-       */
-      public int getY() {
-        return y_;
-      }
-
-      private byte memoizedIsInitialized = -1;
-      @java.lang.Override
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        if (!hasX()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasY()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      @java.lang.Override
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        if (((bitField0_ & 0x00000001) != 0)) {
-          output.writeInt32(1, x_);
-        }
-        if (((bitField0_ & 0x00000002) != 0)) {
-          output.writeInt32(2, y_);
-        }
-        unknownFields.writeTo(output);
-      }
-
-      @java.lang.Override
-      public int getSerializedSize() {
-        int size = memoizedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(1, x_);
-        }
-        if (((bitField0_ & 0x00000002) != 0)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(2, y_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-      }
-
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof grpc.Services.SimpleGreetingRequest.Position)) {
-          return super.equals(obj);
-        }
-        grpc.Services.SimpleGreetingRequest.Position other = (grpc.Services.SimpleGreetingRequest.Position) obj;
-
-        if (hasX() != other.hasX()) return false;
-        if (hasX()) {
-          if (getX()
-              != other.getX()) return false;
-        }
-        if (hasY() != other.hasY()) return false;
-        if (hasY()) {
-          if (getY()
-              != other.getY()) return false;
-        }
-        if (!unknownFields.equals(other.unknownFields)) return false;
-        return true;
-      }
-
-      @java.lang.Override
-      public int hashCode() {
-        if (memoizedHashCode != 0) {
-          return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasX()) {
-          hash = (37 * hash) + X_FIELD_NUMBER;
-          hash = (53 * hash) + getX();
-        }
-        if (hasY()) {
-          hash = (37 * hash) + Y_FIELD_NUMBER;
-          hash = (53 * hash) + getY();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-      }
-
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          java.nio.ByteBuffer data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          java.nio.ByteBuffer data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static grpc.Services.SimpleGreetingRequest.Position parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-
-      @java.lang.Override
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-      public static Builder newBuilder(grpc.Services.SimpleGreetingRequest.Position prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }
-      @java.lang.Override
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
-      }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code grpc.SimpleGreetingRequest.Position}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:grpc.SimpleGreetingRequest.Position)
-          grpc.Services.SimpleGreetingRequest.PositionOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return grpc.Services.internal_static_grpc_SimpleGreetingRequest_Position_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return grpc.Services.internal_static_grpc_SimpleGreetingRequest_Position_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  grpc.Services.SimpleGreetingRequest.Position.class, grpc.Services.SimpleGreetingRequest.Position.Builder.class);
-        }
-
-        // Construct using grpc.Services.SimpleGreetingRequest.Position.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }
-        @java.lang.Override
-        public Builder clear() {
-          super.clear();
-          x_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
-          y_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
-          return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return grpc.Services.internal_static_grpc_SimpleGreetingRequest_Position_descriptor;
-        }
-
-        @java.lang.Override
-        public grpc.Services.SimpleGreetingRequest.Position getDefaultInstanceForType() {
-          return grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public grpc.Services.SimpleGreetingRequest.Position build() {
-          grpc.Services.SimpleGreetingRequest.Position result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        @java.lang.Override
-        public grpc.Services.SimpleGreetingRequest.Position buildPartial() {
-          grpc.Services.SimpleGreetingRequest.Position result = new grpc.Services.SimpleGreetingRequest.Position(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            result.x_ = x_;
-            to_bitField0_ |= 0x00000001;
-          }
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            result.y_ = y_;
-            to_bitField0_ |= 0x00000002;
-          }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof grpc.Services.SimpleGreetingRequest.Position) {
-            return mergeFrom((grpc.Services.SimpleGreetingRequest.Position)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(grpc.Services.SimpleGreetingRequest.Position other) {
-          if (other == grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance()) return this;
-          if (other.hasX()) {
-            setX(other.getX());
-          }
-          if (other.hasY()) {
-            setY(other.getY());
-          }
-          this.mergeUnknownFields(other.unknownFields);
-          onChanged();
-          return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-          if (!hasX()) {
-            return false;
-          }
-          if (!hasY()) {
-            return false;
-          }
-          return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          grpc.Services.SimpleGreetingRequest.Position parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (grpc.Services.SimpleGreetingRequest.Position) e.getUnfinishedMessage();
-            throw e.unwrapIOException();
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        private int x_ ;
-        /**
-         * <code>required int32 x = 1;</code>
-         * @return Whether the x field is set.
-         */
-        public boolean hasX() {
-          return ((bitField0_ & 0x00000001) != 0);
-        }
-        /**
-         * <code>required int32 x = 1;</code>
-         * @return The x.
-         */
-        public int getX() {
-          return x_;
-        }
-        /**
-         * <code>required int32 x = 1;</code>
-         * @param value The x to set.
-         * @return This builder for chaining.
-         */
-        public Builder setX(int value) {
-          bitField0_ |= 0x00000001;
-          x_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required int32 x = 1;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearX() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          x_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private int y_ ;
-        /**
-         * <code>required int32 y = 2;</code>
-         * @return Whether the y field is set.
-         */
-        public boolean hasY() {
-          return ((bitField0_ & 0x00000002) != 0);
-        }
-        /**
-         * <code>required int32 y = 2;</code>
-         * @return The y.
-         */
-        public int getY() {
-          return y_;
-        }
-        /**
-         * <code>required int32 y = 2;</code>
-         * @param value The y to set.
-         * @return This builder for chaining.
-         */
-        public Builder setY(int value) {
-          bitField0_ |= 0x00000002;
-          y_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required int32 y = 2;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearY() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          y_ = 0;
-          onChanged();
-          return this;
-        }
-        @java.lang.Override
-        public final Builder setUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.mergeUnknownFields(unknownFields);
-        }
-
-
-        // @@protoc_insertion_point(builder_scope:grpc.SimpleGreetingRequest.Position)
-      }
-
-      // @@protoc_insertion_point(class_scope:grpc.SimpleGreetingRequest.Position)
-      private static final grpc.Services.SimpleGreetingRequest.Position DEFAULT_INSTANCE;
-      static {
-        DEFAULT_INSTANCE = new grpc.Services.SimpleGreetingRequest.Position();
-      }
-
-      public static grpc.Services.SimpleGreetingRequest.Position getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
-      @java.lang.Deprecated public static final com.google.protobuf.Parser<Position>
-          PARSER = new com.google.protobuf.AbstractParser<Position>() {
-        @java.lang.Override
-        public Position parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Position(input, extensionRegistry);
-        }
-      };
-
-      public static com.google.protobuf.Parser<Position> parser() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<Position> getParserForType() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public grpc.Services.SimpleGreetingRequest.Position getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-      }
-
     }
 
     private int bitField0_;
@@ -856,26 +228,26 @@ public final class Services {
     }
 
     public static final int POSITION_FIELD_NUMBER = 3;
-    private grpc.Services.SimpleGreetingRequest.Position position_;
+    private grpc.Services.Position position_;
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      * @return Whether the position field is set.
      */
     public boolean hasPosition() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      * @return The position.
      */
-    public grpc.Services.SimpleGreetingRequest.Position getPosition() {
-      return position_ == null ? grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance() : position_;
+    public grpc.Services.Position getPosition() {
+      return position_ == null ? grpc.Services.Position.getDefaultInstance() : position_;
     }
     /**
-     * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+     * <code>required .grpc.Position position = 3;</code>
      */
-    public grpc.Services.SimpleGreetingRequest.PositionOrBuilder getPositionOrBuilder() {
-      return position_ == null ? grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance() : position_;
+    public grpc.Services.PositionOrBuilder getPositionOrBuilder() {
+      return position_ == null ? grpc.Services.Position.getDefaultInstance() : position_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1401,31 +773,31 @@ public final class Services {
         return this;
       }
 
-      private grpc.Services.SimpleGreetingRequest.Position position_;
+      private grpc.Services.Position position_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          grpc.Services.SimpleGreetingRequest.Position, grpc.Services.SimpleGreetingRequest.Position.Builder, grpc.Services.SimpleGreetingRequest.PositionOrBuilder> positionBuilder_;
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> positionBuilder_;
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        * @return Whether the position field is set.
        */
       public boolean hasPosition() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        * @return The position.
        */
-      public grpc.Services.SimpleGreetingRequest.Position getPosition() {
+      public grpc.Services.Position getPosition() {
         if (positionBuilder_ == null) {
-          return position_ == null ? grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance() : position_;
+          return position_ == null ? grpc.Services.Position.getDefaultInstance() : position_;
         } else {
           return positionBuilder_.getMessage();
         }
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
-      public Builder setPosition(grpc.Services.SimpleGreetingRequest.Position value) {
+      public Builder setPosition(grpc.Services.Position value) {
         if (positionBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1439,10 +811,10 @@ public final class Services {
         return this;
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
       public Builder setPosition(
-          grpc.Services.SimpleGreetingRequest.Position.Builder builderForValue) {
+          grpc.Services.Position.Builder builderForValue) {
         if (positionBuilder_ == null) {
           position_ = builderForValue.build();
           onChanged();
@@ -1453,15 +825,15 @@ public final class Services {
         return this;
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
-      public Builder mergePosition(grpc.Services.SimpleGreetingRequest.Position value) {
+      public Builder mergePosition(grpc.Services.Position value) {
         if (positionBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
               position_ != null &&
-              position_ != grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance()) {
+              position_ != grpc.Services.Position.getDefaultInstance()) {
             position_ =
-              grpc.Services.SimpleGreetingRequest.Position.newBuilder(position_).mergeFrom(value).buildPartial();
+              grpc.Services.Position.newBuilder(position_).mergeFrom(value).buildPartial();
           } else {
             position_ = value;
           }
@@ -1473,7 +845,7 @@ public final class Services {
         return this;
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
       public Builder clearPosition() {
         if (positionBuilder_ == null) {
@@ -1486,33 +858,33 @@ public final class Services {
         return this;
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
-      public grpc.Services.SimpleGreetingRequest.Position.Builder getPositionBuilder() {
+      public grpc.Services.Position.Builder getPositionBuilder() {
         bitField0_ |= 0x00000004;
         onChanged();
         return getPositionFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
-      public grpc.Services.SimpleGreetingRequest.PositionOrBuilder getPositionOrBuilder() {
+      public grpc.Services.PositionOrBuilder getPositionOrBuilder() {
         if (positionBuilder_ != null) {
           return positionBuilder_.getMessageOrBuilder();
         } else {
           return position_ == null ?
-              grpc.Services.SimpleGreetingRequest.Position.getDefaultInstance() : position_;
+              grpc.Services.Position.getDefaultInstance() : position_;
         }
       }
       /**
-       * <code>required .grpc.SimpleGreetingRequest.Position position = 3;</code>
+       * <code>required .grpc.Position position = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          grpc.Services.SimpleGreetingRequest.Position, grpc.Services.SimpleGreetingRequest.Position.Builder, grpc.Services.SimpleGreetingRequest.PositionOrBuilder> 
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> 
           getPositionFieldBuilder() {
         if (positionBuilder_ == null) {
           positionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              grpc.Services.SimpleGreetingRequest.Position, grpc.Services.SimpleGreetingRequest.Position.Builder, grpc.Services.SimpleGreetingRequest.PositionOrBuilder>(
+              grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder>(
                   getPosition(),
                   getParentForChildren(),
                   isClean());
@@ -1568,6 +940,634 @@ public final class Services {
 
     @java.lang.Override
     public grpc.Services.SimpleGreetingRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PositionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.Position)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 x = 1;</code>
+     * @return Whether the x field is set.
+     */
+    boolean hasX();
+    /**
+     * <code>required int32 x = 1;</code>
+     * @return The x.
+     */
+    int getX();
+
+    /**
+     * <code>required int32 y = 2;</code>
+     * @return Whether the y field is set.
+     */
+    boolean hasY();
+    /**
+     * <code>required int32 y = 2;</code>
+     * @return The y.
+     */
+    int getY();
+  }
+  /**
+   * Protobuf type {@code grpc.Position}
+   */
+  public  static final class Position extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.Position)
+      PositionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Position.newBuilder() to construct.
+    private Position(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Position() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Position();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Position(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              x_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              y_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.Services.internal_static_grpc_Position_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.Services.internal_static_grpc_Position_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.Services.Position.class, grpc.Services.Position.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int X_FIELD_NUMBER = 1;
+    private int x_;
+    /**
+     * <code>required int32 x = 1;</code>
+     * @return Whether the x field is set.
+     */
+    public boolean hasX() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required int32 x = 1;</code>
+     * @return The x.
+     */
+    public int getX() {
+      return x_;
+    }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private int y_;
+    /**
+     * <code>required int32 y = 2;</code>
+     * @return Whether the y field is set.
+     */
+    public boolean hasY() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required int32 y = 2;</code>
+     * @return The y.
+     */
+    public int getY() {
+      return y_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasX()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasY()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt32(1, x_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt32(2, y_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, x_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, y_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.Services.Position)) {
+        return super.equals(obj);
+      }
+      grpc.Services.Position other = (grpc.Services.Position) obj;
+
+      if (hasX() != other.hasX()) return false;
+      if (hasX()) {
+        if (getX()
+            != other.getX()) return false;
+      }
+      if (hasY() != other.hasY()) return false;
+      if (hasY()) {
+        if (getY()
+            != other.getY()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasX()) {
+        hash = (37 * hash) + X_FIELD_NUMBER;
+        hash = (53 * hash) + getX();
+      }
+      if (hasY()) {
+        hash = (37 * hash) + Y_FIELD_NUMBER;
+        hash = (53 * hash) + getY();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.Services.Position parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Position parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Position parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Position parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Position parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Position parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Position parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Position parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.Position parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Position parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.Position parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Position parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.Services.Position prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.Position}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.Position)
+        grpc.Services.PositionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.Services.internal_static_grpc_Position_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.Services.internal_static_grpc_Position_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.Services.Position.class, grpc.Services.Position.Builder.class);
+      }
+
+      // Construct using grpc.Services.Position.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        x_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        y_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.Services.internal_static_grpc_Position_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.Services.Position getDefaultInstanceForType() {
+        return grpc.Services.Position.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.Services.Position build() {
+        grpc.Services.Position result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.Services.Position buildPartial() {
+        grpc.Services.Position result = new grpc.Services.Position(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.x_ = x_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.y_ = y_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.Services.Position) {
+          return mergeFrom((grpc.Services.Position)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.Services.Position other) {
+        if (other == grpc.Services.Position.getDefaultInstance()) return this;
+        if (other.hasX()) {
+          setX(other.getX());
+        }
+        if (other.hasY()) {
+          setY(other.getY());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasX()) {
+          return false;
+        }
+        if (!hasY()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.Services.Position parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.Services.Position) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int x_ ;
+      /**
+       * <code>required int32 x = 1;</code>
+       * @return Whether the x field is set.
+       */
+      public boolean hasX() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required int32 x = 1;</code>
+       * @return The x.
+       */
+      public int getX() {
+        return x_;
+      }
+      /**
+       * <code>required int32 x = 1;</code>
+       * @param value The x to set.
+       * @return This builder for chaining.
+       */
+      public Builder setX(int value) {
+        bitField0_ |= 0x00000001;
+        x_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 x = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int y_ ;
+      /**
+       * <code>required int32 y = 2;</code>
+       * @return Whether the y field is set.
+       */
+      public boolean hasY() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required int32 y = 2;</code>
+       * @return The y.
+       */
+      public int getY() {
+        return y_;
+      }
+      /**
+       * <code>required int32 y = 2;</code>
+       * @param value The y to set.
+       * @return This builder for chaining.
+       */
+      public Builder setY(int value) {
+        bitField0_ |= 0x00000002;
+        y_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 y = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        y_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.Position)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.Position)
+    private static final grpc.Services.Position DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.Services.Position();
+    }
+
+    public static grpc.Services.Position getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Position>
+        PARSER = new com.google.protobuf.AbstractParser<Position>() {
+      @java.lang.Override
+      public Position parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Position(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Position> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Position> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.Services.Position getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2100,21 +2100,2254 @@ public final class Services {
 
   }
 
+  public interface DeliveryOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.Delivery)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     * @return Whether the pickup field is set.
+     */
+    boolean hasPickup();
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     * @return The pickup.
+     */
+    grpc.Services.Position getPickup();
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     */
+    grpc.Services.PositionOrBuilder getPickupOrBuilder();
+
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     * @return Whether the delivery field is set.
+     */
+    boolean hasDelivery();
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     * @return The delivery.
+     */
+    grpc.Services.Position getDelivery();
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     */
+    grpc.Services.PositionOrBuilder getDeliveryOrBuilder();
+
+    /**
+     * <code>required string id = 3;</code>
+     * @return Whether the id field is set.
+     */
+    boolean hasId();
+    /**
+     * <code>required string id = 3;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <code>required string id = 3;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+  }
+  /**
+   * Protobuf type {@code grpc.Delivery}
+   */
+  public  static final class Delivery extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.Delivery)
+      DeliveryOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Delivery.newBuilder() to construct.
+    private Delivery(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Delivery() {
+      id_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Delivery();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Delivery(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              grpc.Services.Position.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) != 0)) {
+                subBuilder = pickup_.toBuilder();
+              }
+              pickup_ = input.readMessage(grpc.Services.Position.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(pickup_);
+                pickup_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              grpc.Services.Position.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) != 0)) {
+                subBuilder = delivery_.toBuilder();
+              }
+              delivery_ = input.readMessage(grpc.Services.Position.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(delivery_);
+                delivery_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              id_ = bs;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.Services.internal_static_grpc_Delivery_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.Services.internal_static_grpc_Delivery_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.Services.Delivery.class, grpc.Services.Delivery.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int PICKUP_FIELD_NUMBER = 1;
+    private grpc.Services.Position pickup_;
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     * @return Whether the pickup field is set.
+     */
+    public boolean hasPickup() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     * @return The pickup.
+     */
+    public grpc.Services.Position getPickup() {
+      return pickup_ == null ? grpc.Services.Position.getDefaultInstance() : pickup_;
+    }
+    /**
+     * <code>required .grpc.Position pickup = 1;</code>
+     */
+    public grpc.Services.PositionOrBuilder getPickupOrBuilder() {
+      return pickup_ == null ? grpc.Services.Position.getDefaultInstance() : pickup_;
+    }
+
+    public static final int DELIVERY_FIELD_NUMBER = 2;
+    private grpc.Services.Position delivery_;
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     * @return Whether the delivery field is set.
+     */
+    public boolean hasDelivery() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     * @return The delivery.
+     */
+    public grpc.Services.Position getDelivery() {
+      return delivery_ == null ? grpc.Services.Position.getDefaultInstance() : delivery_;
+    }
+    /**
+     * <code>required .grpc.Position delivery = 2;</code>
+     */
+    public grpc.Services.PositionOrBuilder getDeliveryOrBuilder() {
+      return delivery_ == null ? grpc.Services.Position.getDefaultInstance() : delivery_;
+    }
+
+    public static final int ID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object id_;
+    /**
+     * <code>required string id = 3;</code>
+     * @return Whether the id field is set.
+     */
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required string id = 3;</code>
+     * @return The id.
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          id_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string id = 3;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasPickup()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDelivery()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getPickup().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getDelivery().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getPickup());
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeMessage(2, getDelivery());
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, id_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getPickup());
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getDelivery());
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, id_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.Services.Delivery)) {
+        return super.equals(obj);
+      }
+      grpc.Services.Delivery other = (grpc.Services.Delivery) obj;
+
+      if (hasPickup() != other.hasPickup()) return false;
+      if (hasPickup()) {
+        if (!getPickup()
+            .equals(other.getPickup())) return false;
+      }
+      if (hasDelivery() != other.hasDelivery()) return false;
+      if (hasDelivery()) {
+        if (!getDelivery()
+            .equals(other.getDelivery())) return false;
+      }
+      if (hasId() != other.hasId()) return false;
+      if (hasId()) {
+        if (!getId()
+            .equals(other.getId())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasPickup()) {
+        hash = (37 * hash) + PICKUP_FIELD_NUMBER;
+        hash = (53 * hash) + getPickup().hashCode();
+      }
+      if (hasDelivery()) {
+        hash = (37 * hash) + DELIVERY_FIELD_NUMBER;
+        hash = (53 * hash) + getDelivery().hashCode();
+      }
+      if (hasId()) {
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + getId().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.Services.Delivery parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Delivery parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.Delivery parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.Delivery parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Delivery parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.Delivery parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.Services.Delivery prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.Delivery}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.Delivery)
+        grpc.Services.DeliveryOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.Services.internal_static_grpc_Delivery_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.Services.internal_static_grpc_Delivery_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.Services.Delivery.class, grpc.Services.Delivery.Builder.class);
+      }
+
+      // Construct using grpc.Services.Delivery.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getPickupFieldBuilder();
+          getDeliveryFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (pickupBuilder_ == null) {
+          pickup_ = null;
+        } else {
+          pickupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (deliveryBuilder_ == null) {
+          delivery_ = null;
+        } else {
+          deliveryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        id_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.Services.internal_static_grpc_Delivery_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.Services.Delivery getDefaultInstanceForType() {
+        return grpc.Services.Delivery.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.Services.Delivery build() {
+        grpc.Services.Delivery result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.Services.Delivery buildPartial() {
+        grpc.Services.Delivery result = new grpc.Services.Delivery(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          if (pickupBuilder_ == null) {
+            result.pickup_ = pickup_;
+          } else {
+            result.pickup_ = pickupBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          if (deliveryBuilder_ == null) {
+            result.delivery_ = delivery_;
+          } else {
+            result.delivery_ = deliveryBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.id_ = id_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.Services.Delivery) {
+          return mergeFrom((grpc.Services.Delivery)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.Services.Delivery other) {
+        if (other == grpc.Services.Delivery.getDefaultInstance()) return this;
+        if (other.hasPickup()) {
+          mergePickup(other.getPickup());
+        }
+        if (other.hasDelivery()) {
+          mergeDelivery(other.getDelivery());
+        }
+        if (other.hasId()) {
+          bitField0_ |= 0x00000004;
+          id_ = other.id_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasPickup()) {
+          return false;
+        }
+        if (!hasDelivery()) {
+          return false;
+        }
+        if (!hasId()) {
+          return false;
+        }
+        if (!getPickup().isInitialized()) {
+          return false;
+        }
+        if (!getDelivery().isInitialized()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.Services.Delivery parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.Services.Delivery) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private grpc.Services.Position pickup_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> pickupBuilder_;
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       * @return Whether the pickup field is set.
+       */
+      public boolean hasPickup() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       * @return The pickup.
+       */
+      public grpc.Services.Position getPickup() {
+        if (pickupBuilder_ == null) {
+          return pickup_ == null ? grpc.Services.Position.getDefaultInstance() : pickup_;
+        } else {
+          return pickupBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public Builder setPickup(grpc.Services.Position value) {
+        if (pickupBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          pickup_ = value;
+          onChanged();
+        } else {
+          pickupBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public Builder setPickup(
+          grpc.Services.Position.Builder builderForValue) {
+        if (pickupBuilder_ == null) {
+          pickup_ = builderForValue.build();
+          onChanged();
+        } else {
+          pickupBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public Builder mergePickup(grpc.Services.Position value) {
+        if (pickupBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0) &&
+              pickup_ != null &&
+              pickup_ != grpc.Services.Position.getDefaultInstance()) {
+            pickup_ =
+              grpc.Services.Position.newBuilder(pickup_).mergeFrom(value).buildPartial();
+          } else {
+            pickup_ = value;
+          }
+          onChanged();
+        } else {
+          pickupBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public Builder clearPickup() {
+        if (pickupBuilder_ == null) {
+          pickup_ = null;
+          onChanged();
+        } else {
+          pickupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public grpc.Services.Position.Builder getPickupBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getPickupFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      public grpc.Services.PositionOrBuilder getPickupOrBuilder() {
+        if (pickupBuilder_ != null) {
+          return pickupBuilder_.getMessageOrBuilder();
+        } else {
+          return pickup_ == null ?
+              grpc.Services.Position.getDefaultInstance() : pickup_;
+        }
+      }
+      /**
+       * <code>required .grpc.Position pickup = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> 
+          getPickupFieldBuilder() {
+        if (pickupBuilder_ == null) {
+          pickupBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder>(
+                  getPickup(),
+                  getParentForChildren(),
+                  isClean());
+          pickup_ = null;
+        }
+        return pickupBuilder_;
+      }
+
+      private grpc.Services.Position delivery_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> deliveryBuilder_;
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       * @return Whether the delivery field is set.
+       */
+      public boolean hasDelivery() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       * @return The delivery.
+       */
+      public grpc.Services.Position getDelivery() {
+        if (deliveryBuilder_ == null) {
+          return delivery_ == null ? grpc.Services.Position.getDefaultInstance() : delivery_;
+        } else {
+          return deliveryBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public Builder setDelivery(grpc.Services.Position value) {
+        if (deliveryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          delivery_ = value;
+          onChanged();
+        } else {
+          deliveryBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public Builder setDelivery(
+          grpc.Services.Position.Builder builderForValue) {
+        if (deliveryBuilder_ == null) {
+          delivery_ = builderForValue.build();
+          onChanged();
+        } else {
+          deliveryBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public Builder mergeDelivery(grpc.Services.Position value) {
+        if (deliveryBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0) &&
+              delivery_ != null &&
+              delivery_ != grpc.Services.Position.getDefaultInstance()) {
+            delivery_ =
+              grpc.Services.Position.newBuilder(delivery_).mergeFrom(value).buildPartial();
+          } else {
+            delivery_ = value;
+          }
+          onChanged();
+        } else {
+          deliveryBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public Builder clearDelivery() {
+        if (deliveryBuilder_ == null) {
+          delivery_ = null;
+          onChanged();
+        } else {
+          deliveryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public grpc.Services.Position.Builder getDeliveryBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getDeliveryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      public grpc.Services.PositionOrBuilder getDeliveryOrBuilder() {
+        if (deliveryBuilder_ != null) {
+          return deliveryBuilder_.getMessageOrBuilder();
+        } else {
+          return delivery_ == null ?
+              grpc.Services.Position.getDefaultInstance() : delivery_;
+        }
+      }
+      /**
+       * <code>required .grpc.Position delivery = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder> 
+          getDeliveryFieldBuilder() {
+        if (deliveryBuilder_ == null) {
+          deliveryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              grpc.Services.Position, grpc.Services.Position.Builder, grpc.Services.PositionOrBuilder>(
+                  getDelivery(),
+                  getParentForChildren(),
+                  isClean());
+          delivery_ = null;
+        }
+        return deliveryBuilder_;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>required string id = 3;</code>
+       * @return Whether the id field is set.
+       */
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>required string id = 3;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            id_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string id = 3;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string id = 3;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string id = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string id = 3;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.Delivery)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.Delivery)
+    private static final grpc.Services.Delivery DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.Services.Delivery();
+    }
+
+    public static grpc.Services.Delivery getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Delivery>
+        PARSER = new com.google.protobuf.AbstractParser<Delivery>() {
+      @java.lang.Override
+      public Delivery parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Delivery(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Delivery> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Delivery> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.Services.Delivery getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface DeliveryAssignationMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.DeliveryAssignationMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     * @return Whether the delivery field is set.
+     */
+    boolean hasDelivery();
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     * @return The delivery.
+     */
+    grpc.Services.Delivery getDelivery();
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     */
+    grpc.Services.DeliveryOrBuilder getDeliveryOrBuilder();
+  }
+  /**
+   * Protobuf type {@code grpc.DeliveryAssignationMessage}
+   */
+  public  static final class DeliveryAssignationMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.DeliveryAssignationMessage)
+      DeliveryAssignationMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DeliveryAssignationMessage.newBuilder() to construct.
+    private DeliveryAssignationMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DeliveryAssignationMessage() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DeliveryAssignationMessage();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DeliveryAssignationMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              grpc.Services.Delivery.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) != 0)) {
+                subBuilder = delivery_.toBuilder();
+              }
+              delivery_ = input.readMessage(grpc.Services.Delivery.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(delivery_);
+                delivery_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.Services.internal_static_grpc_DeliveryAssignationMessage_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.Services.internal_static_grpc_DeliveryAssignationMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.Services.DeliveryAssignationMessage.class, grpc.Services.DeliveryAssignationMessage.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int DELIVERY_FIELD_NUMBER = 1;
+    private grpc.Services.Delivery delivery_;
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     * @return Whether the delivery field is set.
+     */
+    public boolean hasDelivery() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     * @return The delivery.
+     */
+    public grpc.Services.Delivery getDelivery() {
+      return delivery_ == null ? grpc.Services.Delivery.getDefaultInstance() : delivery_;
+    }
+    /**
+     * <code>required .grpc.Delivery delivery = 1;</code>
+     */
+    public grpc.Services.DeliveryOrBuilder getDeliveryOrBuilder() {
+      return delivery_ == null ? grpc.Services.Delivery.getDefaultInstance() : delivery_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasDelivery()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getDelivery().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getDelivery());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getDelivery());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.Services.DeliveryAssignationMessage)) {
+        return super.equals(obj);
+      }
+      grpc.Services.DeliveryAssignationMessage other = (grpc.Services.DeliveryAssignationMessage) obj;
+
+      if (hasDelivery() != other.hasDelivery()) return false;
+      if (hasDelivery()) {
+        if (!getDelivery()
+            .equals(other.getDelivery())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasDelivery()) {
+        hash = (37 * hash) + DELIVERY_FIELD_NUMBER;
+        hash = (53 * hash) + getDelivery().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.Services.DeliveryAssignationMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.DeliveryAssignationMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.DeliveryAssignationMessage)
+        grpc.Services.DeliveryAssignationMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationMessage_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.Services.DeliveryAssignationMessage.class, grpc.Services.DeliveryAssignationMessage.Builder.class);
+      }
+
+      // Construct using grpc.Services.DeliveryAssignationMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getDeliveryFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (deliveryBuilder_ == null) {
+          delivery_ = null;
+        } else {
+          deliveryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationMessage_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationMessage getDefaultInstanceForType() {
+        return grpc.Services.DeliveryAssignationMessage.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationMessage build() {
+        grpc.Services.DeliveryAssignationMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationMessage buildPartial() {
+        grpc.Services.DeliveryAssignationMessage result = new grpc.Services.DeliveryAssignationMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          if (deliveryBuilder_ == null) {
+            result.delivery_ = delivery_;
+          } else {
+            result.delivery_ = deliveryBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.Services.DeliveryAssignationMessage) {
+          return mergeFrom((grpc.Services.DeliveryAssignationMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.Services.DeliveryAssignationMessage other) {
+        if (other == grpc.Services.DeliveryAssignationMessage.getDefaultInstance()) return this;
+        if (other.hasDelivery()) {
+          mergeDelivery(other.getDelivery());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasDelivery()) {
+          return false;
+        }
+        if (!getDelivery().isInitialized()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.Services.DeliveryAssignationMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.Services.DeliveryAssignationMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private grpc.Services.Delivery delivery_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Delivery, grpc.Services.Delivery.Builder, grpc.Services.DeliveryOrBuilder> deliveryBuilder_;
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       * @return Whether the delivery field is set.
+       */
+      public boolean hasDelivery() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       * @return The delivery.
+       */
+      public grpc.Services.Delivery getDelivery() {
+        if (deliveryBuilder_ == null) {
+          return delivery_ == null ? grpc.Services.Delivery.getDefaultInstance() : delivery_;
+        } else {
+          return deliveryBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public Builder setDelivery(grpc.Services.Delivery value) {
+        if (deliveryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          delivery_ = value;
+          onChanged();
+        } else {
+          deliveryBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public Builder setDelivery(
+          grpc.Services.Delivery.Builder builderForValue) {
+        if (deliveryBuilder_ == null) {
+          delivery_ = builderForValue.build();
+          onChanged();
+        } else {
+          deliveryBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public Builder mergeDelivery(grpc.Services.Delivery value) {
+        if (deliveryBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0) &&
+              delivery_ != null &&
+              delivery_ != grpc.Services.Delivery.getDefaultInstance()) {
+            delivery_ =
+              grpc.Services.Delivery.newBuilder(delivery_).mergeFrom(value).buildPartial();
+          } else {
+            delivery_ = value;
+          }
+          onChanged();
+        } else {
+          deliveryBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public Builder clearDelivery() {
+        if (deliveryBuilder_ == null) {
+          delivery_ = null;
+          onChanged();
+        } else {
+          deliveryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public grpc.Services.Delivery.Builder getDeliveryBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getDeliveryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      public grpc.Services.DeliveryOrBuilder getDeliveryOrBuilder() {
+        if (deliveryBuilder_ != null) {
+          return deliveryBuilder_.getMessageOrBuilder();
+        } else {
+          return delivery_ == null ?
+              grpc.Services.Delivery.getDefaultInstance() : delivery_;
+        }
+      }
+      /**
+       * <code>required .grpc.Delivery delivery = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          grpc.Services.Delivery, grpc.Services.Delivery.Builder, grpc.Services.DeliveryOrBuilder> 
+          getDeliveryFieldBuilder() {
+        if (deliveryBuilder_ == null) {
+          deliveryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              grpc.Services.Delivery, grpc.Services.Delivery.Builder, grpc.Services.DeliveryOrBuilder>(
+                  getDelivery(),
+                  getParentForChildren(),
+                  isClean());
+          delivery_ = null;
+        }
+        return deliveryBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.DeliveryAssignationMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.DeliveryAssignationMessage)
+    private static final grpc.Services.DeliveryAssignationMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.Services.DeliveryAssignationMessage();
+    }
+
+    public static grpc.Services.DeliveryAssignationMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<DeliveryAssignationMessage>
+        PARSER = new com.google.protobuf.AbstractParser<DeliveryAssignationMessage>() {
+      @java.lang.Override
+      public DeliveryAssignationMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new DeliveryAssignationMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<DeliveryAssignationMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DeliveryAssignationMessage> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.Services.DeliveryAssignationMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface DeliveryAssignationResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.DeliveryAssignationResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool response = 1;</code>
+     * @return Whether the response field is set.
+     */
+    boolean hasResponse();
+    /**
+     * <code>required bool response = 1;</code>
+     * @return The response.
+     */
+    boolean getResponse();
+  }
+  /**
+   * Protobuf type {@code grpc.DeliveryAssignationResponse}
+   */
+  public  static final class DeliveryAssignationResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.DeliveryAssignationResponse)
+      DeliveryAssignationResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DeliveryAssignationResponse.newBuilder() to construct.
+    private DeliveryAssignationResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DeliveryAssignationResponse() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DeliveryAssignationResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DeliveryAssignationResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              response_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.Services.internal_static_grpc_DeliveryAssignationResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.Services.internal_static_grpc_DeliveryAssignationResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.Services.DeliveryAssignationResponse.class, grpc.Services.DeliveryAssignationResponse.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int RESPONSE_FIELD_NUMBER = 1;
+    private boolean response_;
+    /**
+     * <code>required bool response = 1;</code>
+     * @return Whether the response field is set.
+     */
+    public boolean hasResponse() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required bool response = 1;</code>
+     * @return The response.
+     */
+    public boolean getResponse() {
+      return response_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasResponse()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeBool(1, response_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, response_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.Services.DeliveryAssignationResponse)) {
+        return super.equals(obj);
+      }
+      grpc.Services.DeliveryAssignationResponse other = (grpc.Services.DeliveryAssignationResponse) obj;
+
+      if (hasResponse() != other.hasResponse()) return false;
+      if (hasResponse()) {
+        if (getResponse()
+            != other.getResponse()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasResponse()) {
+        hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getResponse());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.Services.DeliveryAssignationResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.Services.DeliveryAssignationResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.DeliveryAssignationResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.DeliveryAssignationResponse)
+        grpc.Services.DeliveryAssignationResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.Services.DeliveryAssignationResponse.class, grpc.Services.DeliveryAssignationResponse.Builder.class);
+      }
+
+      // Construct using grpc.Services.DeliveryAssignationResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        response_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.Services.internal_static_grpc_DeliveryAssignationResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationResponse getDefaultInstanceForType() {
+        return grpc.Services.DeliveryAssignationResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationResponse build() {
+        grpc.Services.DeliveryAssignationResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.Services.DeliveryAssignationResponse buildPartial() {
+        grpc.Services.DeliveryAssignationResponse result = new grpc.Services.DeliveryAssignationResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.response_ = response_;
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.Services.DeliveryAssignationResponse) {
+          return mergeFrom((grpc.Services.DeliveryAssignationResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.Services.DeliveryAssignationResponse other) {
+        if (other == grpc.Services.DeliveryAssignationResponse.getDefaultInstance()) return this;
+        if (other.hasResponse()) {
+          setResponse(other.getResponse());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasResponse()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.Services.DeliveryAssignationResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.Services.DeliveryAssignationResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean response_ ;
+      /**
+       * <code>required bool response = 1;</code>
+       * @return Whether the response field is set.
+       */
+      public boolean hasResponse() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required bool response = 1;</code>
+       * @return The response.
+       */
+      public boolean getResponse() {
+        return response_;
+      }
+      /**
+       * <code>required bool response = 1;</code>
+       * @param value The response to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResponse(boolean value) {
+        bitField0_ |= 0x00000001;
+        response_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool response = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearResponse() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        response_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.DeliveryAssignationResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.DeliveryAssignationResponse)
+    private static final grpc.Services.DeliveryAssignationResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.Services.DeliveryAssignationResponse();
+    }
+
+    public static grpc.Services.DeliveryAssignationResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<DeliveryAssignationResponse>
+        PARSER = new com.google.protobuf.AbstractParser<DeliveryAssignationResponse>() {
+      @java.lang.Override
+      public DeliveryAssignationResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new DeliveryAssignationResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<DeliveryAssignationResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DeliveryAssignationResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.Services.DeliveryAssignationResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_grpc_SimpleGreetingRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_grpc_SimpleGreetingRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_grpc_SimpleGreetingRequest_Position_descriptor;
+    internal_static_grpc_Position_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_grpc_SimpleGreetingRequest_Position_fieldAccessorTable;
+      internal_static_grpc_Position_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_grpc_SimpleGreetingResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_grpc_SimpleGreetingResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_Delivery_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_Delivery_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_DeliveryAssignationMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_DeliveryAssignationMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_DeliveryAssignationResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_DeliveryAssignationResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2124,14 +4357,21 @@ public final class Services {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016services.proto\022\004grpc\"\213\001\n\025SimpleGreetin" +
-      "gRequest\022\n\n\002id\030\001 \002(\t\022\014\n\004port\030\002 \002(\005\0226\n\010po" +
-      "sition\030\003 \002(\0132$.grpc.SimpleGreetingReques" +
-      "t.Position\032 \n\010Position\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002" +
-      " \002(\005\"(\n\026SimpleGreetingResponse\022\016\n\006master" +
-      "\030\001 \002(\0102Y\n\010Chatting\022M\n\016SimpleGreeting\022\033.g" +
-      "rpc.SimpleGreetingRequest\032\034.grpc.SimpleG" +
-      "reetingResponse\"\000"
+      "\n\016services.proto\022\004grpc\"S\n\025SimpleGreeting" +
+      "Request\022\n\n\002id\030\001 \002(\t\022\014\n\004port\030\002 \002(\005\022 \n\010pos" +
+      "ition\030\003 \002(\0132\016.grpc.Position\" \n\010Position\022" +
+      "\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\"(\n\026SimpleGreetingR" +
+      "esponse\022\016\n\006master\030\001 \002(\010\"X\n\010Delivery\022\036\n\006p" +
+      "ickup\030\001 \002(\0132\016.grpc.Position\022 \n\010delivery\030" +
+      "\002 \002(\0132\016.grpc.Position\022\n\n\002id\030\003 \002(\t\">\n\032Del" +
+      "iveryAssignationMessage\022 \n\010delivery\030\001 \002(" +
+      "\0132\016.grpc.Delivery\"/\n\033DeliveryAssignation" +
+      "Response\022\020\n\010response\030\001 \002(\0102\276\001\n\010Chatting\022" +
+      "M\n\016SimpleGreeting\022\033.grpc.SimpleGreetingR" +
+      "equest\032\034.grpc.SimpleGreetingResponse\"\000\022c" +
+      "\n\032DeliveryAssignationService\022 .grpc.Deli" +
+      "veryAssignationMessage\032!.grpc.DeliveryAs" +
+      "signationResponse\"\000"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2143,18 +4383,36 @@ public final class Services {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_SimpleGreetingRequest_descriptor,
         new java.lang.String[] { "Id", "Port", "Position", });
-    internal_static_grpc_SimpleGreetingRequest_Position_descriptor =
-      internal_static_grpc_SimpleGreetingRequest_descriptor.getNestedTypes().get(0);
-    internal_static_grpc_SimpleGreetingRequest_Position_fieldAccessorTable = new
+    internal_static_grpc_Position_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_grpc_Position_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_grpc_SimpleGreetingRequest_Position_descriptor,
+        internal_static_grpc_Position_descriptor,
         new java.lang.String[] { "X", "Y", });
     internal_static_grpc_SimpleGreetingResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_grpc_SimpleGreetingResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_SimpleGreetingResponse_descriptor,
         new java.lang.String[] { "Master", });
+    internal_static_grpc_Delivery_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_grpc_Delivery_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_Delivery_descriptor,
+        new java.lang.String[] { "Pickup", "Delivery", "Id", });
+    internal_static_grpc_DeliveryAssignationMessage_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_grpc_DeliveryAssignationMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_DeliveryAssignationMessage_descriptor,
+        new java.lang.String[] { "Delivery", });
+    internal_static_grpc_DeliveryAssignationResponse_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_grpc_DeliveryAssignationResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_DeliveryAssignationResponse_descriptor,
+        new java.lang.String[] { "Response", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

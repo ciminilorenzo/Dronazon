@@ -1,4 +1,4 @@
-package drone;
+package drone.modules;
 
 import java.util.Scanner;
 
@@ -17,11 +17,11 @@ import java.util.Scanner;
             - ASK TO ADMINISTRATION SERVER TO QUIT
  */
 
-public class QuitThread extends Thread
+public class QuitModule extends Thread
 {
     Scanner         scanner = new Scanner(System.in);
 
-    public QuitThread(){}
+    public QuitModule(){}
 
     public void run() {
         System.out.println("[SYSTEM INFO] Type 'quit' to shutdown the drone.");

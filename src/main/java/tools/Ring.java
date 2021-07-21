@@ -12,6 +12,7 @@ import java.util.Comparator;
 
 /**
  * This class gives instances of 'RING'. A Ring is a representation of each drone's view of the smartcity.
+ * TODO: Shall we synchronize this data structure? Calls are received only from updateView() in GreetingServiceImplementation for now.
  */
 
 @XmlRootElement
@@ -58,8 +59,20 @@ public class Ring
     }
 
 
-    public ArrayList<Drone> getDroneArrayListFromRing(){
-        return this.droneArrayList;
+    public Drone getNext(Drone drone){
+        if(droneArrayList.size() == 1){
+            return null;
+        }
+
+        for(int i = 0; i < droneArrayList.size(); i++){
+            if(drone.getID() == droneArrayList.get(i).getID()){
+                return droneArrayList.get(i+1);
+            }
+            if(i == droneArrayList.size() - 1){
+                return droneArrayList.get(0);
+            }
+        }
+        return null;
     }
 
 
@@ -69,8 +82,17 @@ public class Ring
 
         result.append("[RING] Printing... \n");
 
-        for (Drone drone:droneArrayList){
-            result.append("\t ---> ").append(drone.getPort());
+        for(int i = 0; i < droneArrayList.size(); i++)
+        {
+            if(i == 0) result.append("\t").append(droneArrayList.get(i).getPort());
+            else result.append("\t --->\t").append(droneArrayList.get(i).getPort());
+        }
+
+        for(int i = 0; i < droneArrayList.size(); i++)
+        {
+            if(i == 0) result.append("\n\t|______");
+            else if(i == droneArrayList.size() -1) result.append("___________________|");
+            else result.append("____________");
         }
         return result.toString();
     }

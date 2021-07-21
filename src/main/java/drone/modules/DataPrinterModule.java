@@ -1,4 +1,6 @@
-package drone;
+package drone.modules;
+
+import drone.Drone;
 
 /**
  * EACH 10 SECONDS THIS THREAD HAVE TO PRINT:
@@ -9,11 +11,11 @@ package drone;
  * Is it right to don't synchronize the whole set of codes?
  */
 
-public class DataPrinter extends Thread
+public class DataPrinterModule extends Thread
 {
     Drone drone;
 
-    public DataPrinter(Drone drone)
+    public DataPrinterModule(Drone drone)
     {
         this.drone = drone;
     }

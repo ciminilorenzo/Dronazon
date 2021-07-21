@@ -1,5 +1,6 @@
 package tools;
 
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -46,5 +47,9 @@ public class Position
         return new Position(
                 (int) (Math.random() * 9),
                 (int) (Math.random() * 9));
+    }
+
+    public static double getDistanceBetweenTwoPoints(Position first, Position second){
+        return Math.sqrt((second.getX() - first.getX())^2 + (second.getY() - first.getY())^2);
     }
 }

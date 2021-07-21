@@ -1,11 +1,15 @@
-package drone;
+package drone.modules;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import drone.Drone;
+import drone.GreetingServiceImplementation;
 import grpc.ChattingGrpc;
 import grpc.Services;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import tools.Delivery;
 
 
 /**
@@ -54,8 +58,8 @@ public class CommunicationModule extends Thread
         System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Start chatting process");
 
 
-        if(drone.getSmartcity().getDroneArrayListFromRing() != null) {
-            for (Drone currentDrone : drone.getSmartcity().getDroneArrayListFromRing()) {
+        if(drone.getSmartcity().getDroneArrayList() != null) {
+            for (Drone currentDrone : drone.getSmartcity().getDroneArrayList()) {
                 if(currentDrone.getID() != drone.getID())
                 synchronousCall(drone, currentDrone);
             }
@@ -74,7 +78,7 @@ public class CommunicationModule extends Thread
         ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
         ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
 
-        Services.SimpleGreetingRequest.Position position = Services.SimpleGreetingRequest.Position
+        Services.Position position = Services.Position
                 .newBuilder()
                 .setX(sendingDrone.getPosition().getX())
                 .setY(sendingDrone.getPosition().getY())
@@ -93,4 +97,47 @@ public class CommunicationModule extends Thread
             sendingDrone.setMasterDrone(receivingDrone);
         }
     }
+
+    /**
+     * Assertion: Drone that is calling this method is master drone.
+     *
+     * @param sendingDrone master drone
+     * @param receivingDrone elected drone to delivery
+     * @param delivery delivery that must be delivered
+     * @return true or false whatever the assignation is successfully or not
+     */
+    public static boolean askToMakeADelivery(Drone sendingDrone, Drone receivingDrone, Delivery delivery) {
+        System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
+
+        ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
+        ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+
+        Services.Position pickup = Services.Position
+                .newBuilder()
+                .setX(delivery.getPickupPoint().getX())
+                .setY(delivery.getPickupPoint().getY())
+                .build();
+
+        Services.Position deliv = Services.Position
+                .newBuilder()
+                .setX(delivery.getDeliveryPoint().getX())
+                .setY(delivery.getDeliveryPoint().getY())
+                .build();
+
+        Services.Delivery finalDelivery = Services.Delivery
+                .newBuilder()
+                .setPickup(pickup)
+                .setDelivery(deliv)
+                .setId(delivery.getID().toString())
+                .build();
+
+        Services.DeliveryAssignationMessage deliveryAssignationResponse = Services.DeliveryAssignationMessage.newBuilder()
+                .setDelivery(finalDelivery)
+                .build();
+
+        // Here i'm gonna receive 'true' or 'false' based on the fact that the other drone is whatever master or not.
+        Services.DeliveryAssignationResponse response =  chattingStub.deliveryAssignationService(deliveryAssignationResponse);
+        return response.getResponse();
+    }
+
 }

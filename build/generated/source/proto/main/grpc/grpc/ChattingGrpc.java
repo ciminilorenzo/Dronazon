@@ -58,6 +58,37 @@ public final class ChattingGrpc {
     return getSimpleGreetingMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.DeliveryAssignationMessage,
+      grpc.Services.DeliveryAssignationResponse> getDeliveryAssignationServiceMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "DeliveryAssignationService",
+      requestType = grpc.Services.DeliveryAssignationMessage.class,
+      responseType = grpc.Services.DeliveryAssignationResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.DeliveryAssignationMessage,
+      grpc.Services.DeliveryAssignationResponse> getDeliveryAssignationServiceMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.DeliveryAssignationMessage, grpc.Services.DeliveryAssignationResponse> getDeliveryAssignationServiceMethod;
+    if ((getDeliveryAssignationServiceMethod = ChattingGrpc.getDeliveryAssignationServiceMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getDeliveryAssignationServiceMethod = ChattingGrpc.getDeliveryAssignationServiceMethod) == null) {
+          ChattingGrpc.getDeliveryAssignationServiceMethod = getDeliveryAssignationServiceMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.DeliveryAssignationMessage, grpc.Services.DeliveryAssignationResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeliveryAssignationService"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.DeliveryAssignationMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.DeliveryAssignationResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("DeliveryAssignationService"))
+              .build();
+        }
+      }
+    }
+    return getDeliveryAssignationServiceMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -92,6 +123,13 @@ public final class ChattingGrpc {
       asyncUnimplementedUnaryCall(getSimpleGreetingMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void deliveryAssignationService(grpc.Services.DeliveryAssignationMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.DeliveryAssignationResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getDeliveryAssignationServiceMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -101,6 +139,13 @@ public final class ChattingGrpc {
                 grpc.Services.SimpleGreetingRequest,
                 grpc.Services.SimpleGreetingResponse>(
                   this, METHODID_SIMPLE_GREETING)))
+          .addMethod(
+            getDeliveryAssignationServiceMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.DeliveryAssignationMessage,
+                grpc.Services.DeliveryAssignationResponse>(
+                  this, METHODID_DELIVERY_ASSIGNATION_SERVICE)))
           .build();
     }
   }
@@ -130,6 +175,14 @@ public final class ChattingGrpc {
       asyncUnaryCall(
           getChannel().newCall(getSimpleGreetingMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void deliveryAssignationService(grpc.Services.DeliveryAssignationMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.DeliveryAssignationResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getDeliveryAssignationServiceMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -155,6 +208,13 @@ public final class ChattingGrpc {
     public grpc.Services.SimpleGreetingResponse simpleGreeting(grpc.Services.SimpleGreetingRequest request) {
       return blockingUnaryCall(
           getChannel(), getSimpleGreetingMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.DeliveryAssignationResponse deliveryAssignationService(grpc.Services.DeliveryAssignationMessage request) {
+      return blockingUnaryCall(
+          getChannel(), getDeliveryAssignationServiceMethod(), getCallOptions(), request);
     }
   }
 
@@ -183,9 +243,18 @@ public final class ChattingGrpc {
       return futureUnaryCall(
           getChannel().newCall(getSimpleGreetingMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.DeliveryAssignationResponse> deliveryAssignationService(
+        grpc.Services.DeliveryAssignationMessage request) {
+      return futureUnaryCall(
+          getChannel().newCall(getDeliveryAssignationServiceMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SIMPLE_GREETING = 0;
+  private static final int METHODID_DELIVERY_ASSIGNATION_SERVICE = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -207,6 +276,10 @@ public final class ChattingGrpc {
         case METHODID_SIMPLE_GREETING:
           serviceImpl.simpleGreeting((grpc.Services.SimpleGreetingRequest) request,
               (io.grpc.stub.StreamObserver<grpc.Services.SimpleGreetingResponse>) responseObserver);
+          break;
+        case METHODID_DELIVERY_ASSIGNATION_SERVICE:
+          serviceImpl.deliveryAssignationService((grpc.Services.DeliveryAssignationMessage) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.DeliveryAssignationResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -270,6 +343,7 @@ public final class ChattingGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ChattingFileDescriptorSupplier())
               .addMethod(getSimpleGreetingMethod())
+              .addMethod(getDeliveryAssignationServiceMethod())
               .build();
         }
       }

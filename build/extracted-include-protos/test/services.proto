@@ -4,13 +4,13 @@ message SimpleGreetingRequest
 {
   required string id = 1;
   required int32 port = 2;
-
-  message Position{
-    required int32 x = 1;
-    required int32 y = 2;
-  }
-
   required Position position = 3;
+}
+
+message Position
+{
+  required int32 x = 1;
+  required int32 y = 2;
 }
 
 message SimpleGreetingResponse
@@ -18,6 +18,26 @@ message SimpleGreetingResponse
   required bool master = 1;
 }
 
+message Delivery{
+  required Position pickup = 1;
+  required Position delivery = 2;
+  required string id = 3;
+}
+
+message DeliveryAssignationMessage
+{
+  required Delivery delivery = 1;
+}
+
+message DeliveryAssignationResponse
+{
+  required bool response = 1;
+}
+
+
+
 service Chatting{
   rpc SimpleGreeting(SimpleGreetingRequest) returns (SimpleGreetingResponse) {}
+
+  rpc DeliveryAssignationService(DeliveryAssignationMessage) returns (DeliveryAssignationResponse) {}
 }

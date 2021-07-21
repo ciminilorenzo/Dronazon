@@ -1,18 +1,26 @@
 package tools;
 
 import com.google.gson.Gson;
+import grpc.Services;
 
 import java.util.UUID;
 
 public class Delivery
 {
-    private final UUID ID = UUID.randomUUID();
+    private UUID ID = UUID.randomUUID();
     private final Position pickupPoint;
     private final Position deliveryPoint;
 
     public Delivery(Position pickupPoint, Position deliveryPoint){
         this.pickupPoint = pickupPoint;
         this.deliveryPoint = deliveryPoint;
+    }
+
+    public Delivery(String id, Services.Position pickupPoint, Services.Position deliveryPoint){
+        this.ID = UUID.fromString(id);
+        this.pickupPoint = new Position(pickupPoint.getX(), pickupPoint.getY());
+        this.deliveryPoint = new Position(deliveryPoint.getX(), deliveryPoint.getY());
+
     }
 
     public UUID getID() {

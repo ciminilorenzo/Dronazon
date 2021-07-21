@@ -1,5 +1,7 @@
 package drone;
 
+import drone.modules.CommunicationModule;
+import drone.modules.QuitModule;
 import tools.CityMap;
 import tools.Position;
 import tools.Ring;
@@ -40,10 +42,27 @@ public class Drone
 
     private double distanceMade = 0.0;
 
+
+    // Flag used to set if the current drone is the master or not.
     private boolean masterFlag = false;
 
+    // Pointer to the master drone.
     private Drone masterDrone;
 
+    // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
+    private boolean isBusy = false;
+
+
+    public boolean isBusy() {
+        return isBusy;
+    }
+
+    public void setBusy(boolean busy) {
+        if(isBusy == false){
+            //TODO: DEVE MANDARE STATISTICHE TRAMITE GRPC E DIRE CHE NON E' BUSY. QUINDI MASTER DOVREBBE AVERE STRUTTURA DATI DELLA FORMA <boolean, drone>
+        }
+        isBusy = busy;
+    }
 
     public double getDistanceMade(){ return this.distanceMade; }
 
@@ -143,8 +162,8 @@ public class Drone
     public static void main(String[] argv) {
         Drone       drone = new Drone();
         // Setting quit thread to allow the user to quit.
-        QuitThread quitThread = new QuitThread();
-        quitThread.start();
+        QuitModule quitModule = new QuitModule();
+        quitModule.start();
 
         System.out.println("*************** STARTING NEW DRONE ***************" + drone + "\n\n\n");
 
