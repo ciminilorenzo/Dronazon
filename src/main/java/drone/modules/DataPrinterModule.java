@@ -24,7 +24,7 @@ public class DataPrinterModule extends Thread
     {
         System.out.println("\n\n[DRONE'S AUTOMATED ROUTINE] " +
                 "\n\t NUMBER OF DELIVERY THAT THIS DRONE HAS MADE: " + drone.getNumberOfDeliveryDone() +
-                "\n\t NUMBER OF KILOMETERS THIS DRONE TRAVELLED: " + drone.getDistanceMade() +
+                "\n\t NUMBER OF KILOMETERS THIS DRONE HAS TRAVELLED: " + drone.getDistanceMade() +
                 "\n\t BATTERY LEFT: "+ drone.getBattery() + "%" +
                 "\n\n"
         );

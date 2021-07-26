@@ -1,6 +1,9 @@
 package drone;
 
+import administration.resources.statistics.Statistic;
 import drone.modules.CommunicationModule;
+import drone.modules.DataPrinterModule;
+import drone.modules.MasterModule;
 import drone.modules.QuitModule;
 import tools.CityMap;
 import tools.Position;
@@ -16,6 +19,9 @@ import com.sun.jersey.api.client.WebResource;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 @XmlRootElement(name="Drone")
@@ -52,15 +58,19 @@ public class Drone
     // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
     private boolean isBusy = false;
 
+    @XmlTransient
+    private ArrayList<Statistic> masterDroneStatistics;
+
+    @XmlTransient
+    private MasterModule masterThread;
+
 
     public boolean isBusy() {
         return isBusy;
     }
 
     public void setBusy(boolean busy) {
-        if(isBusy == false){
-            //TODO: DEVE MANDARE STATISTICHE TRAMITE GRPC E DIRE CHE NON E' BUSY. QUINDI MASTER DOVREBBE AVERE STRUTTURA DATI DELLA FORMA <boolean, drone>
-        }
+        System.out.println("[DRONE MODULE] Setting busy flag of this drone as: " + busy);
         isBusy = busy;
     }
 
@@ -126,8 +136,9 @@ public class Drone
 
     public void setMasterFlag(boolean masterFlag) {
         if(masterFlag){
-            MasterThread masterThread = new MasterThread(this);
+            masterThread = new MasterModule(this);
             masterThread.start();
+            this.masterDroneStatistics = new ArrayList<>();
         }
         this.masterFlag = masterFlag;
     }
@@ -140,12 +151,21 @@ public class Drone
         this.masterDrone = masterDrone;
     }
 
-    public Drone(UUID id, int port, Position position){
-        this.ID = id;
-        this.port = port;
-        this.position = position;
+    public ArrayList<Statistic> getMasterDroneStatistics() {
+        return masterDroneStatistics;
     }
 
+    public void setMasterDroneStatistics(ArrayList<Statistic> masterDroneStatistics) {
+        this.masterDroneStatistics = masterDroneStatistics;
+    }
+
+    public void addStatisticToMasterDroneDataStructure(Statistic statistic){
+        if(getMasterDroneStatistics() != null){
+            System.out.println("[MASTER MODULE] New statistic has just been received and inserted into the master drone data structure");
+            this.masterDroneStatistics.add(statistic);
+            System.out.println("[MASTER MODULE] Last version of master's statistics:" + this.getMasterDroneStatistics());
+        }
+    }
 
     public String toString(){
         return "\n" +
@@ -157,7 +177,24 @@ public class Drone
 
 
 
+
+
+
+    public Drone(UUID id, int port, Position position){
+        this.ID = id;
+        this.port = port;
+        this.position = position;
+    }
+
     private Drone(){}
+
+
+
+
+
+
+
+
 
     public static void main(String[] argv) {
         Drone       drone = new Drone();
@@ -174,10 +211,8 @@ public class Drone
         CommunicationModule communicationModule = new CommunicationModule(drone);
         communicationModule.start();
 
-        //TODO: SET OF FOR DEBUGGING PURPOSES
-        // Setting scheduled task for printing each 10 seconds drone's data.
-        //ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        //scheduledExecutorService.scheduleAtFixedRate(new DataPrinter(drone), 10,10, TimeUnit.SECONDS);
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,20, TimeUnit.SECONDS);
 
     }
 
@@ -248,6 +283,11 @@ public class Drone
         }
     }
 
+    // This is method is called from master drone when either one new drone enters the smartcity or set himself as not busy.
+    // This method is called in GreetingServiceImplementation
+    public void communicateAvailability(){
+        this.masterThread.checkIfDelivery();
+    }
 
 
 

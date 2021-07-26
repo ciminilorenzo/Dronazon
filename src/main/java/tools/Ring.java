@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.UUID;
 
 
 /**
@@ -74,6 +75,32 @@ public class Ring
         }
         return null;
     }
+
+
+
+    // Assertion: This method is called by master drone after receiving delivery's data from deliverer drone.
+    public void modifyDroneAfterDelivery(UUID id, Position position, int battery, boolean busy){
+        for (Drone current: droneArrayList) {
+            if(current.getID().compareTo(id) == 0){
+                current.setPosition(position);
+                current.setBattery(battery);
+                current.setBusy(false);
+                System.out.println("[MASTER RING] DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy ->" + busy);
+                return;
+            }
+        }
+    }
+
+    public void setBusy(UUID id){
+        for(Drone current: droneArrayList){
+            if(current.getID().compareTo(id) == 0){
+                current.setBusy(true);
+            }
+        }
+    }
+
+
+
 
 
     @Override

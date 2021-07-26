@@ -23,7 +23,7 @@ public class GlobalStatistic
     private double          batteryAvg;
 
     @XmlElement
-    private String            timeStamp;
+    private String          timeStamp;
 
 
     /**

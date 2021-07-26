@@ -6,8 +6,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import tools.Delivery;
 
-import java.io.IOException;
-
 
 /**
  * This a process that simulates an e-commerce. In particular, Dronazon must generate randomly made orders every 5 seconds.
@@ -18,7 +16,7 @@ public class Dronazon
     private static final String  broker = "tcp://localhost:1883";
     private static final String  clientId = MqttClient.generateClientId();
 
-    public static void main(String[] argv) throws MqttException, IOException, InterruptedException {
+    public static void main(String[] argv) throws MqttException, InterruptedException {
         MqttClient          client = new MqttClient(broker, clientId);
         MqttConnectOptions  connectOptions = new MqttConnectOptions();
         connect(client, connectOptions);
@@ -51,7 +49,7 @@ public class Dronazon
      *  With this level of Quality-of-Service we want that our message will be send exactly one time.
      *  This is based on 4 messages: 1. Message's send 2. PUBREC 3. PUBREL 4. PUBCOMP
      */
-    private static void publish(MqttClient client) throws MqttException, InterruptedException, IOException {
+    private static void publish(MqttClient client) throws MqttException, InterruptedException{
         final int        qos = 2;
 
         while (true) {
@@ -62,7 +60,7 @@ public class Dronazon
             client.publish(topic, message);
             System.out.println("[ DRONAZON ] Has just published a new delivery:\n" +
                     message);
-            Thread.sleep(20000);
+            Thread.sleep(3000);
         }
     }
 }

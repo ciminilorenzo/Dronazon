@@ -1,5 +1,6 @@
 package drone;
 
+import administration.resources.statistics.Statistic;
 import drone.modules.DeliveryModule;
 import tools.Delivery;
 import tools.Position;
@@ -45,6 +46,10 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         responseStreamObserver.onNext(simpleGreetingResponse);
         responseStreamObserver.onCompleted();
         System.out.println("[DRONE COMMUNICATION MODULE - INPUT] SIMPLE GREETING SERVICE - Answer successfully sent to drone " + request.getId());
+
+        // New drone has just entered into the smartcity. This is one situation where if there are any undelivered deliveries
+        // it could be assigned of one of them.
+        drone.communicateAvailability();
     }
 
     private void updateView(Services.SimpleGreetingRequest newDrone){
@@ -62,10 +67,58 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
     @Override
     public void deliveryAssignationService(Services.DeliveryAssignationMessage request, StreamObserver<Services.DeliveryAssignationResponse> responseObserver) {
         System.out.println("\n\n[DRONE COMMUNICATION MODULE - INPUT] DELIVERY ASSIGNATION - Preparing the drone to the delivery ");
-        Services.DeliveryAssignationMessage.Delivery deliveryReceived = request.getDelivery();
-        Delivery delivery = new Delivery(deliveryReceived.getId(), deliveryReceived.getPickup(), deliveryReceived.getDelivery());
-        drone.setBusy(true);
-        DeliveryModule deliveryModule = new DeliveryModule(drone, delivery);
-        deliveryModule.start();+/
+        Services.DeliveryAssignationResponse deliveryAssignationResponse;
+
+        if(drone.isBusy()){
+            System.out.println("[gRPC MODULE] This delivery can't be accepted. Drone is already busy");
+            deliveryAssignationResponse = Services.DeliveryAssignationResponse.newBuilder().setResponse(false).build();
+        }
+        else {
+            deliveryAssignationResponse = Services.DeliveryAssignationResponse.newBuilder().setResponse(true).build();
+            Services.Delivery deliveryReceived = request.getDelivery();
+            Delivery delivery = new Delivery(deliveryReceived.getId(), deliveryReceived.getPickup(), deliveryReceived.getDelivery());
+            drone.setBusy(true);
+            DeliveryModule deliveryModule = new DeliveryModule(drone, delivery);
+            deliveryModule.start();
+
+        }
+
+        responseObserver.onNext(deliveryAssignationResponse);
+        responseObserver.onCompleted();
+    }
+
+
+    /**
+     * Assertion: This method is called just in case in which this drone is the master one.
+     *
+     * @param request DeliveryComplete message received from drone which had completed the delivery
+     * @param responseObserver master drone has to send receipt confirmation
+     */
+    @Override
+    public void deliveryCompleteService(Services.DeliveryComplete request, StreamObserver<Services.DeliveryCompleteResponse> responseObserver) {
+        System.out.println("\n\n[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Inserting received statistic into the data structure . . .");
+
+        Position    newPosition =  new Position(request.getNewPosition().getX(), request.getNewPosition().getY());
+        int         battery = request.getBatteryLeft();
+
+        Statistic statistic = new Statistic(
+                request.getTimestamp(),
+                newPosition,
+                request.getDistance(),
+                request.getPollution(),
+                battery
+        );
+
+        // Updating master's view
+        this.drone.addStatisticToMasterDroneDataStructure(statistic);       // Adding statistic to master's data structure.
+        this.drone.getSmartcity().modifyDroneAfterDelivery(UUID.fromString(request.getDroneId()), newPosition, battery, false);     // Modifying deliverer's data inside master drone data structure
+        this.drone.communicateAvailability();       // This is another situation where if there are any undelivered deliveries this drone, due he his just been assigned as 'not busy', could deliverer it
+
+
+        System.out.println("[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Received statistic successfully saved");
+        Services.DeliveryCompleteResponse response = Services.DeliveryCompleteResponse.newBuilder().setResponse(true).build();
+        responseObserver.onNext(response);
+        System.out.println("[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Sending receipt confirmation message");
+        responseObserver.onCompleted();
     }
 }

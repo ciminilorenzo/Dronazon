@@ -74,40 +74,48 @@ public class CommunicationModule extends Thread
 
     private static void synchronousCall(Drone sendingDrone, Drone receivingDrone){
         System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
+        try
+        {
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
+            ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
 
-        ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
-        ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+            Services.Position position = Services.Position
+                    .newBuilder()
+                    .setX(sendingDrone.getPosition().getX())
+                    .setY(sendingDrone.getPosition().getY())
+                    .build();
 
-        Services.Position position = Services.Position
-                .newBuilder()
-                .setX(sendingDrone.getPosition().getX())
-                .setY(sendingDrone.getPosition().getY())
-                .build();
+            Services.SimpleGreetingRequest simpleGreetingRequest = Services.SimpleGreetingRequest.newBuilder()
+                    .setId(sendingDrone.getID().toString())
+                    .setPort(sendingDrone.getPort())
+                    .setPosition(position)
+                    .build();
 
-        Services.SimpleGreetingRequest simpleGreetingRequest = Services.SimpleGreetingRequest.newBuilder()
-                .setId(sendingDrone.getID().toString())
-                .setPort(sendingDrone.getPort())
-                .setPosition(position)
-                .build();
-
-        // Here i'm gonna receive 'true' or 'false' based on the fact that the other drone is whatever master or not.
-        Services.SimpleGreetingResponse response = chattingStub.simpleGreeting(simpleGreetingRequest);
-        System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Response obtained from drone: " + response.getMaster());
-        if(response.getMaster()){
-            sendingDrone.setMasterDrone(receivingDrone);
+            // Here i'm gonna receive 'true' or 'false' based on the fact that the other drone is whatever master or not.
+            Services.SimpleGreetingResponse response = chattingStub.simpleGreeting(simpleGreetingRequest);
+            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Response obtained from drone: " + response.getMaster());
+            if(response.getMaster()){
+                sendingDrone.setMasterDrone(receivingDrone);
+            }
+            managedChannel.shutdown();
         }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
+
+
     }
 
     /**
      * Assertion: Drone that is calling this method is master drone.
      *
-     * @param sendingDrone master drone
      * @param receivingDrone elected drone to delivery
      * @param delivery delivery that must be delivered
      * @return true or false whatever the assignation is successfully or not
      */
-    public static boolean askToMakeADelivery(Drone sendingDrone, Drone receivingDrone, Delivery delivery) {
+    public static boolean askToMakeADelivery(Drone receivingDrone, Delivery delivery) {
         System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
+        System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID());
 
         ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
         ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
@@ -131,13 +139,36 @@ public class CommunicationModule extends Thread
                 .setId(delivery.getID().toString())
                 .build();
 
-        Services.DeliveryAssignationMessage deliveryAssignationResponse = Services.DeliveryAssignationMessage.newBuilder()
+        Services.DeliveryAssignationMessage deliveryAssignationMessage = Services.DeliveryAssignationMessage.newBuilder()
                 .setDelivery(finalDelivery)
                 .build();
 
         // Here i'm gonna receive 'true' or 'false' based on the fact that the other drone is whatever master or not.
-        Services.DeliveryAssignationResponse response =  chattingStub.deliveryAssignationService(deliveryAssignationResponse);
+        Services.DeliveryAssignationResponse response = chattingStub.deliveryAssignationService(deliveryAssignationMessage);
         return response.getResponse();
+    }
+
+
+    /**
+     * Assertion: Drone which is calling this method is not master drone. Master drone has his private data structure.
+     *
+     * TODO: Se ritorna false vuol dire che il drone master è offline. Nuova elezione? ---> Non può ritornare false se è offline lol
+     *      Come gestire non risposta?
+     * @return true if master has received drone's data.
+     */
+    public static boolean sendCompletedDeliveryData(Drone masterDrone, Services.DeliveryComplete deliveryComplete){
+        try
+        {
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + masterDrone.getPort()).usePlaintext().build();
+            ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+            Services.DeliveryCompleteResponse response = chattingStub.deliveryCompleteService(deliveryComplete);
+            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Delivery's data has been sent");
+            return response.getResponse();
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+            return false;
+        }
     }
 
 }

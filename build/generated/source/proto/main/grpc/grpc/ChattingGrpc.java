@@ -89,6 +89,37 @@ public final class ChattingGrpc {
     return getDeliveryAssignationServiceMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.DeliveryComplete,
+      grpc.Services.DeliveryCompleteResponse> getDeliveryCompleteServiceMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "DeliveryCompleteService",
+      requestType = grpc.Services.DeliveryComplete.class,
+      responseType = grpc.Services.DeliveryCompleteResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.DeliveryComplete,
+      grpc.Services.DeliveryCompleteResponse> getDeliveryCompleteServiceMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.DeliveryComplete, grpc.Services.DeliveryCompleteResponse> getDeliveryCompleteServiceMethod;
+    if ((getDeliveryCompleteServiceMethod = ChattingGrpc.getDeliveryCompleteServiceMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getDeliveryCompleteServiceMethod = ChattingGrpc.getDeliveryCompleteServiceMethod) == null) {
+          ChattingGrpc.getDeliveryCompleteServiceMethod = getDeliveryCompleteServiceMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.DeliveryComplete, grpc.Services.DeliveryCompleteResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeliveryCompleteService"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.DeliveryComplete.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.DeliveryCompleteResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("DeliveryCompleteService"))
+              .build();
+        }
+      }
+    }
+    return getDeliveryCompleteServiceMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -130,6 +161,13 @@ public final class ChattingGrpc {
       asyncUnimplementedUnaryCall(getDeliveryAssignationServiceMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void deliveryCompleteService(grpc.Services.DeliveryComplete request,
+        io.grpc.stub.StreamObserver<grpc.Services.DeliveryCompleteResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getDeliveryCompleteServiceMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -146,6 +184,13 @@ public final class ChattingGrpc {
                 grpc.Services.DeliveryAssignationMessage,
                 grpc.Services.DeliveryAssignationResponse>(
                   this, METHODID_DELIVERY_ASSIGNATION_SERVICE)))
+          .addMethod(
+            getDeliveryCompleteServiceMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.DeliveryComplete,
+                grpc.Services.DeliveryCompleteResponse>(
+                  this, METHODID_DELIVERY_COMPLETE_SERVICE)))
           .build();
     }
   }
@@ -183,6 +228,14 @@ public final class ChattingGrpc {
       asyncUnaryCall(
           getChannel().newCall(getDeliveryAssignationServiceMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void deliveryCompleteService(grpc.Services.DeliveryComplete request,
+        io.grpc.stub.StreamObserver<grpc.Services.DeliveryCompleteResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getDeliveryCompleteServiceMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -215,6 +268,13 @@ public final class ChattingGrpc {
     public grpc.Services.DeliveryAssignationResponse deliveryAssignationService(grpc.Services.DeliveryAssignationMessage request) {
       return blockingUnaryCall(
           getChannel(), getDeliveryAssignationServiceMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.DeliveryCompleteResponse deliveryCompleteService(grpc.Services.DeliveryComplete request) {
+      return blockingUnaryCall(
+          getChannel(), getDeliveryCompleteServiceMethod(), getCallOptions(), request);
     }
   }
 
@@ -251,10 +311,19 @@ public final class ChattingGrpc {
       return futureUnaryCall(
           getChannel().newCall(getDeliveryAssignationServiceMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.DeliveryCompleteResponse> deliveryCompleteService(
+        grpc.Services.DeliveryComplete request) {
+      return futureUnaryCall(
+          getChannel().newCall(getDeliveryCompleteServiceMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SIMPLE_GREETING = 0;
   private static final int METHODID_DELIVERY_ASSIGNATION_SERVICE = 1;
+  private static final int METHODID_DELIVERY_COMPLETE_SERVICE = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -280,6 +349,10 @@ public final class ChattingGrpc {
         case METHODID_DELIVERY_ASSIGNATION_SERVICE:
           serviceImpl.deliveryAssignationService((grpc.Services.DeliveryAssignationMessage) request,
               (io.grpc.stub.StreamObserver<grpc.Services.DeliveryAssignationResponse>) responseObserver);
+          break;
+        case METHODID_DELIVERY_COMPLETE_SERVICE:
+          serviceImpl.deliveryCompleteService((grpc.Services.DeliveryComplete) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.DeliveryCompleteResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -344,6 +417,7 @@ public final class ChattingGrpc {
               .setSchemaDescriptor(new ChattingFileDescriptorSupplier())
               .addMethod(getSimpleGreetingMethod())
               .addMethod(getDeliveryAssignationServiceMethod())
+              .addMethod(getDeliveryCompleteServiceMethod())
               .build();
         }
       }

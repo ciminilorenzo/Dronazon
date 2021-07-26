@@ -1,5 +1,6 @@
 package grpc;
 
+// SimpleGreetingService
 message SimpleGreetingRequest
 {
   required string id = 1;
@@ -18,6 +19,8 @@ message SimpleGreetingResponse
   required bool master = 1;
 }
 
+
+// DeliveryAssignationService
 message Delivery{
   required Position pickup = 1;
   required Position delivery = 2;
@@ -36,8 +39,28 @@ message DeliveryAssignationResponse
 
 
 
+// DeliveryCompleteService
+message DeliveryComplete
+{
+  required string   droneId = 6;      // Sending drone's id
+  required string   timestamp = 1;    // Timestamp when the delivery was delivered;
+  required Position newPosition = 2;  // New drone's position (it's equal to the delivery's one)
+  required double   distance = 3;     // Distance made to deliver
+  required double   pollution = 4;    // Pollution measurements measured during the trip between drone's position an delivery's position
+  required int32    batteryLeft = 5;  // Drone's battery level after delivery
+}
+
+message DeliveryCompleteResponse
+{
+  required bool response = 1;
+}
+
+
+
 service Chatting{
   rpc SimpleGreeting(SimpleGreetingRequest) returns (SimpleGreetingResponse) {}
 
   rpc DeliveryAssignationService(DeliveryAssignationMessage) returns (DeliveryAssignationResponse) {}
+
+  rpc DeliveryCompleteService(DeliveryComplete) returns (DeliveryCompleteResponse) {}
 }

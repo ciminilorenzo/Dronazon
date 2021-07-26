@@ -50,6 +50,6 @@ public class Position
     }
 
     public static double getDistanceBetweenTwoPoints(Position first, Position second){
-        return Math.sqrt((second.getX() - first.getX())^2 + (second.getY() - first.getY())^2);
+        return Math.sqrt(Math.pow((second.getX() - first.getX()), 2) + Math.pow(second.getY() - first.getY(),2));
     }
 }

@@ -1,13 +1,9 @@
 tools/Delivery.java
  tools.Delivery
-drone/modules/DeliveryModule.java
- drone.modules.DeliveryModule
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
 administration/ServerAdministrator.java
  administration.ServerAdministrator
-administration/resources/statistics/GlobalStatistic.java
- administration.resources.statistics.GlobalStatistic
-administration/resources/statistics/StatisticsContainer.java
- administration.resources.statistics.StatisticsContainer
 grpc/ChattingGrpc.java
  grpc.ChattingGrpc
  grpc.ChattingGrpc$1
@@ -19,10 +15,10 @@ grpc/ChattingGrpc.java
  grpc.ChattingGrpc$ChattingMethodDescriptorSupplier
  grpc.ChattingGrpc$ChattingStub
  grpc.ChattingGrpc$MethodHandlers
-tools/Ring.java
- tools.Ring
-drone/GreetingServiceImplementation.java
- drone.GreetingServiceImplementation
+administration/resources/statistics/StatisticsContainer.java
+ administration.resources.statistics.StatisticsContainer
+tools/CityMap.java
+ tools.CityMap
 grpc/Services.java
  grpc.Services
  grpc.Services$1
@@ -37,6 +33,14 @@ grpc/Services.java
  grpc.Services$DeliveryAssignationResponse$1
  grpc.Services$DeliveryAssignationResponse$Builder
  grpc.Services$DeliveryAssignationResponseOrBuilder
+ grpc.Services$DeliveryComplete
+ grpc.Services$DeliveryComplete$1
+ grpc.Services$DeliveryComplete$Builder
+ grpc.Services$DeliveryCompleteOrBuilder
+ grpc.Services$DeliveryCompleteResponse
+ grpc.Services$DeliveryCompleteResponse$1
+ grpc.Services$DeliveryCompleteResponse$Builder
+ grpc.Services$DeliveryCompleteResponseOrBuilder
  grpc.Services$DeliveryOrBuilder
  grpc.Services$Position
  grpc.Services$Position$1
@@ -50,34 +54,40 @@ grpc/Services.java
  grpc.Services$SimpleGreetingResponse$1
  grpc.Services$SimpleGreetingResponse$Builder
  grpc.Services$SimpleGreetingResponseOrBuilder
-tools/CityMap.java
- tools.CityMap
-drone/modules/CommunicationModule.java
- drone.modules.CommunicationModule
-drone/modules/DataPrinterModule.java
- drone.modules.DataPrinterModule
 tools/Position.java
  tools.Position
-drone/modules/QuitModule.java
- drone.modules.QuitModule
-drone/Drone.java
- drone.Drone
-administration/services/SmartCityService.java
- administration.services.SmartCityService
-mqtt/Dronazon.java
- mqtt.Dronazon
 tools/StatisticsServerResponse.java
  tools.StatisticsServerResponse
-administration/services/StatisticsService.java
- administration.services.StatisticsService
+administration/resources/statistics/Statistic.java
+ administration.resources.statistics.Statistic
+drone/modules/QuitModule.java
+ drone.modules.QuitModule
 tools/ServerResponse.java
  tools.ServerResponse
-administration/resources/SmartCity.java
- administration.resources.SmartCity
-drone/MasterThread.java
- drone.MasterThread
- drone.MasterThread$1
+administration/resources/statistics/GlobalStatistic.java
+ administration.resources.statistics.GlobalStatistic
 tools/DronesServerResponse.java
  tools.DronesServerResponse
 administration/ClientAdministrator.java
  administration.ClientAdministrator
+mqtt/Dronazon.java
+ mqtt.Dronazon
+drone/modules/DataPrinterModule.java
+ drone.modules.DataPrinterModule
+administration/services/SmartCityService.java
+ administration.services.SmartCityService
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
+tools/Ring.java
+ tools.Ring
+drone/modules/DeliveryModule.java
+ drone.modules.DeliveryModule
+drone/Drone.java
+ drone.Drone
+drone/modules/MasterModule.java
+ drone.modules.MasterModule
+ drone.modules.MasterModule$1
+drone/GreetingServiceImplementation.java
+ drone.GreetingServiceImplementation
+drone/modules/CommunicationModule.java
+ drone.modules.CommunicationModule
