@@ -49,7 +49,7 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
 
         // New drone has just entered into the smartcity. This is one situation where if there are any undelivered deliveries
         // it could be assigned of one of them.
-        drone.communicateAvailability();
+        drone.communicateAvailability(drone);
     }
 
     private void updateView(Services.SimpleGreetingRequest newDrone){
@@ -106,13 +106,14 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
                 newPosition,
                 request.getDistance(),
                 request.getPollution(),
-                battery
+                battery,
+                request.getDroneId()
         );
 
         // Updating master's view
-        this.drone.addStatisticToMasterDroneDataStructure(statistic);       // Adding statistic to master's data structure.
-        this.drone.getSmartcity().modifyDroneAfterDelivery(UUID.fromString(request.getDroneId()), newPosition, battery, false);     // Modifying deliverer's data inside master drone data structure
-        this.drone.communicateAvailability();       // This is another situation where if there are any undelivered deliveries this drone, due he his just been assigned as 'not busy', could deliverer it
+        this.drone.addStatisticToMasterDroneDataStructure(statistic);   // Adding statistic to master's data structure.
+        this.drone.getSmartcity().modifyDroneAfterDelivery(UUID.fromString(request.getDroneId()), newPosition, battery, false);  // Modifying deliverer's data inside master drone data structure
+        this.drone.communicateAvailability(drone);       // This is another situation where if there are any undelivered deliveries this drone, due he his just been assigned as 'not busy', could deliverer it
 
 
         System.out.println("[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Received statistic successfully saved");

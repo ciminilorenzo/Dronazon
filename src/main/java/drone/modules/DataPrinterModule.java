@@ -13,7 +13,7 @@ import drone.Drone;
 
 public class DataPrinterModule extends Thread
 {
-    Drone drone;
+    private final Drone drone;
 
     public DataPrinterModule(Drone drone)
     {

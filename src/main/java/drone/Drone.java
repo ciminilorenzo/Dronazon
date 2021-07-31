@@ -1,10 +1,7 @@
 package drone;
 
 import administration.resources.statistics.Statistic;
-import drone.modules.CommunicationModule;
-import drone.modules.DataPrinterModule;
-import drone.modules.MasterModule;
-import drone.modules.QuitModule;
+import drone.modules.*;
 import tools.CityMap;
 import tools.Position;
 import tools.Ring;
@@ -40,6 +37,7 @@ public class Drone
     @XmlElement
     private int battery = 100;
 
+    @XmlTransient
     private final static String serverAddress = "http://localhost:1337/";
 
     private Ring smartcity;
@@ -58,7 +56,6 @@ public class Drone
     // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
     private boolean isBusy = false;
 
-    @XmlTransient
     private ArrayList<Statistic> masterDroneStatistics;
 
     @XmlTransient
@@ -72,6 +69,11 @@ public class Drone
     public void setBusy(boolean busy) {
         System.out.println("[DRONE MODULE] Setting busy flag of this drone as: " + busy);
         isBusy = busy;
+
+        // Each time master drone finishes his delivery checks if there is an undelivered delivery
+        if(this.isMasterFlag()){
+            communicateAvailability(this);
+        }
     }
 
     public double getDistanceMade(){ return this.distanceMade; }
@@ -139,6 +141,9 @@ public class Drone
             masterThread = new MasterModule(this);
             masterThread.start();
             this.masterDroneStatistics = new ArrayList<>();
+
+            ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            scheduledExecutorService.scheduleAtFixedRate(new GlobalStatisticsScheduledPrinter(this), 10,10, TimeUnit.SECONDS);
         }
         this.masterFlag = masterFlag;
     }
@@ -212,7 +217,7 @@ public class Drone
         communicationModule.start();
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,20, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,15, TimeUnit.SECONDS);
 
     }
 
@@ -285,8 +290,10 @@ public class Drone
 
     // This is method is called from master drone when either one new drone enters the smartcity or set himself as not busy.
     // This method is called in GreetingServiceImplementation
-    public void communicateAvailability(){
-        this.masterThread.checkIfDelivery();
+    public void communicateAvailability(Drone drone){
+        if(drone.isMasterFlag() && drone.masterThread != null) {
+            this.masterThread.checkIfDelivery();
+        }
     }
 
 

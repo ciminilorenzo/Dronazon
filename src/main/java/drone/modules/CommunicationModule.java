@@ -145,6 +145,7 @@ public class CommunicationModule extends Thread
 
         // Here i'm gonna receive 'true' or 'false' based on the fact that the other drone is whatever master or not.
         Services.DeliveryAssignationResponse response = chattingStub.deliveryAssignationService(deliveryAssignationMessage);
+        managedChannel.shutdown();
         return response.getResponse();
     }
 

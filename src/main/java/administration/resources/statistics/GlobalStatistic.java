@@ -1,10 +1,13 @@
 package administration.resources.statistics;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
+import javax.xml.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @XmlRootElement(name="statistic")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,28 +26,77 @@ public class GlobalStatistic
     private double          batteryAvg;
 
     @XmlElement
-    private String          timeStamp;
+    private long            timeStamp;
+
 
 
     /**
-     *  Master will create a GlobalStatistics object to insert into StatisticsContainer.
+     * deliveryAvg -> AVERAGE OF DELIVERY COMPLETED BY DRONES
+     *      * distanceAvg -> AVERAGE OF DISTANCE MADE BY DRONES
+     *      * pollutionAvg -> AVERAGE OF POLLUTION LEVEL ACQUIRED BY DRONES
+     *      * batteryAvg -> AVERAGE OF DRONES LEVEL BATTERY
+     *      * timeStamp -> WHEN THE DELIVERY IS CALCULATED
      *
-     * @param deliveryAvg -> AVERAGE OF DELIVERY COMPLETED BY DRONES
-     * @param distanceAvg -> AVERAGE OF DISTANCE MADE BY DRONES
-     * @param pollutionAvg -> AVERAGE OF POLLUTION LEVEL ACQUIRED BY DRONES
-     * @param batteryAvg -> AVERAGE OF DRONES LEVEL BATTERY
-     * @param timeStamp -> WHEN THE DELIVERY IS CALCULATED
+     * ASSUNTION: GlobalStatic is calculated using as divisor the number of drones which are in the data received from the master drone
+     *            and not the number of drones in the smartcity.
+     *
+     *
+     * Everytime master drone sends the set of statistics received during each period (made by 10 seconds) it calculates
+     * a new global statistic to send to the server administrator.
+     *
+     * The global statistic is then calculated in the following way:
+     *  -   (1) : Some parameters are instantiated as we are gonna need them for calculating the global statistic;
+     *  -   (2) : A MultiMap (MultiMap can handle one key with a list of values) is instantiated for grouping drones' deliveries data using id of drones.
+     *  -   (3) : For each drone the algorithm:
+     *              -   (3.1) Uses a currentBattery param for saving the last information about drone's battery level (the one which is going to be used
+     *                        for calculating the deliveryAvg;
+     *              -   (3.2) Updates distance total;
+     *              -   (3.3) Updates pollution total;
+     *              -   (3.4) Updated total battery level.
+     *
+     * @param statistic represents the arraylist which contains the whole set of statistics sent by master drone.
      */
-    public GlobalStatistic(double deliveryAvg, double distanceAvg, double pollutionAvg, double batteryAvg, String timeStamp)
-    {
-        this.deliveryAvg = deliveryAvg;
-        this.distanceAvg = distanceAvg;
-        this.pollutionAvg = pollutionAvg;
-        this.batteryAvg = batteryAvg;
-        this.timeStamp = timeStamp;
+    public GlobalStatistic(ArrayList<Statistic> statistic){
+        //  (1)
+        double battery      = 0;
+
+        //  (2)
+        Multimap<String, Statistic> hashMap = ArrayListMultimap.create();
+        for (Statistic current: statistic){
+            hashMap.put(current.getId(), current);
+        }
+
+        //  (3)
+        for (String currentKey: hashMap.keys()) {
+            ArrayList<Statistic> currentSetOfStatistics = new ArrayList<>(hashMap.get(currentKey));
+
+            //  (3.\)
+            double currentBattery = 0;
+
+            for (Statistic current: currentSetOfStatistics) {
+                //  (3.\)
+                currentBattery = current.getBattery();
+                //  (3.2)
+                this.distanceAvg += current.getDistance();
+                //  (3.3)
+                this.pollutionAvg += current.getPollution();
+
+            }
+
+            // (3.4)
+            battery += currentBattery;
+        }
+
+        this.deliveryAvg = statistic.size() / hashMap.size();
+        this.distanceAvg = this.distanceAvg / hashMap.size();
+        this.pollutionAvg = this.pollutionAvg / hashMap.size();
+        this.batteryAvg = battery / hashMap.size();;
+        this.timeStamp = new Date().getTime();;
+
     }
 
-    public GlobalStatistic(){}
+
+    private GlobalStatistic(){}
 
     public double getDeliveryAvg() {
         return deliveryAvg;
@@ -62,7 +114,7 @@ public class GlobalStatistic
         return batteryAvg;
     }
 
-    public String getTimeStamp() {
+    public long getTimeStamp() {
         return this.timeStamp;
     }
 
@@ -83,17 +135,19 @@ public class GlobalStatistic
         this.batteryAvg = batteryAvg;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
     public String toString(){
+        SimpleDateFormat    formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        Date date = new Date(this.getTimeStamp());
+
         return "[GLOBAL STATISTIC] \n" +
                 "\t AVERAGE OF DELIVERY COMPLETED BY DRONES: " + this.deliveryAvg + "\n" +
                 "\t AVERAGE OF DISTANCE MADE BY DRONES: " + this.distanceAvg + "\n" +
                 "\t AVERAGE OF POLLUTION LEVEL ACQUIRED BY DRONES: " + this.pollutionAvg + "\n" +
                 "\t AVERAGE OF DRONES LEVEL BATTERY: " + this.batteryAvg + "\n" +
-                "\t ACQUIRED AT: " + this.getTimeStamp() + "\n";
+                "\t ACQUIRED AT: " + date + "\n";
     }
-
 }

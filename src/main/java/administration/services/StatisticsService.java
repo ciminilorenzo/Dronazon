@@ -21,6 +21,7 @@ public class StatisticsService
     public static final String GET_LAST_STATISTICS = "http://localhost:1337/statistics/global/";
     public static final String AVG_DELIVERY        = "http://localhost:1337/statistics/global/average_delivery";
     public static final String AVG_DISTANCE        = "http://localhost:1337/statistics/global/average_distance";
+    public static final String INSERT              = "http://localhost:1337/statistics/global/insertion";
 
     /**
      * @return -> list of smartcity's drone population
@@ -53,7 +54,7 @@ public class StatisticsService
     public Response getGlobalStatistics(
             @PathParam("number") int number){
 
-        System.out.println("[SMARTCITY SERVICE INFO] ADMINISTRATOR HAS JUST ASKED TO RETRIEVE LAST " + number + "GLOBAL STATISTICS");
+        System.out.println("[SMARTCITY SERVICE INFO] ADMINISTRATOR HAS JUST ASKED TO RETRIEVE LAST " + number + " GLOBAL STATISTICS");
         StatisticsServerResponse response = new StatisticsServerResponse(StatisticsContainer
                 .getInstance()
                 .getLastGlobalStatistics(number));
@@ -125,6 +126,7 @@ public class StatisticsService
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response insertGlobalStatistic(GlobalStatistic globalStatistic){
+        System.out.println("[STATISTICS SERVICE] Trying to insert a new statistic");
         StatisticsContainer.getInstance().insertGlobalStatistic(globalStatistic);
         return Response.ok().build();
     }

@@ -60,6 +60,9 @@ public class Ring
     }
 
 
+    //  TODO: getNext() is currently returning next drone in the ring representation. This method must implement
+    //      a gRPC 'ping' call in order to detect if the next drone is available or not. In the case it isn't the ring must be
+    //      rebuild and getNext() must be recalled.
     public Drone getNext(Drone drone){
         if(droneArrayList.size() == 1){
             return null;
@@ -78,13 +81,13 @@ public class Ring
 
 
 
-    // Assertion: This method is called by master drone after receiving delivery's data from deliverer drone.
+    // Assertion: This method is called by master drone after receiving delivery's data from deliverer drone for updating his view.
     public void modifyDroneAfterDelivery(UUID id, Position position, int battery, boolean busy){
         for (Drone current: droneArrayList) {
             if(current.getID().compareTo(id) == 0){
                 current.setPosition(position);
                 current.setBattery(battery);
-                current.setBusy(false);
+                current.setBusy(false); // This procedure is called both in the master and drone view.
                 System.out.println("[MASTER RING] DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy ->" + busy);
                 return;
             }
@@ -97,6 +100,10 @@ public class Ring
                 current.setBusy(true);
             }
         }
+    }
+
+    public int getNumberOfDrones(){
+        return this.droneArrayList.size();
     }
 
 

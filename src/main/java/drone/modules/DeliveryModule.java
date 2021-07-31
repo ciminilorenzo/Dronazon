@@ -51,9 +51,8 @@ public class DeliveryModule extends Thread
 
             // If this is master drone we don't have to perform a grpc.
             if(this.drone.isMasterFlag()){
-                Statistic statistic = new Statistic(timestamp, position, distance, pollution, battery);
+                Statistic statistic = new Statistic(timestamp, position, distance, pollution, battery, this.drone.getID().toString());
                 this.drone.addStatisticToMasterDroneDataStructure(statistic);
-                this.drone.communicateAvailability();
             }
             else
             {
@@ -70,7 +69,7 @@ public class DeliveryModule extends Thread
             }
 
             System.out.println("[DELIVERY MODULE] NEW POSITION: " + this.drone.getPosition() + " " + " NEW BATTERY LEVEL: " + this.drone.getBattery());
-            System.out.println("[DELIVERY MODULE] Drone's information updated after delivery\n\n");
+            System.out.println("[DELIVERY MODULE] Drone's information updated after delivery");
         }
         catch (InterruptedException e)
         {

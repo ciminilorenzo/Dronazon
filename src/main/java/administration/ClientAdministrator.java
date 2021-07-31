@@ -75,7 +75,7 @@ public class ClientAdministrator
                     String              secondBoundToSend;
                     Date                firstBoundToCheck;
                     Date                secondBoundToCheck;
-                    SimpleDateFormat    formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ITALY);
+                    SimpleDateFormat    formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 
                     try
                     {

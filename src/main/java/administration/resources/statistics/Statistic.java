@@ -12,13 +12,15 @@ package administration.resources.statistics;
 
 import tools.Position;
 
+
 public class Statistic
 {
-    private final String timestamp;
-    private final Position position;
-    private final double distance;
-    private final double pollution;
-    private final int battery;
+    private String id;
+    private String timestamp;
+    private Position position;
+    private double distance;
+    private double pollution;
+    private double battery;
 
     public String getTimestamp() {
         return timestamp;
@@ -26,6 +28,14 @@ public class Statistic
 
     public Position getPosition() {
         return position;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public double getDistance() {
@@ -36,17 +46,20 @@ public class Statistic
         return pollution;
     }
 
-    public int getBattery() {
+    public double getBattery() {
         return battery;
     }
 
-    public Statistic(String timestamp, Position position, double distance, double pollution, int battery){
+    public Statistic(String timestamp, Position position, double distance, double pollution, int battery, String id){
         this.timestamp = timestamp;
         this.position = position;
         this.distance = distance;
         this.pollution = pollution;
         this.battery = battery;
+        this.id = id;
     }
+
+    private Statistic(){}
 
     @Override
     public String toString() {

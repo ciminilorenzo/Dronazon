@@ -23,7 +23,6 @@ public class StatisticsContainer
     public synchronized static StatisticsContainer getInstance(){
         if(instance == null){
             instance = new StatisticsContainer();
-            instance.statistics.add(new GlobalStatistic(2.0,2.0,2.0,2.0, "11-07-1997 12:00:00" ));
         }
         return instance;
     }
@@ -33,6 +32,7 @@ public class StatisticsContainer
     }
 
     public synchronized void insertGlobalStatistic(GlobalStatistic statistic){
+        System.out.println("[STATISTICS CONTAINER] A new global statistic has been added");
         this.statistics.add(statistic);
     }
 
@@ -106,12 +106,16 @@ public class StatisticsContainer
      *
      * @return new arraylist which contains global statistics between bounds.
      */
-    private ArrayList<GlobalStatistic> getBetweenBounds(Date firstBound, Date secondBound) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ITALY);
-        ArrayList<GlobalStatistic> copy = this.getStatistics();
+    private ArrayList<GlobalStatistic> getBetweenBounds(Date firstBound, Date secondBound) {
+        ArrayList<GlobalStatistic>  copy        = this.getStatistics();
 
         for (GlobalStatistic current: statistics){
-            if (formatter.parse(current.getTimeStamp()).before(firstBound) || formatter.parse(current.getTimeStamp()).after(secondBound)){
+            Date currentDate = new Date(current.getTimeStamp());
+            System.out.println("DATA STATISTICA CORRENTE: " + currentDate);
+            System.out.println("PRIMO LIMITE: " + firstBound);
+            System.out.println("PRIMO LIMITE: " + secondBound);
+
+            if (currentDate.before(firstBound) || currentDate.after(secondBound)){
                 copy.remove(current);
             }
         }
