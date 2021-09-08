@@ -17,6 +17,8 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
     public GreetingServiceImplementation(Drone drone){
         this.drone = drone;
     }
+
+
     /**
      * Simple method called when a drone wants to send a SimpleGreeting message into the net.
      * This function is used in:
@@ -26,13 +28,14 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
      * @param request SimpleGreetingRequest object that contains all data needed for this purpose.
      * @param responseStreamObserver stream observer
      *
-     *  This is an unary gRPC since the drone will send the single SimpleGreeting message and will receive one single
+     *  This is a unary gRPC since the drone will send the single SimpleGreeting message and will receive one single
      *  SimpleGreetingResponse message.
      *
      */
     @Override
     public void simpleGreeting(Services.SimpleGreetingRequest request, StreamObserver<Services.SimpleGreetingResponse> responseStreamObserver)
     {
+        // This call is made in order to update drone's view with new drones entering into the smartcity.
         updateView(request);
         System.out.println("\n\n[DRONE COMMUNICATION MODULE - INPUT] SIMPLE GREETING SERVICE - Preparing to answer to a request ");
         Services.SimpleGreetingResponse simpleGreetingResponse;
@@ -47,9 +50,11 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         responseStreamObserver.onCompleted();
         System.out.println("[DRONE COMMUNICATION MODULE - INPUT] SIMPLE GREETING SERVICE - Answer successfully sent to drone " + request.getId());
 
-        // New drone has just entered into the smartcity. This is one situation where if there are any undelivered deliveries
+        // New drone has just entered into the smartcity. This is one situation where if the current drone is the master one, it could check if there are any undelivered deliveries
         // it could be assigned of one of them.
-        drone.communicateAvailability(drone);
+        if(drone.isMasterFlag()){
+            drone.communicateAvailability();
+        }
     }
 
     private void updateView(Services.SimpleGreetingRequest newDrone){
@@ -59,6 +64,9 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
     }
 
     /**
+     * Assertion: This method is called just in case in which this drone is the master one when it has to perform a
+     * delivery assignment
+     *
      * As soon as master drone is unable to determine which one is the delivery drone, it makes a grpc call to it.
      *
      * @param request DeliveryAssignationMessage used for communicating delivery information to the specified drone.
@@ -69,20 +77,17 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         System.out.println("\n\n[DRONE COMMUNICATION MODULE - INPUT] DELIVERY ASSIGNATION - Preparing the drone to the delivery ");
         Services.DeliveryAssignationResponse deliveryAssignationResponse;
 
-        if(drone.isBusy()){
-            System.out.println("[gRPC MODULE] This delivery can't be accepted. Drone is already busy");
-            deliveryAssignationResponse = Services.DeliveryAssignationResponse.newBuilder().setResponse(false).build();
-        }
-        else {
-            deliveryAssignationResponse = Services.DeliveryAssignationResponse.newBuilder().setResponse(true).build();
-            Services.Delivery deliveryReceived = request.getDelivery();
-            Delivery delivery = new Delivery(deliveryReceived.getId(), deliveryReceived.getPickup(), deliveryReceived.getDelivery());
-            drone.setBusy(true);
-            DeliveryModule deliveryModule = new DeliveryModule(drone, delivery);
-            deliveryModule.start();
+        deliveryAssignationResponse         = Services.DeliveryAssignationResponse.newBuilder().setResponse(true).build();
+        Services.Delivery deliveryReceived  = request.getDelivery();
+        Delivery delivery                   = new Delivery(deliveryReceived.getId(), deliveryReceived.getPickup(), deliveryReceived.getDelivery());
 
-        }
+        // This call changes drone busy state in itself view. The master drone will also call this procedure to change in his view the same fact.
+        drone.setBusy(true);
+        DeliveryModule deliveryModule = new DeliveryModule(drone, delivery);
 
+        // This field is set in order to make the join possibile inside the quit module.
+        drone.setDeliveryModule(deliveryModule);
+        deliveryModule.start();
         responseObserver.onNext(deliveryAssignationResponse);
         responseObserver.onCompleted();
     }
@@ -112,8 +117,9 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
 
         // Updating master's view
         this.drone.addStatisticToMasterDroneDataStructure(statistic);   // Adding statistic to master's data structure.
+        //TODO: QUI DEVO SETTARE COME NOT BUSY SOLO SE BATTERIA SUPERIORE A 10%
         this.drone.getSmartcity().modifyDroneAfterDelivery(UUID.fromString(request.getDroneId()), newPosition, battery, false);  // Modifying deliverer's data inside master drone data structure
-        this.drone.communicateAvailability(drone);       // This is another situation where if there are any undelivered deliveries this drone, due he his just been assigned as 'not busy', could deliverer it
+        this.drone.communicateAvailability();       // This is another situation where if there are any undelivered deliveries this drone, due he is just been assigned as 'not busy', could deliverer it
 
 
         System.out.println("[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Received statistic successfully saved");

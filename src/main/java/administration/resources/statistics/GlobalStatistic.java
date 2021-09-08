@@ -37,7 +37,7 @@ public class GlobalStatistic
      *      * batteryAvg -> AVERAGE OF DRONES LEVEL BATTERY
      *      * timeStamp -> WHEN THE DELIVERY IS CALCULATED
      *
-     * ASSUNTION: GlobalStatic is calculated using as divisor the number of drones which are in the data received from the master drone
+     * ASSUMPTION: GlobalStatic is calculated using as divisor the number of drones which are in the data received from the master drone
      *            and not the number of drones in the smartcity.
      *
      *
@@ -45,7 +45,7 @@ public class GlobalStatistic
      * a new global statistic to send to the server administrator.
      *
      * The global statistic is then calculated in the following way:
-     *  -   (1) : Some parameters are instantiated as we are gonna need them for calculating the global statistic;
+     *  -   (1) : Some parameters are instantiated as we are going to need them for calculating the global statistic;
      *  -   (2) : A MultiMap (MultiMap can handle one key with a list of values) is instantiated for grouping drones' deliveries data using id of drones.
      *  -   (3) : For each drone the algorithm:
      *              -   (3.1) Uses a currentBattery param for saving the last information about drone's battery level (the one which is going to be used
@@ -67,7 +67,7 @@ public class GlobalStatistic
         }
 
         //  (3)
-        for (String currentKey: hashMap.keys()) {
+        for (String currentKey: hashMap.keySet()) {
             ArrayList<Statistic> currentSetOfStatistics = new ArrayList<>(hashMap.get(currentKey));
 
             //  (3.\)
@@ -87,10 +87,11 @@ public class GlobalStatistic
             battery += currentBattery;
         }
 
-        this.deliveryAvg = statistic.size() / hashMap.size();
-        this.distanceAvg = this.distanceAvg / hashMap.size();
-        this.pollutionAvg = this.pollutionAvg / hashMap.size();
-        this.batteryAvg = battery / hashMap.size();;
+        int divisor = hashMap.keySet().size();
+        this.deliveryAvg = statistic.size() / (double) divisor;
+        this.distanceAvg = this.distanceAvg / divisor;
+        this.pollutionAvg = this.pollutionAvg / divisor;
+        this.batteryAvg = battery / divisor;
         this.timeStamp = new Date().getTime();;
 
     }
@@ -140,7 +141,6 @@ public class GlobalStatistic
     }
 
     public String toString(){
-        SimpleDateFormat    formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         Date date = new Date(this.getTimeStamp());
 
         return "[GLOBAL STATISTIC] \n" +

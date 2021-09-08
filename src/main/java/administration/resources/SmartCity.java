@@ -34,12 +34,16 @@ public class SmartCity
         return smartCity;
     }
 
-    public ArrayList<Drone> getDrones(){
+    public synchronized ArrayList<Drone> getDrones(){
         return this.drones;
     }
 
-    public void setDrones(ArrayList<Drone> drones) {
+    public synchronized void setDrones(ArrayList<Drone> drones) {
         this.drones = drones;
+    }
+
+    private synchronized void addDrone(Drone drone){
+        this.drones.add(drone);
     }
 
 
@@ -47,37 +51,46 @@ public class SmartCity
 
     /**
      *  Simply checking that the drone who wants to enter has unique ID and unique PORT number.
-     *  If the assumptions are true method is gonna return a ServerResponse object composed by: drones already in
+     *  If the assumptions are true method is going to return a ServerResponse object composed by: drones already in
      *  - without himself -, acquired position and a flag used to understand if the insertion has been successful.
      *
         @param drone who wants to enter into the smartcity.
         TODO: CONCURRENCY CHECK HERE MUST BE DONE
 
      */
-    public synchronized ServerResponse insertDrone(Drone drone) {
-        final ArrayList<Drone> listToReturn = new ArrayList<>(drones);
-        final Position positionToReturn = Position.getRandomPosition();
+    public ServerResponse insertDrone(Drone drone) {
 
-        for (Drone current: drones) {
+        ArrayList<Drone> listOfDronesAlreadyIn = new ArrayList<>(getDrones());
+
+        for (Drone current: listOfDronesAlreadyIn) {
             if(current.getID() == drone.getID() || current.getPort() == drone.getPort()){
                 return new ServerResponse(null, null, true);
             }
         }
 
-        ServerResponse response = new ServerResponse(positionToReturn,listToReturn, false);
+        final Position positionToReturn = Position.getRandomPosition();
+        ServerResponse response = new ServerResponse(positionToReturn, listOfDronesAlreadyIn, false);
         drone.setPosition(positionToReturn);
-        drones.add(drone);
+        addDrone(drone);
         return response;
     }
 
-    public String toString(){
-        String result = "[PRINTING SMART CITY POPULATION]";
-        for (Drone current:drones) {
-            result += "\n\t ID:\t" + current.getID() +
-                    "\n\t PORT:\t" + current.getPort() +
-                    "\n\t POSITION:\t" + current.getPosition() +
-                    "\n\t BATTERY:\t" + current.getBattery();
+    // Since we are trying to remove a not native object we have to implement the method in the following way
+    public synchronized void takeOutDrone(Drone drone){
+        for (Drone drone1: drones) {
+            if(drone1.getID().equals(drone.getID())){
+                drones.remove(drone1);
+                return;
+            }
         }
-        return result;
+    }
+
+    public String toString(){
+        StringBuilder result = new StringBuilder();
+        result.append("[PRINTING SMART CITY POPULATION]");
+        for (Drone current:getDrones()) {
+            result.append("\n\t ID:\t").append(current.getID()).append("\n\t PORT:\t").append(current.getPort()).append("\n\t POSITION:\t").append(current.getPosition()).append("\n\t BATTERY:\t").append(current.getBattery());
+        }
+        return result.toString();
     }
 }

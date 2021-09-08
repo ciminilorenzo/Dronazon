@@ -20,15 +20,16 @@ public class GlobalStatisticsScheduledPrinter extends Thread
     /**
      * Each 10 seconds master drone has to calculate a new global statistic using data received from drones who have
      * delivered at least 1  delivery.
-     * Once master drone has calculated the global statistic, it have to clear the whole data structure.
+     * Once master drone has calculated the global statistic, it has to clear the whole data structure.
      *
      * Inside GlobalStatistic class, each global statistic is calculated using the number of drones which
      */
     public void run(){
         if(!this.drone.getMasterDroneStatistics().isEmpty()) {
             GlobalStatistic     globalStatistic = new GlobalStatistic(this.drone.getMasterDroneStatistics());
+            System.out.println(this.drone.getMasterDroneStatistics());
 
-            // Each time master drone calculates global statistics he have to clear the data structure.
+            // Each time master drone calculates global statistics it has to clear the data structure.
             this.drone.getMasterDroneStatistics().clear();
 
             System.out.println("[GLOBAL STATISTICS SCHEDULED MODULE] Global statistic has just been calculated");

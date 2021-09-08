@@ -1,11 +1,12 @@
 package drone;
 
+import PM10.Measurement;
+import PM10.PM10Queue;
+import PM10.PM10Simulator;
 import administration.resources.statistics.Statistic;
 import drone.modules.*;
-import tools.CityMap;
-import tools.Position;
-import tools.Ring;
-import tools.ServerResponse;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import tools.*;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -15,6 +16,7 @@ import com.sun.jersey.api.client.WebResource;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @XmlRootElement(name="Drone")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Drone
+public class Drone implements EventListener
 {
     @XmlElement
     private UUID ID = UUID.randomUUID();
@@ -37,29 +39,67 @@ public class Drone
     @XmlElement
     private int battery = 100;
 
-    @XmlTransient
-    private final static String serverAddress = "http://localhost:1337/";
+    private transient final static String serverAddress = "http://localhost:1337/";
 
-    private Ring smartcity;
+    private transient Ring smartcity;
 
-    private int numberOfDeliveryDone = 0;
+    private transient int numberOfDeliveryDone = 0;
 
-    private double distanceMade = 0.0;
-
+    private transient double distanceMade = 0.0;
 
     // Flag used to set if the current drone is the master or not.
-    private boolean masterFlag = false;
+    private transient volatile boolean masterFlag = false;
 
     // Pointer to the master drone.
-    private Drone masterDrone;
+    private transient Drone masterDrone;
 
     // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
-    private boolean isBusy = false;
+    public transient volatile boolean isBusy = false;
 
-    private ArrayList<Statistic> masterDroneStatistics;
+    // Data structure used by master drone for saving drones' statistics.
+    private transient ArrayList<Statistic> masterDroneStatistics;
 
-    @XmlTransient
-    private MasterModule masterThread;
+
+    private transient MasterModule masterThread;
+
+    private transient QuitModule quitModule;
+
+    private transient DeliveryModule deliveryModule;
+
+
+
+    public  transient  ArrayList<Double> measurementsDataStructure = new ArrayList<>();
+    private static transient final Object measurementArrayDummyLock = new Object();
+
+    private transient PM10Queue measurements;
+
+    private transient PM10Simulator simulator;
+
+
+
+
+    public QuitModule getQuitModule() {
+        return quitModule;
+    }
+
+    public void setQuitModule(QuitModule quitModule) {
+        this.quitModule = quitModule;
+    }
+
+    public DeliveryModule getDeliveryModule() {
+        return deliveryModule;
+    }
+
+    public void setDeliveryModule(DeliveryModule deliveryModule) {
+        this.deliveryModule = deliveryModule;
+    }
+
+
+    public ArrayList<Double> getMeasurementsDataStructure(){
+        synchronized (measurementArrayDummyLock){
+            return measurementsDataStructure;
+        }
+    }
 
 
     public boolean isBusy() {
@@ -67,13 +107,29 @@ public class Drone
     }
 
     public void setBusy(boolean busy) {
-        System.out.println("[DRONE MODULE] Setting busy flag of this drone as: " + busy);
-        isBusy = busy;
+        if(battery < 20 && !busy){
+            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Drone's battery is low. Starting quitting process");
+            // Drone can't deliver any delivery anymore
+            isBusy = true;
+            this.quitModule.exit();
+        }
+        else{
+            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Setting busy flag of this drone as: " + busy);
+            isBusy = busy;
+        }
 
         // Each time master drone finishes his delivery checks if there is an undelivered delivery
-        if(this.isMasterFlag()){
-            communicateAvailability(this);
+        if(this.isMasterFlag() && !busy){
+            communicateAvailability();
         }
+    }
+
+    public MasterModule getMasterThread() {
+        return masterThread;
+    }
+
+    public void setMasterThread(MasterModule masterThread) {
+        this.masterThread = masterThread;
     }
 
     public double getDistanceMade(){ return this.distanceMade; }
@@ -136,6 +192,16 @@ public class Drone
         return masterFlag;
     }
 
+
+    /**
+     * If the current drone is the master drone then:
+     *  -   A new MasterModule is going to start for satisfying master's services;
+     *  -   Master's statistics data structure is going to be initialized;
+     *  -   A new GlobalStatisticsScheduledPrinter is going to be started for sending master's statistics to the administrator server each 10 seconds.
+     *
+     *
+     * @param masterFlag flag used to say if a drone is the master one or not.
+     */
     public void setMasterFlag(boolean masterFlag) {
         if(masterFlag){
             masterThread = new MasterModule(this);
@@ -166,9 +232,8 @@ public class Drone
 
     public void addStatisticToMasterDroneDataStructure(Statistic statistic){
         if(getMasterDroneStatistics() != null){
-            System.out.println("[MASTER MODULE] New statistic has just been received and inserted into the master drone data structure");
+            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] New statistic has just been received and inserted into the master drone data structure");
             this.masterDroneStatistics.add(statistic);
-            System.out.println("[MASTER MODULE] Last version of master's statistics:" + this.getMasterDroneStatistics());
         }
     }
 
@@ -204,20 +269,24 @@ public class Drone
     public static void main(String[] argv) {
         Drone       drone = new Drone();
         // Setting quit thread to allow the user to quit.
-        QuitModule quitModule = new QuitModule();
-        quitModule.start();
+        drone.quitModule = new QuitModule(drone);
+        drone.quitModule.start();
 
         System.out.println("*************** STARTING NEW DRONE ***************" + drone + "\n\n\n");
 
         // Entering into the smartcity
-        getAdministratorAuthorizationToEnter(drone);
+        drone.getAdministratorAuthorizationToEnter(drone);
 
         // Starting drone's communication module
         CommunicationModule communicationModule = new CommunicationModule(drone);
         communicationModule.start();
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,15, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,10, TimeUnit.SECONDS);
+
+        drone.measurements = new PM10Queue(drone);
+        drone.simulator = new PM10Simulator(drone.measurements);
+        drone.simulator.start();
 
     }
 
@@ -236,7 +305,7 @@ public class Drone
      *
      * @param drone Drone which wants to enter into the smartcity.
      */
-    private static void getAdministratorAuthorizationToEnter(Drone drone){
+    private void getAdministratorAuthorizationToEnter(Drone drone){
         System.out.println("*************** TRYING TO ENTER INTO THE SMARTCITY ***************");
         final Client    client = Client.create();
         final String    insertionAddress = serverAddress + "smartcity/insertion";
@@ -267,10 +336,10 @@ public class Drone
                         "\tNEW POSITION ACQUIRED: "             + serverResponse.getPosition() + "\n" +
                         "\tDRONES ALREADY IN OVER THIS ONE: "   + serverResponse.getDrones().toString());
 
-                /*
-                    Se here i'm receiving the list from the ServerAdministration and creating my own representation of the
-                    smartcity.
-                 */
+
+                //    Se here I'm receiving the list from the ServerAdministration and creating my own representation of the
+                //    smartcity.
+
                 dronesAlreadyIn.add(drone);
                 drone.smartcity.insertListOfDrones(dronesAlreadyIn);
             }
@@ -288,14 +357,21 @@ public class Drone
         }
     }
 
-    // This is method is called from master drone when either one new drone enters the smartcity or set himself as not busy.
-    // This method is called in GreetingServiceImplementation
-    public void communicateAvailability(Drone drone){
-        if(drone.isMasterFlag() && drone.masterThread != null) {
+    //  This method is called in the following scenarios:
+    //      -   Master drone becomes not busy
+    //      -   New drone enters into the smartcity
+    //      -   Master drone receives delivery confirmation by one of the smartcity's drones
+    public void communicateAvailability(){
+        if(masterThread != null) {
+            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Checking presence or not of undelivered deliveries");
             this.masterThread.checkIfDelivery();
         }
     }
 
 
-
+    @Override
+    public void takeEightMeasurements() {
+        List<Measurement> measurements = this.measurements.readAllAndClean();
+        this.measurementsDataStructure.add(measurements.stream().mapToDouble(Measurement::getValue).sum() / measurements.size());
+    }
 }

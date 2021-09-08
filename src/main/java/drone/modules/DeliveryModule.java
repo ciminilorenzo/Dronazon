@@ -7,6 +7,7 @@ import tools.Delivery;
 import tools.Position;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -33,9 +34,18 @@ public class DeliveryModule extends Thread
             String id         = this.drone.getID().toString();
             String timestamp  = formatter.format(new Date());
             Position position = delivery.getDeliveryPoint();
-            double distance   = Position.getDistanceBetweenTwoPoints(this.drone.getPosition(), delivery.getPickupPoint()) + Position.getDistanceBetweenTwoPoints(delivery.getPickupPoint(), delivery.getDeliveryPoint());
-            double pollution  = 0.0; //TODO: IMPLEMENT THIS
-            int    battery    = this.drone.getBattery()-10;
+
+            double distance   = Position.getDistanceBetweenTwoPoints(
+                    this.drone.getPosition(),
+                    delivery.getPickupPoint()) + Position.getDistanceBetweenTwoPoints(delivery.getPickupPoint(), delivery.getDeliveryPoint());
+
+            // Calculating pollution average of averages
+            ArrayList<Double> measurementsCopy = this.drone.getMeasurementsDataStructure();
+            double pollution  = measurementsCopy
+                    .stream()
+                    .mapToDouble(i -> i).sum() / this.drone.measurementsDataStructure.size();
+
+            int    battery    = this.drone.getBattery() -10;
 
 
             // New drone's position is equal to the delivery's pickup point one
@@ -46,13 +56,12 @@ public class DeliveryModule extends Thread
             this.drone.setDistanceMade(this.drone.getDistanceMade() + distance);
             // Updating number of delivery successfully completed by the drone
             this.drone.setNumberOfDeliveryDone(this.drone.getNumberOfDeliveryDone() + 1);
-            // Not still busy
-            this.drone.setBusy(false);
 
             // If this is master drone we don't have to perform a grpc.
             if(this.drone.isMasterFlag()){
                 Statistic statistic = new Statistic(timestamp, position, distance, pollution, battery, this.drone.getID().toString());
                 this.drone.addStatisticToMasterDroneDataStructure(statistic);
+                System.out.println("[DELIVERY MODULE] Delivery's data completely inserted.");
             }
             else
             {
@@ -65,11 +74,12 @@ public class DeliveryModule extends Thread
                         .setBatteryLeft(battery)
                         .build();
                 boolean response = CommunicationModule.sendCompletedDeliveryData(this.drone.getMasterDrone(), deliveryComplete);
-                System.out.println("[DELIVERY MODULE] Delivery's data completely sent");
+                System.out.println("[DELIVERY MODULE] Delivery's data completely sent. Response: " + response);
             }
 
-            System.out.println("[DELIVERY MODULE] NEW POSITION: " + this.drone.getPosition() + " " + " NEW BATTERY LEVEL: " + this.drone.getBattery());
             System.out.println("[DELIVERY MODULE] Drone's information updated after delivery");
+            // Not still busy
+            this.drone.setBusy(false);
         }
         catch (InterruptedException e)
         {

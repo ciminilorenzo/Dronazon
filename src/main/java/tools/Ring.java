@@ -59,6 +59,17 @@ public class Ring
         System.out.println(this);
     }
 
+    public void removeDrone(Drone droneToDelete){
+        System.out.println("[RING] DRONE HAS JUST BEEN REMOVED FROM THE SMARTCITY");
+        droneArrayList.remove(droneToDelete);
+        droneArrayList.sort(Comparator.comparing(Drone::getPort));
+        System.out.println(this);
+    }
+
+    public boolean isAlone(){
+        return (getDroneArrayList().size() == 1);
+    }
+
 
     //  TODO: getNext() is currently returning next drone in the ring representation. This method must implement
     //      a gRPC 'ping' call in order to detect if the next drone is available or not. In the case it isn't the ring must be
@@ -87,7 +98,7 @@ public class Ring
             if(current.getID().compareTo(id) == 0){
                 current.setPosition(position);
                 current.setBattery(battery);
-                current.setBusy(false); // This procedure is called both in the master and drone view.
+                current.isBusy = busy; // This procedure is called both in the master and drone view.
                 System.out.println("[MASTER RING] DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy ->" + busy);
                 return;
             }
@@ -95,9 +106,10 @@ public class Ring
     }
 
     public void setBusy(UUID id){
+        System.out.println("[MASTER RING] DRONE WITH ID: " + id + " HAS JUST UPDATED HIS BUSY STATE AS TRUE");
         for(Drone current: droneArrayList){
             if(current.getID().compareTo(id) == 0){
-                current.setBusy(true);
+                current.isBusy = true;
             }
         }
     }
