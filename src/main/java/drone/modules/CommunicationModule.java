@@ -37,7 +37,7 @@ public class CommunicationModule extends Thread
         {
             Server server = ServerBuilder.forPort(drone.getPort()).addService(new GreetingServiceImplementation(drone)).build();
             server.start();
-            System.out.println("[DRONE COMMUNICATION MODULE - INPUT    -> " + Thread.currentThread().getId() + "] Drone has successfully started to listen on port: " + drone.getPort());
+            System.out.println("[DRONE COMMUNICATION MODULE]    Drone has successfully started to listen on port: " + drone.getPort());
             chatting(drone);
             server.awaitTermination();
         }
@@ -57,7 +57,7 @@ public class CommunicationModule extends Thread
      *
      */
     private static void chatting(Drone drone) throws InterruptedException {
-        System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Start chatting process");
+        System.out.println("[DRONE COMMUNICATION MODULE]    Start chatting process");
         ArrayList<Drone> drones = drone.getSmartcity().getDroneArrayList();
 
         if(drones != null)
@@ -67,8 +67,7 @@ public class CommunicationModule extends Thread
             for (Drone currentDrone : drones){
                 // Receiving drone must be different from the sender
                 if(currentDrone.getID() != drone.getID()){
-                    System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> "
-                            + Thread.currentThread().getId() + "] Starting the process for communicating to drone: " + currentDrone.getID()
+                    System.out.println("[DRONE COMMUNICATION MODULE]    Starting the process for communicating to drone: " + currentDrone.getID()
                             + " on port: " + currentDrone.getPort());
 
                     CommunicationThread communicationThread = new CommunicationThread(drone, currentDrone);
@@ -77,23 +76,34 @@ public class CommunicationModule extends Thread
                 }
             }
 
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] All threads have been started");
+            System.out.println("[DRONE COMMUNICATION MODULE]    All threads have been started");
             for(CommunicationThread thread: threadArrayList){
                 thread.join();
-                Services.SimpleGreetingResponse response = thread.getResponse();
 
+                Services.SimpleGreetingResponse response = thread.getResponse();
+                /*
+                    3 cases here:
+                        1.  If the response is null it means that we had an error during the communication process.
+                            then we have to remove the drone from the ring; this operation is done inside the CommunicationThread;
+                        2.  If the response is equal to 'false' then the drone is active but, it isn't the master one then we don't
+                            have to do nothing;
+                        3.  If the response is equal to 'true' then the drone is both active and the master one then we will update the
+                            master pointer.
+                 */
                 if(response != null && response.getMaster()){
                     drone.setMasterDrone(thread.receivingDrone);
+                    System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is: \n" + drone.getMasterDrone().getID());
                 }
             }
         }
+        else
+        {
+            System.out.println("[DRONE COMMUNICATION MODULE]    This is the master drone");
+        }
 
-
-        System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Chatting process has just finished");
-
-        if(drone.getMasterDrone() == null) System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] THIS IS THE MASTER DRONE\n\n");
-        else System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Master drone is: \n" + drone.getMasterDrone() + "\n\n");
+        System.out.println("[DRONE COMMUNICATION MODULE]    Chatting process has just finished");
     }
+
 
 
 
@@ -107,8 +117,8 @@ public class CommunicationModule extends Thread
         assert masterDrone.isMasterFlag();
         try
         {
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID());
+            System.out.println("[DRONE COMMUNICATION MODULE]    Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
+            System.out.println("[DRONE COMMUNICATION MODULE]    Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID());
 
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
@@ -137,12 +147,13 @@ public class CommunicationModule extends Thread
                     .build();
 
             Services.DeliveryAssignationResponse response = chattingStub.deliveryAssignationService(deliveryAssignationMessage);
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Drone with id: " + receivingDrone.getID() + " has just accepted to handle delivery with id: " + delivery.getID());
+            System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " has just accepted to handle delivery with id: " + delivery.getID());
+            // QUI ALLORA DOVREI AGGIORNARE LA VISIONE DEL MASTER SUL DRONE DAL MOMENTO CHE HA ACCETTATO
             managedChannel.shutdown();
             return true;
         }
         catch (StatusRuntimeException exception){
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Drone with id: " + receivingDrone.getID() + " is not reachable");
+            System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " is not reachable");
             masterDrone.getSmartcity().removeDrone(receivingDrone);
             return false;
         }
@@ -161,11 +172,11 @@ public class CommunicationModule extends Thread
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + masterDrone.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
             Services.DeliveryCompleteResponse response = chattingStub.deliveryCompleteService(deliveryComplete);
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT] Delivery's data has been sent");
+            System.out.println("[DRONE COMMUNICATION MODULE]    Delivery's data has been sent");
             return true;
         }
         catch (StatusRuntimeException exception){
-            System.out.println("[DRONE COMMUNICATION MODULE - OUTPUT    -> " + Thread.currentThread().getId() + "] Master drone is not reachable");
+            System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is not reachable");
             //TODO: ELEZIONE ---> QUI DOVREI FARE IL JOIN CON IL THREAD ELEZIONE?? DEVO RIMANDARE LE STATISTICHE APPNA POSSO
             return false;
         }

@@ -56,7 +56,7 @@ public class QuitModule extends Thread
                 // This is done for waiting until all deliveries are assigned
                 if(!drone.getMasterThread().deliveryNotAssigned.isEmpty()){
                     while(!drone.getMasterThread().deliveryNotAssigned.isEmpty()){
-                        System.out.println("[QUIT MODULE]   Drone must assign " + drone.getMasterThread().deliveryNotAssigned.size() + " deliveries yet");
+                        System.out.println("[QUIT MODULE]   Drone must assign " + drone.getMasterThread().deliveryNotAssigned.size() + " deliveries yet in order to quit");
                         synchronized (dummyObject){
                             dummyObject.wait();
                         }
@@ -65,11 +65,25 @@ public class QuitModule extends Thread
                 }
 
                 // If the drone is still delivering this makes the process wait until the delivery is successful complete
-                if(drone.getDeliveryModule().isAlive()){
-                    System.out.println("[QUIT MODULE]   Drone is delivering now ... must wait");
+                if(drone.getDeliveryModule() != null && drone.getDeliveryModule().isAlive()){
+                    System.out.println("[QUIT MODULE]   Drone is delivering now . . . must wait");
+
                     // Waits until the delivery is finished.
-                    drone.getDeliveryModule().join();
+                    //
+                    // 1.   This timeout is set in order to be sure that the quit procedure goes ahead since last setBusy() inside
+                    //      DeliveryModule will call setBusy() with a parameter that is lower than 20 thus will call this exit() method
+                    //      and waiting his conclusion. All this makes the DeliveryModule not finish and, furthermore, without having DeliveryModule
+                    //      concluded this method won't go ahead blocking himself during the check if whatever DeliveryModule is finished or not.
+                    //
+                    // 2.   This same kind of join is made inside the try/catch block related to the case in which se drone which wants to exit
+                    //      is not the master one.
+                    //
+                    // 3.   This amount of time is set to be sure that both all data from other drone's coming back and
+                    //      the delivery currently ongoing is finished.
+
+                    drone.getDeliveryModule().join(5010);
                     drone.isBusy = true;
+                    System.out.println("[QUIT MODULE]   Delivery has finished. Proceeding quit procedure . . .");
                 }
                 quitFromTheSmartCity(drone);
 
@@ -84,10 +98,10 @@ public class QuitModule extends Thread
             try
             {
                 // If the drone is still delivering this makes the process wait until the delivery is successful complete
-                if(drone.getDeliveryModule().isAlive()){
+                if(drone.getDeliveryModule() != null && drone.getDeliveryModule().isAlive()){
                     System.out.println("[QUIT MODULE]   Drone is delivering now ... must wait");
                     // Waits until the delivery is finished.
-                    drone.getDeliveryModule().join();
+                    drone.getDeliveryModule().join(5010);
                 }
 
                 quitFromTheSmartCity(drone);

@@ -21,8 +21,7 @@ public class CommunicationThread extends Thread{
     public void run() {
         try
         {
-            System.out.println("[COMMUNICATION THREAD    -> " + Thread.currentThread().getId() + "] Starting a new communication thread");
-            Thread.sleep(5000);
+            System.out.println("[COMMUNICATION THREAD]  Starting a new communication thread");
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
 
@@ -42,9 +41,9 @@ public class CommunicationThread extends Thread{
             response = chattingStub.simpleGreeting(simpleGreetingRequest);
             managedChannel.shutdown();
         }
-        catch (StatusRuntimeException | InterruptedException exception){
-            System.out.println("[COMMUNICATION THREAD    -> " + Thread.currentThread().getId() + "] Drone with id: " + receivingDrone.getID() + " is not available");
-            System.out.println("[COMMUNICATION THREAD    -> " + Thread.currentThread().getId() + "] Updating view . . .");
+        catch (StatusRuntimeException exception){
+            System.out.println("[COMMUNICATION THREAD]  Drone with id: " + receivingDrone.getID() + " is not available");
+            System.out.println("[COMMUNICATION THREAD]  Updating view . . .");
             sendingDrone.getSmartcity().removeDrone(sendingDrone);
         }
 

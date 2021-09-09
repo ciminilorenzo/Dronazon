@@ -55,6 +55,12 @@ message DeliveryCompleteResponse
   required bool response = 1;
 }
 
+message PingRequest
+{}
+
+message PingResponse
+{}
+
 
 
 service Chatting{
@@ -63,4 +69,6 @@ service Chatting{
   rpc DeliveryAssignationService(DeliveryAssignationMessage) returns (DeliveryAssignationResponse) {}
 
   rpc DeliveryCompleteService(DeliveryComplete) returns (DeliveryCompleteResponse) {}
+
+  rpc Ping(PingRequest) returns (PingResponse) {}
 }

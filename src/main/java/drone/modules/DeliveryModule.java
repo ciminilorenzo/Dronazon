@@ -74,12 +74,11 @@ public class DeliveryModule extends Thread
                         .setBatteryLeft(battery)
                         .build();
                 boolean response = CommunicationModule.sendCompletedDeliveryData(this.drone.getMasterDrone(), deliveryComplete);
-                System.out.println("[DELIVERY MODULE] Delivery's data completely sent. Response: " + response);
             }
 
-            System.out.println("[DELIVERY MODULE] Drone's information updated after delivery");
             // Not still busy
             this.drone.setBusy(false);
+            System.out.println("[DELIVERY MODULE] Drone's information updated after delivery");
         }
         catch (InterruptedException e)
         {

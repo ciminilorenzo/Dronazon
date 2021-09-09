@@ -99,7 +99,7 @@ public class Ring
                 current.setPosition(position);
                 current.setBattery(battery);
                 current.isBusy = busy; // This procedure is called both in the master and drone view.
-                System.out.println("[MASTER RING] DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy ->" + busy);
+                System.out.println("[MASTER RING]   DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy -> " + busy);
                 return;
             }
         }

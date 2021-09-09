@@ -64,10 +64,7 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
     }
 
     /**
-     * Assertion: This method is called just in case in which this drone is the master one when it has to perform a
-     * delivery assignment
-     *
-     * As soon as master drone is unable to determine which one is the delivery drone, it makes a grpc call to it.
+     * Assertion: This gRPC call is made by the master drone when he has to perform a delivery assignment.
      *
      * @param request DeliveryAssignationMessage used for communicating delivery information to the specified drone.
      * @param responseObserver stream observer
@@ -126,6 +123,15 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         Services.DeliveryCompleteResponse response = Services.DeliveryCompleteResponse.newBuilder().setResponse(true).build();
         responseObserver.onNext(response);
         System.out.println("[DRONE COMMUNICATION MODULE - INPUT] DELIVERY COMPLETE MESSAGE - Sending receipt confirmation message");
+        responseObserver.onCompleted();
+    }
+
+
+
+    @Override
+    public void ping(Services.PingRequest request, StreamObserver<Services.PingResponse> responseObserver){
+        Services.PingResponse response = Services.PingResponse.newBuilder().build();
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 }

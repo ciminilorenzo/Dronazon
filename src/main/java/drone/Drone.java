@@ -5,7 +5,6 @@ import PM10.PM10Queue;
 import PM10.PM10Simulator;
 import administration.resources.statistics.Statistic;
 import drone.modules.*;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import tools.*;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
@@ -59,14 +58,13 @@ public class Drone implements EventListener
     // Data structure used by master drone for saving drones' statistics.
     private transient ArrayList<Statistic> masterDroneStatistics;
 
-
     private transient MasterModule masterThread;
 
     private transient QuitModule quitModule;
 
     private transient DeliveryModule deliveryModule;
 
-
+    private transient ScheduledExecutorService pingModule;
 
     public  transient  ArrayList<Double> measurementsDataStructure = new ArrayList<>();
     private static transient final Object measurementArrayDummyLock = new Object();
@@ -94,13 +92,11 @@ public class Drone implements EventListener
         this.deliveryModule = deliveryModule;
     }
 
-
     public ArrayList<Double> getMeasurementsDataStructure(){
         synchronized (measurementArrayDummyLock){
             return measurementsDataStructure;
         }
     }
-
 
     public boolean isBusy() {
         return isBusy;
@@ -192,6 +188,15 @@ public class Drone implements EventListener
         return masterFlag;
     }
 
+    public ScheduledExecutorService getPingModule() {
+        return pingModule;
+    }
+
+    public void setPingModule(ScheduledExecutorService pingModule) {
+        this.pingModule = pingModule;
+    }
+
+
 
     /**
      * If the current drone is the master drone then:
@@ -219,7 +224,19 @@ public class Drone implements EventListener
     }
 
     public void setMasterDrone(Drone masterDrone) {
-        this.masterDrone = masterDrone;
+        if(masterDrone != null){
+            this.masterDrone = masterDrone;
+            ScheduledExecutorService pingScheduler = Executors.newScheduledThreadPool(1);
+            pingScheduler.scheduleAtFixedRate(new PingModule(this, masterDrone), 10,10, TimeUnit.SECONDS);
+            this.pingModule = pingScheduler;
+        }
+        else {
+            if(!this.pingModule.isShutdown()){
+                this.pingModule.shutdown();
+                this.pingModule = null;
+            }
+        }
+
     }
 
     public ArrayList<Statistic> getMasterDroneStatistics() {
@@ -263,9 +280,6 @@ public class Drone implements EventListener
 
 
 
-
-
-
     public static void main(String[] argv) {
         Drone       drone = new Drone();
         // Setting quit thread to allow the user to quit.
@@ -281,8 +295,8 @@ public class Drone implements EventListener
         CommunicationModule communicationModule = new CommunicationModule(drone);
         communicationModule.start();
 
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.scheduleAtFixedRate(new DataPrinterModule(drone), 10,10, TimeUnit.SECONDS);
+        ScheduledExecutorService dataPrinter = Executors.newScheduledThreadPool(1);
+        dataPrinter.scheduleAtFixedRate(new DataPrinterModule(drone), 10,10, TimeUnit.SECONDS);
 
         drone.measurements = new PM10Queue(drone);
         drone.simulator = new PM10Simulator(drone.measurements);
