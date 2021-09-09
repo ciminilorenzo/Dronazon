@@ -1,28 +1,25 @@
 # Distributed and pervasive systems project
 
-KEEP IN MIND:
-    1.  CERCARE DI REALIZZARE UNA SINCRONIZZAZIONE A GRANA PIU' FINE POSSIBILE IN MODO TALE DA NON BLOCCARE IL SERVER.
+**KEEP IN MIND:**
+1. CERCARE DI REALIZZARE UNA SINCRONIZZAZIONE A GRANA PIU' FINE POSSIBILE IN MODO TALE DA NON BLOCCARE IL SERVER.
         PER ESEMPIO, MENTRE PER OPERAZIONI DI INGRESSO/USCITA DAL SERVER OCCORRE SINCRONIZZARE L'INTERA ISTANZA DELLA SMARTCITY
         PER TUTTA LA DURATA DELL'OPERAZIONE, NEL CASO DEL CALCOLO DELLE STATISTICHE DOBBIAMO SOLO SINCRONIZZARE LA LETTURA DELL'ARRAY DELLE STATISTICHE
-
-    2.  
-        Davide, [15 giu 2021, 22:06:13 (15 giu 2021, 22:06:39)]:
-        Attenti che se il drone si presenta al master ma non ha ancora il server grpc attivo, se il master prova ad assegnare una consegna fallisce e lo elimina, ma in realtà sarebbe appena entrato
-        Controllate con sleep varie
-        --> Questo dovrebbe essere gestito dal momento che prima il drone starta il server grpc e, solo dopo, comincia il processo di chattingp per comunicare la sua presenza.
+2. Attenti che se il drone si presenta al master ma non ha ancora il server grpc attivo, se il master prova ad assegnare una consegna fallisce e lo elimina, ma in realtà sarebbe appena entrato
+   Controllate con sleep varie
+   --> Questo dovrebbe essere gestito dal momento che prima il drone starta il server grpc e, solo dopo, comincia il processo di chattingp per comunicare la sua presenza.
 
 
 **MOMENTI IN CUI VIENE CONTROLLATA PRESENZA DI SPEDIZIONI NON ANCORA GESTITE:**
-    - Quando un drone normale finisce la propria consegna (quando il master riceve dati sulla spedizione controlla)
-    - Quando il drone master finisce la propria consegna
-    - Quando il drone master gestisce ingresso nuovo drone (nel modulo di comunicazione in risposta al GreetingMessage)
+1. Quando un drone normale finisce la propria consegna (quando il master riceve dati sulla spedizione controlla)
+2. Quando il drone master finisce la propria consegna 
+3. Quando il drone master gestisce ingresso nuovo drone (nel modulo di comunicazione in risposta al GreetingMessage)
 
 
 
 
 **MOMENTI IN CUI UN MASTER PUO' ACCORGERSI CHE UN DRONE (NON MASTER) È CADUTO:**
-    1.  Quando gli assegna una spedizione e non risponde -> GESTITO
-    2.  
+1.  Quando gli assegna una spedizione e non risponde -> GESTITO 
+
 
     Assunzioni: 
         1.  Non è valido il caso in cui il master si accorge che un drone è caduto nel momento in cui non riceve statistiche di consegna dopo un determinato time-out
@@ -32,7 +29,7 @@ KEEP IN MIND:
 
 
 **MOMENTI IN CUI UN NODO PUO' ACCORGERSI CHE IL MASTER È CADUTO:**
-    1.  Quando viene fatto il ping e non risponde.
+1.  Quando viene fatto il ping e non risponde.
 
 
     Assunzioni:
@@ -43,15 +40,15 @@ KEEP IN MIND:
 
 
 **MOMENTI IN CUI UN DRONE SI ACCORGE CHE UN ALTRO DRONE E' CADUTO:**
-    1.  Quando, durante un elezione, il next() non risponde
-    2.  Momento in cui si fa il greeting iniziale (CommunicationThread) -> *GESTITO IL FATTO CHE IL DRONE DEVE ESSERE RIMOSSO DAL RING CORRENTE*
+1. Quando, durante un elezione, il next() non risponde
+2. Momento in cui si fa il greeting iniziale (CommunicationThread) -> *GESTITO IL FATTO CHE IL DRONE DEVE ESSERE RIMOSSO DAL RING CORRENTE*
 
 
 
 ELEZIONE:
-    1. Parte quando, durante il ping(), il master non risponde.
-    2. Potremmo far passare un messaggio contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni 
-    3. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
+1. Parte quando, durante il ping(), il master non risponde.
+2. Potremmo far passare un messaggio contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni 
+3. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
 
 
 
