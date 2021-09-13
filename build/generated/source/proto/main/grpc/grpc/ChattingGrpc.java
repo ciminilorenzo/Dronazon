@@ -120,35 +120,97 @@ public final class ChattingGrpc {
     return getDeliveryCompleteServiceMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<grpc.Services.PingRequest,
-      grpc.Services.PingResponse> getPingMethod;
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.Empty,
+      grpc.Services.Empty> getPingMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "Ping",
-      requestType = grpc.Services.PingRequest.class,
-      responseType = grpc.Services.PingResponse.class,
+      requestType = grpc.Services.Empty.class,
+      responseType = grpc.Services.Empty.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<grpc.Services.PingRequest,
-      grpc.Services.PingResponse> getPingMethod() {
-    io.grpc.MethodDescriptor<grpc.Services.PingRequest, grpc.Services.PingResponse> getPingMethod;
+  public static io.grpc.MethodDescriptor<grpc.Services.Empty,
+      grpc.Services.Empty> getPingMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.Empty, grpc.Services.Empty> getPingMethod;
     if ((getPingMethod = ChattingGrpc.getPingMethod) == null) {
       synchronized (ChattingGrpc.class) {
         if ((getPingMethod = ChattingGrpc.getPingMethod) == null) {
           ChattingGrpc.getPingMethod = getPingMethod =
-              io.grpc.MethodDescriptor.<grpc.Services.PingRequest, grpc.Services.PingResponse>newBuilder()
+              io.grpc.MethodDescriptor.<grpc.Services.Empty, grpc.Services.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Ping"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.Services.PingRequest.getDefaultInstance()))
+                  grpc.Services.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.Services.PingResponse.getDefaultInstance()))
+                  grpc.Services.Empty.getDefaultInstance()))
               .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("Ping"))
               .build();
         }
       }
     }
     return getPingMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.ElectionMessage,
+      grpc.Services.Empty> getElectionMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Election",
+      requestType = grpc.Services.ElectionMessage.class,
+      responseType = grpc.Services.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.ElectionMessage,
+      grpc.Services.Empty> getElectionMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.ElectionMessage, grpc.Services.Empty> getElectionMethod;
+    if ((getElectionMethod = ChattingGrpc.getElectionMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getElectionMethod = ChattingGrpc.getElectionMethod) == null) {
+          ChattingGrpc.getElectionMethod = getElectionMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.ElectionMessage, grpc.Services.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Election"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.ElectionMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("Election"))
+              .build();
+        }
+      }
+    }
+    return getElectionMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.ElectedMessage,
+      grpc.Services.Empty> getElectedMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Elected",
+      requestType = grpc.Services.ElectedMessage.class,
+      responseType = grpc.Services.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.ElectedMessage,
+      grpc.Services.Empty> getElectedMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.ElectedMessage, grpc.Services.Empty> getElectedMethod;
+    if ((getElectedMethod = ChattingGrpc.getElectedMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getElectedMethod = ChattingGrpc.getElectedMethod) == null) {
+          ChattingGrpc.getElectedMethod = getElectedMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.ElectedMessage, grpc.Services.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Elected"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.ElectedMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("Elected"))
+              .build();
+        }
+      }
+    }
+    return getElectedMethod;
   }
 
   /**
@@ -201,9 +263,23 @@ public final class ChattingGrpc {
 
     /**
      */
-    public void ping(grpc.Services.PingRequest request,
-        io.grpc.stub.StreamObserver<grpc.Services.PingResponse> responseObserver) {
+    public void ping(grpc.Services.Empty request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getPingMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void election(grpc.Services.ElectionMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(getElectionMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void elected(grpc.Services.ElectedMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(getElectedMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -233,9 +309,23 @@ public final class ChattingGrpc {
             getPingMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                grpc.Services.PingRequest,
-                grpc.Services.PingResponse>(
+                grpc.Services.Empty,
+                grpc.Services.Empty>(
                   this, METHODID_PING)))
+          .addMethod(
+            getElectionMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.ElectionMessage,
+                grpc.Services.Empty>(
+                  this, METHODID_ELECTION)))
+          .addMethod(
+            getElectedMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.ElectedMessage,
+                grpc.Services.Empty>(
+                  this, METHODID_ELECTED)))
           .build();
     }
   }
@@ -284,10 +374,26 @@ public final class ChattingGrpc {
 
     /**
      */
-    public void ping(grpc.Services.PingRequest request,
-        io.grpc.stub.StreamObserver<grpc.Services.PingResponse> responseObserver) {
+    public void ping(grpc.Services.Empty request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getPingMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void election(grpc.Services.ElectionMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getElectionMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void elected(grpc.Services.ElectedMessage request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getElectedMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -332,9 +438,23 @@ public final class ChattingGrpc {
 
     /**
      */
-    public grpc.Services.PingResponse ping(grpc.Services.PingRequest request) {
+    public grpc.Services.Empty ping(grpc.Services.Empty request) {
       return blockingUnaryCall(
           getChannel(), getPingMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.Empty election(grpc.Services.ElectionMessage request) {
+      return blockingUnaryCall(
+          getChannel(), getElectionMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.Empty elected(grpc.Services.ElectedMessage request) {
+      return blockingUnaryCall(
+          getChannel(), getElectedMethod(), getCallOptions(), request);
     }
   }
 
@@ -382,10 +502,26 @@ public final class ChattingGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.PingResponse> ping(
-        grpc.Services.PingRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.Empty> ping(
+        grpc.Services.Empty request) {
       return futureUnaryCall(
           getChannel().newCall(getPingMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.Empty> election(
+        grpc.Services.ElectionMessage request) {
+      return futureUnaryCall(
+          getChannel().newCall(getElectionMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.Empty> elected(
+        grpc.Services.ElectedMessage request) {
+      return futureUnaryCall(
+          getChannel().newCall(getElectedMethod(), getCallOptions()), request);
     }
   }
 
@@ -393,6 +529,8 @@ public final class ChattingGrpc {
   private static final int METHODID_DELIVERY_ASSIGNATION_SERVICE = 1;
   private static final int METHODID_DELIVERY_COMPLETE_SERVICE = 2;
   private static final int METHODID_PING = 3;
+  private static final int METHODID_ELECTION = 4;
+  private static final int METHODID_ELECTED = 5;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -424,8 +562,16 @@ public final class ChattingGrpc {
               (io.grpc.stub.StreamObserver<grpc.Services.DeliveryCompleteResponse>) responseObserver);
           break;
         case METHODID_PING:
-          serviceImpl.ping((grpc.Services.PingRequest) request,
-              (io.grpc.stub.StreamObserver<grpc.Services.PingResponse>) responseObserver);
+          serviceImpl.ping((grpc.Services.Empty) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.Empty>) responseObserver);
+          break;
+        case METHODID_ELECTION:
+          serviceImpl.election((grpc.Services.ElectionMessage) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.Empty>) responseObserver);
+          break;
+        case METHODID_ELECTED:
+          serviceImpl.elected((grpc.Services.ElectedMessage) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.Empty>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -492,6 +638,8 @@ public final class ChattingGrpc {
               .addMethod(getDeliveryAssignationServiceMethod())
               .addMethod(getDeliveryCompleteServiceMethod())
               .addMethod(getPingMethod())
+              .addMethod(getElectionMethod())
+              .addMethod(getElectedMethod())
               .build();
         }
       }

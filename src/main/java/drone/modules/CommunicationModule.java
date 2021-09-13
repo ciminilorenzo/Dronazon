@@ -32,7 +32,7 @@ public class CommunicationModule extends Thread
      * @param drone that wants to start to listening on his port.
      */
     private static void startListening(Drone drone){
-        System.out.println("\n\n\n*************** STARTING DRONE'S COMMUNICATION MODULE ***************");
+        System.out.println("\n\n\n[DRONE COMMUNICATION MODULE]    Initializing ...");
         try
         {
             Server server = ServerBuilder.forPort(drone.getPort()).addService(new GreetingServiceImplementation(drone)).build();
@@ -92,7 +92,7 @@ public class CommunicationModule extends Thread
                  */
                 if(response != null && response.getMaster()){
                     drone.setMasterDrone(thread.receivingDrone);
-                    System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is: \n" + drone.getMasterDrone().getID());
+                    System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is: " + drone.getMasterDrone().getID());
                 }
             }
         }
@@ -117,8 +117,7 @@ public class CommunicationModule extends Thread
         assert masterDrone.isMasterFlag();
         try
         {
-            System.out.println("[DRONE COMMUNICATION MODULE]    Starting the process for communicating to drone: " + receivingDrone.getID() + " on port: " + receivingDrone.getPort());
-            System.out.println("[DRONE COMMUNICATION MODULE]    Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID());
+            System.out.println("[DRONE COMMUNICATION MODULE]    Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID() + " on port: " + receivingDrone.getPort());
 
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + receivingDrone.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
@@ -148,7 +147,6 @@ public class CommunicationModule extends Thread
 
             Services.DeliveryAssignationResponse response = chattingStub.deliveryAssignationService(deliveryAssignationMessage);
             System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " has just accepted to handle delivery with id: " + delivery.getID());
-            // QUI ALLORA DOVREI AGGIORNARE LA VISIONE DEL MASTER SUL DRONE DAL MOMENTO CHE HA ACCETTATO
             managedChannel.shutdown();
             return true;
         }
@@ -177,9 +175,58 @@ public class CommunicationModule extends Thread
         }
         catch (StatusRuntimeException exception){
             System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is not reachable");
-            //TODO: ELEZIONE ---> QUI DOVREI FARE IL JOIN CON IL THREAD ELEZIONE?? DEVO RIMANDARE LE STATISTICHE APPNA POSSO
+            //TODO: ELEZIONE
             return false;
         }
+    }
+
+    public static boolean sendElectionMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing){
+        try
+        {
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + nextInTheRing.getPort()).usePlaintext().build();
+            ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+
+            Services.Position position = Services.Position.newBuilder()
+                    .setX(drone.getPosition().getX())
+                    .setY(drone.getPosition().getY())
+                    .build();
+
+            Services.Drone current = Services.Drone.newBuilder()
+                    .setId(drone.getID().toString())
+                    .setPort(drone.getPort())
+                    .setPosition(position)
+                    .setBattery(drone.getBattery())
+                    .build();
+
+            Services.ElectionMessage electionMessage = Services.ElectionMessage.newBuilder()
+                    .setAction("ELECTION")
+                    .setMaster(current)
+                    .addListOfDrones(current)
+                    .build();
+
+
+            System.out.println("[ELECTION] " + Drone.getTime());
+            System.out.println("[ELECTION]  Election message has been sent to the next " + nextInTheRing.getPort());
+            Services.Empty response = chattingStub.election(electionMessage);
+            return true;
+        }
+        catch (StatusRuntimeException exception) {
+            System.out.println("ERRORE " + Drone.getTime());
+            return false;}
+    }
+
+    public static boolean sendElectionMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing, Services.ElectionMessage message){
+        try
+        {
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + nextInTheRing.getPort()).usePlaintext().build();
+            ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+            System.out.println("[ELECTION] " + Drone.getTime());
+            System.out.println("[ELECTION]  Election message has been sent to the next " + nextInTheRing.getPort());
+            Services.Empty response = chattingStub.election(message);
+            return true;
+        }
+        catch (StatusRuntimeException exception) {
+            System.out.println("ERRORE " + Drone.getTime());return false;}
     }
 
 }

@@ -31,14 +31,13 @@ public class PingModule extends Thread
         {
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + masterDrone.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingBlockingStub = ChattingGrpc.newBlockingStub(managedChannel);
-            Services.PingRequest response =  Services.PingRequest.newBuilder().build();
+            Services.Empty response =  Services.Empty.newBuilder().build();
             chattingBlockingStub.ping(response);
         }
         catch (StatusRuntimeException exception){
             System.out.println("[PING MODULE] Master drone has fallen.");
             // That's done in order to stop this module
             drone.setMasterDrone(null);
-            //TODO: ELEZIONE
         }
     }
 }

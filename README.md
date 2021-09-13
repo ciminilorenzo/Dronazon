@@ -22,7 +22,7 @@
 
 
     Assunzioni: 
-        1.  Non è valido il caso in cui il master si accorge che un drone è caduto nel momento in cui non riceve statistiche di consegna dopo un determinato time-out
+        1. Non è valido il caso in cui il master si accorge che un drone è caduto nel momento in cui non riceve statistiche di consegna dopo un determinato time-out
             visto che è un assunzione del progetto il fatto che anche se vuole uscire un drone deve prima terminare la consegna, inviare le statistiche e, solo dopo, 
             uscire dalla smartcity.
 
@@ -49,6 +49,10 @@ ELEZIONE:
 1. Parte quando, durante il ping(), il master non risponde.
 2. Potremmo far passare un messaggio contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni 
 3. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
+
+CASI GESTITI:
+1. Caso in cui il drone è da solo dentro la smartcity durante l'elezione -> *GESTITO*
+2. Caso in cui il prossimo drone nella rete è caduto
 
 
 

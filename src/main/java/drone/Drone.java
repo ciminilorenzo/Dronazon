@@ -5,6 +5,7 @@ import PM10.PM10Queue;
 import PM10.PM10Simulator;
 import administration.resources.statistics.Statistic;
 import drone.modules.*;
+import grpc.Services;
 import tools.*;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
@@ -14,6 +15,9 @@ import com.sun.jersey.api.client.WebResource;
 
 
 import javax.xml.bind.annotation.*;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +54,7 @@ public class Drone implements EventListener
     private transient volatile boolean masterFlag = false;
 
     // Pointer to the master drone.
-    private transient Drone masterDrone;
+    public transient Drone masterDrone;
 
     // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
     public transient volatile boolean isBusy = false;
@@ -72,6 +76,9 @@ public class Drone implements EventListener
     private transient PM10Queue measurements;
 
     private transient PM10Simulator simulator;
+
+    private transient boolean participantToElection;
+
 
 
 
@@ -104,13 +111,13 @@ public class Drone implements EventListener
 
     public void setBusy(boolean busy) {
         if(battery < 20 && !busy){
-            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Drone's battery is low. Starting quitting process");
+            System.out.println("[DRONE MODULE]    Drone's battery is low. Starting quitting process");
             // Drone can't deliver any delivery anymore
             isBusy = true;
             this.quitModule.exit();
         }
         else{
-            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Setting busy flag of this drone as: " + busy);
+            System.out.println("[DRONE MODULE]    Setting busy flag of this drone as " + busy);
             isBusy = busy;
         }
 
@@ -196,6 +203,14 @@ public class Drone implements EventListener
         this.pingModule = pingModule;
     }
 
+    public boolean isParticipantToElection() {
+        return participantToElection;
+    }
+
+    public void setParticipantToElection(boolean participantToElection) {
+        this.participantToElection = participantToElection;
+    }
+
 
 
     /**
@@ -230,11 +245,16 @@ public class Drone implements EventListener
             pingScheduler.scheduleAtFixedRate(new PingModule(this, masterDrone), 10,10, TimeUnit.SECONDS);
             this.pingModule = pingScheduler;
         }
+
         else {
             if(!this.pingModule.isShutdown()){
                 this.pingModule.shutdown();
                 this.pingModule = null;
             }
+            this.getSmartcity().removeDrone(this.masterDrone);
+            this.masterDrone = null;
+            System.out.println("ME NE SONO ACCORTO");
+            sendElectionMessage(this);
         }
 
     }
@@ -249,7 +269,7 @@ public class Drone implements EventListener
 
     public void addStatisticToMasterDroneDataStructure(Statistic statistic){
         if(getMasterDroneStatistics() != null){
-            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] New statistic has just been received and inserted into the master drone data structure");
+            System.out.println("[DRONE MODULE]  New statistic has just been received and inserted into the master drone data structure");
             this.masterDroneStatistics.add(statistic);
         }
     }
@@ -377,7 +397,7 @@ public class Drone implements EventListener
     //      -   Master drone receives delivery confirmation by one of the smartcity's drones
     public void communicateAvailability(){
         if(masterThread != null) {
-            System.out.println("[DRONE MODULE -> "+  Thread.currentThread().getId() + "] Checking presence or not of undelivered deliveries");
+            System.out.println("[DRONE MODULE]    Checking presence or not of undelivered deliveries");
             this.masterThread.checkIfDelivery();
         }
     }
@@ -387,5 +407,67 @@ public class Drone implements EventListener
     public void takeEightMeasurements() {
         List<Measurement> measurements = this.measurements.readAllAndClean();
         this.measurementsDataStructure.add(measurements.stream().mapToDouble(Measurement::getValue).sum() / measurements.size());
+    }
+
+    private void sendElectionMessage(Drone current) {
+        System.out.println("[ELECTION] Starting . . .");
+        if(!this.isParticipantToElection())
+        {
+            this.setParticipantToElection(true);
+            boolean cycle = true;
+
+            while(cycle)
+            {
+                Drone next = current.getSmartcity().getNext(current);
+
+                if(next != null){
+                    if(!CommunicationModule.sendElectionMessageToTheNextInTheRing(current, next)){
+                        // This means that the next drone isn't into the smartcity anymore.
+                        // Thus, we will make another election message which will be sent to the new next drone
+                        System.out.println(java.time.LocalDateTime.now());
+                        System.out.println("[ELECTION]    Actual next drone into the smartcity is not available. Updating the smartcity . . .");
+                        current.getSmartcity().removeDrone(next);
+                    }
+                    else {
+                        cycle = false;
+                    }
+                }
+                else{
+                    // This drone is the only one into the smartcity then stop cycling. Election process is finished
+                    System.out.println(java.time.LocalDateTime.now());
+                    cycle = false;
+                    current.setMasterFlag(true);
+                    System.out.println("[ELECTION]    This drone is the only one into the smartcity. Setting as master . . .");
+                }
+            }
+        }
+    }
+
+
+    public static Services.Drone convertDroneToServicesDrone(Drone drone)
+    {
+        Services.Position position = Services.Position.newBuilder()
+                .setX(drone.getPosition().getX())
+                .setY(drone.getPosition().getY())
+                .build();
+
+        Services.Drone current = Services.Drone.newBuilder()
+                .setId(drone.getID().toString())
+                .setPort(drone.getPort())
+                .setPosition(position)
+                .setBattery(drone.getBattery())
+                .build();
+
+        return Services.Drone.newBuilder()
+                .setId(drone.getID().toString())
+                .setPosition(position)
+                .setPort(drone.getPort())
+                .setBattery(drone.getBattery())
+                .build();
+    }
+
+
+    public static String getTime(){
+        return java.time.LocalDateTime.now().toString();
     }
 }

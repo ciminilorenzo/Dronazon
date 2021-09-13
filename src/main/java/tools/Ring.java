@@ -41,10 +41,12 @@ public class Ring
 
 
     /**
-     *
+     *  //TODO: QUESTI TUTTI MESSI COME SYNCHRONIZED PERCHE' RICEVUTO ERRORE:   java.util.ConcurrentModificationException
+     * 	at java.util.ArrayList.sort(ArrayList.java:1466)
+     * 	at tools.Ring.insertDrone(Ring.java:50)
      * @param drone that is entering into the drone smartcity's representation.
      */
-    public void insertDrone(Drone drone) {
+    public synchronized void insertDrone(Drone drone) {
         System.out.println("\n\n[RING] INSERTING NEW DRONE");
         droneArrayList.add(drone);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));
@@ -52,15 +54,15 @@ public class Ring
         System.out.println(this);
     }
 
-    public void insertListOfDrones(ArrayList<Drone> list){
+    public synchronized void insertListOfDrones(ArrayList<Drone> list){
         System.out.println("\n\n[RING] INSERTING BUNCH OF DRONES");
         droneArrayList.addAll(list);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));;
         System.out.println(this);
     }
 
-    public void removeDrone(Drone droneToDelete){
-        System.out.println("[RING] DRONE HAS JUST BEEN REMOVED FROM THE SMARTCITY");
+    public synchronized void removeDrone(Drone droneToDelete){
+        System.out.println("[RING] Updating . . .");
         droneArrayList.remove(droneToDelete);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));
         System.out.println(this);
@@ -74,17 +76,23 @@ public class Ring
     //  TODO: getNext() is currently returning next drone in the ring representation. This method must implement
     //      a gRPC 'ping' call in order to detect if the next drone is available or not. In the case it isn't the ring must be
     //      rebuild and getNext() must be recalled.
+
+    /**
+     *
+     * @param drone is the drone for which we want to get his next
+     * @return null if the drone sent as parameter
+     */
     public Drone getNext(Drone drone){
         if(droneArrayList.size() == 1){
             return null;
         }
 
         for(int i = 0; i < droneArrayList.size(); i++){
-            if(drone.getID() == droneArrayList.get(i).getID()){
-                return droneArrayList.get(i+1);
-            }
             if(i == droneArrayList.size() - 1){
                 return droneArrayList.get(0);
+            }
+            else if(drone.getID() == droneArrayList.get(i).getID()){
+                return droneArrayList.get(i+1);
             }
         }
         return null;
@@ -125,8 +133,6 @@ public class Ring
     @Override
     public String toString(){
         StringBuilder result = new StringBuilder();
-
-        result.append("[RING] Printing... \n");
 
         for(int i = 0; i < droneArrayList.size(); i++)
         {

@@ -60,7 +60,7 @@ public class Dronazon
             client.publish(topic, message);
             System.out.println("[ DRONAZON ] Has just published a new delivery:\n" +
                     message);
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         }
     }
 }

@@ -35,7 +35,6 @@ public class GlobalStatisticsScheduledPrinter extends Thread
             System.out.println("[GLOBAL STATISTICS SCHEDULED MODULE] Global statistic has just been calculated");
             Client              client = new Client();
             ClientResponse      clientResponse = postRequest(client, StatisticsService.INSERT, globalStatistic);
-            System.out.println("[GLOBAL STATISTICS SCHEDULED MODULE] Response from server about global statistic publication: " + clientResponse);
         }
     }
 

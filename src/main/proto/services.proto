@@ -55,12 +55,30 @@ message DeliveryCompleteResponse
   required bool response = 1;
 }
 
-message PingRequest
-{}
+message Empty {}
 
-message PingResponse
-{}
 
+
+message Drone
+{
+  required string id = 1;
+  required int32 port = 2;
+  required Position position = 3;
+  required int32 battery = 4;
+}
+
+message ElectionMessage
+{
+  required string action = 1;
+  required Drone master = 2;
+  repeated Drone listOfDrones = 3;
+}
+
+message ElectedMessage
+{
+  required string action = 1;
+  required Drone master = 2;
+}
 
 
 service Chatting{
@@ -70,5 +88,9 @@ service Chatting{
 
   rpc DeliveryCompleteService(DeliveryComplete) returns (DeliveryCompleteResponse) {}
 
-  rpc Ping(PingRequest) returns (PingResponse) {}
+  rpc Ping(Empty) returns (Empty) {}
+
+  rpc Election(ElectionMessage) returns (Empty) {}
+
+  rpc Elected(ElectedMessage) returns (Empty) {}
 }

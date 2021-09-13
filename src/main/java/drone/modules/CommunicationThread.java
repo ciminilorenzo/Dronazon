@@ -44,7 +44,7 @@ public class CommunicationThread extends Thread{
         catch (StatusRuntimeException exception){
             System.out.println("[COMMUNICATION THREAD]  Drone with id: " + receivingDrone.getID() + " is not available");
             System.out.println("[COMMUNICATION THREAD]  Updating view . . .");
-            sendingDrone.getSmartcity().removeDrone(sendingDrone);
+            sendingDrone.getSmartcity().removeDrone(receivingDrone);
         }
 
     }
