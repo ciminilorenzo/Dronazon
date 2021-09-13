@@ -147,133 +147,143 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         }
         System.out.println("[ELECTION]  Election message received");
 
-        switch (request.getAction())
+        // If it's not participant
+        if(!drone.isParticipantToElection()){
+            System.out.println("[ELECTION]  It means that master drone has fallen");
+            drone.getSmartcity().removeDrone(drone.getMasterDrone());
+            System.out.println("[ELECTION]  Setting participant as true");
+            drone.setParticipantToElection(true);
+
+            if(drone.getBattery() > request.getMaster().getBattery()){
+                // If the current drone's battery level is greater than the one into the message
+                // then we have to do modify the message in order to update the new master
+                Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
+                List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
+                newList.add(newMaster);
+
+                Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
+                        .setMaster(newMaster)
+                        .addAllListOfDrones(newList)
+                        .build();
+
+                //TODO: GESTIRE CASO IN CUI RITORNA NULL (SI ERA IN 2 MA UNO CADE DURANTE L'ELEZIONE)
+                Drone next = drone.getSmartcity().getNext();
+                //TODO: MAGARI UTILIZZANDO QUESTA VARIABILE
+                boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
+            }
+            else if (drone.getBattery() < request.getMaster().getBattery()){
+                // If the current drone's battery level is smaller than the one into the message
+                // then we have to simply forward the message adding the drone to the list inside the message
+                Drone next = drone.getSmartcity().getNext();
+                Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
+                List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
+                newList.add(newMaster);
+                Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
+                        .setMaster(request.getMaster())
+                        .addAllListOfDrones(newList)
+                        .build();
+
+                boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
+            }
+
+            else{
+                // If the current drone's battery level is equal to the one into the message
+                // then we have to make some checks
+                if(drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) > 0){
+                    // If the current drone's battery level is equal to the one than we have in the message
+                    // and the current drone's ID is bigger than the master's one then we have to update the master
+                    Drone next = drone.getSmartcity().getNext();
+                    Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
+                    List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
+                    newList.add(newMaster);
+
+                    Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
+                            .setMaster(newMaster)
+                            .addAllListOfDrones(newList)
+                            .build();
+                    boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
+                }
+                else
+                {
+                    // If the current drone's battery level is equal to the one than we have in the message
+                    // and the current drone's ID is smaller than the master's one then we have to simply forward the message
+                    Drone next = drone.getSmartcity().getNext();
+
+                    Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
+                    List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
+                    newList.add(newMaster);
+                    Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
+                            .setMaster(request.getMaster())
+                            .addAllListOfDrones(newList)
+                            .build();
+                    boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
+                }
+            }
+
+        }
+        else {
+            // If the drone is already participant we have to distinguish between two cases:
+            //  - current drone has a battery level (or ID in case battery level is equal) that it's bigger than the one
+            //      present inside the message;
+            if ((drone.getBattery() > request.getMaster().getBattery())
+                    ||
+                    (drone.getBattery() == request.getMaster().getBattery() && drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) > 0)) {
+                // then we have that the current drone has an important battery level or ID, and it's present was already
+                // forwarded into the net thus we don't have to do anything.
+                System.out.println("[ELECTION]  Already participant to a election . . . blocking this election");
+            }
+            //  - current drone has a battery level (or ID in case battery level is equal) that's lower than the one
+            //      present inside the message;
+            else if((drone.getBattery() < request.getMaster().getBattery())
+                    ||
+                    (drone.getBattery() == request.getMaster().getBattery() && drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) < 0)) {
+                // then we have that the current drone has a less important battery level or ID, and it's presence was already
+                // forwarded into the net thus we have to simply forward the message but, without adding this drone to the list
+                // present into the message
+                Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
+                        .setMaster(request.getMaster())
+                        .addAllListOfDrones(request.getListOfDronesList())
+                        .build();
+                System.out.println("[ELECTION]  Already participant to a election . . . forwarding the message");
+                CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, drone.getSmartcity().getNext(), newMessage);
+            }
+            else if(request.getMaster().getId().equals(drone.getID().toString())){
+                //drone.setMasterFlag(true);
+                System.out.println("[ELECTION] This drone won the election. Setting as master . . .");
+
+                Services.ElectedMessage message = Services.ElectedMessage.newBuilder()
+                                .setMaster(Drone.convertDroneToServicesDrone(drone)).build();
+                Drone next = drone.getSmartcity().getNext();
+
+                CommunicationModule.sendElectedMessageToTheNextInTheRing(drone, next, message);
+            }
+        }
+    }
+
+
+    @Override
+    public void elected(Services.ElectedMessage request, StreamObserver<Services.Empty> responseObserver) {
+        // If the drone's id contained into the message is the same of the current one then the broadcast has finished
+        if(UUID.fromString(request.getMaster().getId()).compareTo(drone.getID()) == 0){
+            System.out.println("[ELECTED] Elected message has been sent to all the drones into the net");
+            System.out.println("[ELECTED] Starting master's duties ");
+            drone.setMasterFlag(true);
+            drone.setParticipantToElection(false);
+        }
+        // If the drone's id contained into the message is different from the one that is receiving the message
+        // then we have to save the information and forward the message into the net
+        else
         {
-            case "ELECTION":
-            {
-                // If it's not participant
-                if(!drone.isParticipantToElection()){
-                    System.out.println("[ELECTION]  It means that master drone has fallen");
-                    drone.getSmartcity().removeDrone(drone.getMasterDrone());
-                    System.out.println("[ELECTION]  Setting participant as true");
-                    drone.setParticipantToElection(true);
+            System.out.println("[ELECTED] Elected message received");
+            drone.setMasterDrone(Drone.convertServicesDroneToDrone(request.getMaster()));
+            drone.setParticipantToElection(false);
+            System.out.println("[ELECTED] New master is drone with id: " + drone.getMasterDrone().getID() + " and port: " + drone.getMasterDrone().getPort());
 
-                    if(drone.getBattery() > request.getMaster().getBattery()){
-                        // If the current drone's battery level is greater than the one into the message
-                        // then we have to do modify the message in order to update the new master
-                        Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
-                        List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
-                        newList.add(newMaster);
+            //TODO: GESTIRE CASO FALLISCE PROSSIMO
 
-                        Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
-                                .setAction("ELECTION")
-                                .setMaster(newMaster)
-                                .addAllListOfDrones(newList)
-                                .build();
-
-                        //TODO: GESTIRE CASO IN CUI RITORNA NULL (SI ERA IN 2 MA UNO CADE DURANTE L'ELEZIONE)
-                        Drone next = drone.getSmartcity().getNext(drone);
-                        //TODO: MAGARI UTILIZZANDO QUESTA VARIABILE
-                        System.out.println("[ELECTION]  Batteria maggiore");
-                        boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
-                    }
-                    else if (drone.getBattery() < request.getMaster().getBattery()){
-                        // If the current drone's battery level is smaller than the one into the message
-                        // then we have to simply forward the message adding the drone to the list inside the message
-                        Drone next = drone.getSmartcity().getNext(drone);
-                        Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
-                        List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
-                        newList.add(newMaster);
-                        Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
-                                .setAction("ELECTION")
-                                .setMaster(request.getMaster())
-                                .addAllListOfDrones(newList)
-                                .build();
-                        System.out.println("[ELECTION]  Batteria minore");
-
-                        boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
-                    }
-
-                    else{
-                        System.out.println("[ELECTION]  Batteria uguale");
-                        // If the current drone's battery level is equal to the one into the message
-                        // then we have to make some checks
-                        if(drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) > 0){
-                            // If the current drone's battery level is equal to the one than we have in the message
-                            // and the current drone's ID is bigger than the master's one then we have to update the master
-                            Drone next = drone.getSmartcity().getNext(drone);
-                            Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
-                            List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
-                            newList.add(newMaster);
-
-                            Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
-                                    .setAction("ELECTION")
-                                    .setMaster(newMaster)
-                                    .addAllListOfDrones(newList)
-                                    .build();
-                            System.out.println("[ELECTION]  ID MAGGIORE");
-                            boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
-                        }
-                        else
-                        {
-                            // If the current drone's battery level is equal to the one than we have in the message
-                            // and the current drone's ID is smaller than the master's one then we have to simply forward the message
-                            Drone next = drone.getSmartcity().getNext(drone);
-
-                            Services.Drone newMaster = Drone.convertDroneToServicesDrone(drone);
-                            List<Services.Drone> newList = new ArrayList<>(request.getListOfDronesList());
-                            newList.add(newMaster);
-                            Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
-                                    .setAction("ELECTION")
-                                    .setMaster(request.getMaster())
-                                    .addAllListOfDrones(newList)
-                                    .build();
-                            System.out.println("[ELECTION]  ID MINORE");
-                            boolean result = CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, next, newMessage);
-                        }
-                    }
-
-                }
-                else {
-                    // If the drone is already participant we have to distinguish between two cases:
-                    //  - current drone has a battery level (or ID in case battery level is equal) that it's bigger than the one
-                    //      present inside the message;
-                    if ((drone.getBattery() > request.getMaster().getBattery())
-                            ||
-                            (drone.getBattery() == request.getMaster().getBattery() && drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) > 0)) {
-                        // then we have that the current drone has an important battery level or ID, and it's present was already
-                        // forwarded into the net thus we don't have to do anything.
-                        System.out.println("[ELECTION]  Already participant to a election . . . blocking this election");
-                    }
-                    //  - current drone has a battery level (or ID in case battery level is equal) that's lower than the one
-                    //      present inside the message;
-                    else if((drone.getBattery() < request.getMaster().getBattery())
-                            ||
-                            (drone.getBattery() == request.getMaster().getBattery() && drone.getID().compareTo(UUID.fromString(request.getMaster().getId())) < 0)) {
-                        // then we have that the current drone has a less important battery level or ID, and it's presence was already
-                        // forwarded into the net thus we have to simply forward the message but, without adding this drone to the list
-                        // present into the message
-                        Services.ElectionMessage newMessage = Services.ElectionMessage.newBuilder()
-                                .setAction("ELECTION")
-                                .setMaster(request.getMaster())
-                                .addAllListOfDrones(request.getListOfDronesList())
-                                .build();
-                        System.out.println("[ELECTION]  Already participant to a election . . . forwarding the message");
-                        CommunicationModule.sendElectionMessageToTheNextInTheRing(drone, drone.getSmartcity().getNext(drone), newMessage);
-                    }
-                    else if(request.getMaster().getId().equals(drone.getID().toString())){
-                        //drone.setMasterFlag(true);
-                        System.out.println("[ELECTION] This drone won the election. Setting as master . . .");
-                        //TODO: DA QUI DOVREBBE RIPARTIRE IL BROADCAST MA, QUESTA VOLTA, DI 'ELECTED'
-                    }
-                }
-                break;
-
-            }
-            case "ELECTED":
-            {
-                break;
-            }
+            Drone next = drone.getSmartcity().getNext();
+            //TODO: CON QUESTA
+            Boolean response = CommunicationModule.sendElectedMessageToTheNextInTheRing(drone, next, request);
         }
     }
 }

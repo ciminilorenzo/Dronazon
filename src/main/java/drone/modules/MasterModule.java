@@ -42,7 +42,6 @@ public class MasterModule extends Thread {
 
                     // This is the new order arriving from Dronazon.
                     Delivery arrivedDelivery = new Gson().fromJson(new String(message.getPayload()), Delivery.class);
-                    System.out.println("[MASTER MODULE]   NEW ORDER HAS JUST PUBLISHED ");
 
                     // Here we try to assign the arrived delivery to a drone.
                     // If assignation process fails (the connection fall) or nobody is available then we'll add
@@ -62,7 +61,6 @@ public class MasterModule extends Thread {
             });
 
             client.subscribe(topic);
-            System.out.println("[MASTER MODULE]   MASTER HAS JUST SUCCESSFULLY SUBSCRIBED TO THE TOPIC " + topic + "");
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -77,7 +75,6 @@ public class MasterModule extends Thread {
 
     private static void connect(MqttClient client, MqttConnectOptions connectionOptions) throws MqttException {
         client.connect(connectionOptions);
-        System.out.println("\n\n[MASTER MODULE]   HAS JUST CONNECTED TO THE BROKER");
     }
 
 
@@ -213,7 +210,7 @@ public class MasterModule extends Thread {
      * TODO: INVECE IMPLEMENTARE UNA CODA CON WAIT E NOTIFY() però comunque notify dovrebbe essere fatto ogni qualvolta entra un drone
      * TODO: VOLATILE???
      */
-    public void checkIfDelivery(){
+    public synchronized void checkIfDelivery(){
         if(!deliveryNotAssigned.isEmpty()){
             if(assignDelivery(deliveryNotAssigned.get(0))){
                 System.out.println("[DRONE MODULE]    One that can delivered has been found ");

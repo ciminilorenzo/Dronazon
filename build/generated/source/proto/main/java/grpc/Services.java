@@ -7902,23 +7902,6 @@ public final class Services {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string action = 1;</code>
-     * @return Whether the action field is set.
-     */
-    boolean hasAction();
-    /**
-     * <code>required string action = 1;</code>
-     * @return The action.
-     */
-    java.lang.String getAction();
-    /**
-     * <code>required string action = 1;</code>
-     * @return The bytes for action.
-     */
-    com.google.protobuf.ByteString
-        getActionBytes();
-
-    /**
      * <code>required .grpc.Drone master = 2;</code>
      * @return Whether the master field is set.
      */
@@ -7970,7 +7953,6 @@ public final class Services {
       super(builder);
     }
     private ElectionMessage() {
-      action_ = "";
       listOfDrones_ = java.util.Collections.emptyList();
     }
 
@@ -8005,15 +7987,9 @@ public final class Services {
             case 0:
               done = true;
               break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              action_ = bs;
-              break;
-            }
             case 18: {
               grpc.Services.Drone.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) != 0)) {
+              if (((bitField0_ & 0x00000001) != 0)) {
                 subBuilder = master_.toBuilder();
               }
               master_ = input.readMessage(grpc.Services.Drone.PARSER, extensionRegistry);
@@ -8021,13 +7997,13 @@ public final class Services {
                 subBuilder.mergeFrom(master_);
                 master_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000001;
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 listOfDrones_ = new java.util.ArrayList<grpc.Services.Drone>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000002;
               }
               listOfDrones_.add(
                   input.readMessage(grpc.Services.Drone.PARSER, extensionRegistry));
@@ -8048,7 +8024,7 @@ public final class Services {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
           listOfDrones_ = java.util.Collections.unmodifiableList(listOfDrones_);
         }
         this.unknownFields = unknownFields.build();
@@ -8069,51 +8045,6 @@ public final class Services {
     }
 
     private int bitField0_;
-    public static final int ACTION_FIELD_NUMBER = 1;
-    private volatile java.lang.Object action_;
-    /**
-     * <code>required string action = 1;</code>
-     * @return Whether the action field is set.
-     */
-    public boolean hasAction() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string action = 1;</code>
-     * @return The action.
-     */
-    public java.lang.String getAction() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          action_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string action = 1;</code>
-     * @return The bytes for action.
-     */
-    public com.google.protobuf.ByteString
-        getActionBytes() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        action_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     public static final int MASTER_FIELD_NUMBER = 2;
     private grpc.Services.Drone master_;
     /**
@@ -8121,7 +8052,7 @@ public final class Services {
      * @return Whether the master field is set.
      */
     public boolean hasMaster() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>required .grpc.Drone master = 2;</code>
@@ -8179,10 +8110,6 @@ public final class Services {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasAction()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasMaster()) {
         memoizedIsInitialized = 0;
         return false;
@@ -8205,9 +8132,6 @@ public final class Services {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, action_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(2, getMaster());
       }
       for (int i = 0; i < listOfDrones_.size(); i++) {
@@ -8223,9 +8147,6 @@ public final class Services {
 
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, action_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getMaster());
       }
@@ -8248,11 +8169,6 @@ public final class Services {
       }
       grpc.Services.ElectionMessage other = (grpc.Services.ElectionMessage) obj;
 
-      if (hasAction() != other.hasAction()) return false;
-      if (hasAction()) {
-        if (!getAction()
-            .equals(other.getAction())) return false;
-      }
       if (hasMaster() != other.hasMaster()) return false;
       if (hasMaster()) {
         if (!getMaster()
@@ -8271,10 +8187,6 @@ public final class Services {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasAction()) {
-        hash = (37 * hash) + ACTION_FIELD_NUMBER;
-        hash = (53 * hash) + getAction().hashCode();
-      }
       if (hasMaster()) {
         hash = (37 * hash) + MASTER_FIELD_NUMBER;
         hash = (53 * hash) + getMaster().hashCode();
@@ -8418,17 +8330,15 @@ public final class Services {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        action_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         if (masterBuilder_ == null) {
           master_ = null;
         } else {
           masterBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         if (listOfDronesBuilder_ == null) {
           listOfDrones_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           listOfDronesBuilder_.clear();
         }
@@ -8461,21 +8371,17 @@ public final class Services {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.action_ = action_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
           if (masterBuilder_ == null) {
             result.master_ = master_;
           } else {
             result.master_ = masterBuilder_.build();
           }
-          to_bitField0_ |= 0x00000002;
+          to_bitField0_ |= 0x00000001;
         }
         if (listOfDronesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
+          if (((bitField0_ & 0x00000002) != 0)) {
             listOfDrones_ = java.util.Collections.unmodifiableList(listOfDrones_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.listOfDrones_ = listOfDrones_;
         } else {
@@ -8530,11 +8436,6 @@ public final class Services {
 
       public Builder mergeFrom(grpc.Services.ElectionMessage other) {
         if (other == grpc.Services.ElectionMessage.getDefaultInstance()) return this;
-        if (other.hasAction()) {
-          bitField0_ |= 0x00000001;
-          action_ = other.action_;
-          onChanged();
-        }
         if (other.hasMaster()) {
           mergeMaster(other.getMaster());
         }
@@ -8542,7 +8443,7 @@ public final class Services {
           if (!other.listOfDrones_.isEmpty()) {
             if (listOfDrones_.isEmpty()) {
               listOfDrones_ = other.listOfDrones_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureListOfDronesIsMutable();
               listOfDrones_.addAll(other.listOfDrones_);
@@ -8555,7 +8456,7 @@ public final class Services {
               listOfDronesBuilder_.dispose();
               listOfDronesBuilder_ = null;
               listOfDrones_ = other.listOfDrones_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
               listOfDronesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getListOfDronesFieldBuilder() : null;
@@ -8571,9 +8472,6 @@ public final class Services {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasAction()) {
-          return false;
-        }
         if (!hasMaster()) {
           return false;
         }
@@ -8608,90 +8506,6 @@ public final class Services {
       }
       private int bitField0_;
 
-      private java.lang.Object action_ = "";
-      /**
-       * <code>required string action = 1;</code>
-       * @return Whether the action field is set.
-       */
-      public boolean hasAction() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return The action.
-       */
-      public java.lang.String getAction() {
-        java.lang.Object ref = action_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            action_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return The bytes for action.
-       */
-      public com.google.protobuf.ByteString
-          getActionBytes() {
-        java.lang.Object ref = action_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          action_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @param value The action to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAction(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        action_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAction() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        action_ = getDefaultInstance().getAction();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @param value The bytes for action to set.
-       * @return This builder for chaining.
-       */
-      public Builder setActionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        action_ = value;
-        onChanged();
-        return this;
-      }
-
       private grpc.Services.Drone master_;
       private com.google.protobuf.SingleFieldBuilderV3<
           grpc.Services.Drone, grpc.Services.Drone.Builder, grpc.Services.DroneOrBuilder> masterBuilder_;
@@ -8700,7 +8514,7 @@ public final class Services {
        * @return Whether the master field is set.
        */
       public boolean hasMaster() {
-        return ((bitField0_ & 0x00000002) != 0);
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>required .grpc.Drone master = 2;</code>
@@ -8726,7 +8540,7 @@ public final class Services {
         } else {
           masterBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -8740,7 +8554,7 @@ public final class Services {
         } else {
           masterBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -8748,7 +8562,7 @@ public final class Services {
        */
       public Builder mergeMaster(grpc.Services.Drone value) {
         if (masterBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0) &&
+          if (((bitField0_ & 0x00000001) != 0) &&
               master_ != null &&
               master_ != grpc.Services.Drone.getDefaultInstance()) {
             master_ =
@@ -8760,7 +8574,7 @@ public final class Services {
         } else {
           masterBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -8773,14 +8587,14 @@ public final class Services {
         } else {
           masterBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
        * <code>required .grpc.Drone master = 2;</code>
        */
       public grpc.Services.Drone.Builder getMasterBuilder() {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         onChanged();
         return getMasterFieldBuilder().getBuilder();
       }
@@ -8815,9 +8629,9 @@ public final class Services {
       private java.util.List<grpc.Services.Drone> listOfDrones_ =
         java.util.Collections.emptyList();
       private void ensureListOfDronesIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
+        if (!((bitField0_ & 0x00000002) != 0)) {
           listOfDrones_ = new java.util.ArrayList<grpc.Services.Drone>(listOfDrones_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000002;
          }
       }
 
@@ -8967,7 +8781,7 @@ public final class Services {
       public Builder clearListOfDrones() {
         if (listOfDronesBuilder_ == null) {
           listOfDrones_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           listOfDronesBuilder_.clear();
@@ -9044,7 +8858,7 @@ public final class Services {
           listOfDronesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               grpc.Services.Drone, grpc.Services.Drone.Builder, grpc.Services.DroneOrBuilder>(
                   listOfDrones_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
           listOfDrones_ = null;
@@ -9109,23 +8923,6 @@ public final class Services {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string action = 1;</code>
-     * @return Whether the action field is set.
-     */
-    boolean hasAction();
-    /**
-     * <code>required string action = 1;</code>
-     * @return The action.
-     */
-    java.lang.String getAction();
-    /**
-     * <code>required string action = 1;</code>
-     * @return The bytes for action.
-     */
-    com.google.protobuf.ByteString
-        getActionBytes();
-
-    /**
      * <code>required .grpc.Drone master = 2;</code>
      * @return Whether the master field is set.
      */
@@ -9153,7 +8950,6 @@ public final class Services {
       super(builder);
     }
     private ElectedMessage() {
-      action_ = "";
     }
 
     @java.lang.Override
@@ -9187,15 +8983,9 @@ public final class Services {
             case 0:
               done = true;
               break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              action_ = bs;
-              break;
-            }
             case 18: {
               grpc.Services.Drone.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) != 0)) {
+              if (((bitField0_ & 0x00000001) != 0)) {
                 subBuilder = master_.toBuilder();
               }
               master_ = input.readMessage(grpc.Services.Drone.PARSER, extensionRegistry);
@@ -9203,7 +8993,7 @@ public final class Services {
                 subBuilder.mergeFrom(master_);
                 master_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000001;
               break;
             }
             default: {
@@ -9239,51 +9029,6 @@ public final class Services {
     }
 
     private int bitField0_;
-    public static final int ACTION_FIELD_NUMBER = 1;
-    private volatile java.lang.Object action_;
-    /**
-     * <code>required string action = 1;</code>
-     * @return Whether the action field is set.
-     */
-    public boolean hasAction() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string action = 1;</code>
-     * @return The action.
-     */
-    public java.lang.String getAction() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          action_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string action = 1;</code>
-     * @return The bytes for action.
-     */
-    public com.google.protobuf.ByteString
-        getActionBytes() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        action_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     public static final int MASTER_FIELD_NUMBER = 2;
     private grpc.Services.Drone master_;
     /**
@@ -9291,7 +9036,7 @@ public final class Services {
      * @return Whether the master field is set.
      */
     public boolean hasMaster() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>required .grpc.Drone master = 2;</code>
@@ -9314,10 +9059,6 @@ public final class Services {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasAction()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasMaster()) {
         memoizedIsInitialized = 0;
         return false;
@@ -9334,9 +9075,6 @@ public final class Services {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, action_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(2, getMaster());
       }
       unknownFields.writeTo(output);
@@ -9349,9 +9087,6 @@ public final class Services {
 
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, action_);
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getMaster());
       }
@@ -9370,11 +9105,6 @@ public final class Services {
       }
       grpc.Services.ElectedMessage other = (grpc.Services.ElectedMessage) obj;
 
-      if (hasAction() != other.hasAction()) return false;
-      if (hasAction()) {
-        if (!getAction()
-            .equals(other.getAction())) return false;
-      }
       if (hasMaster() != other.hasMaster()) return false;
       if (hasMaster()) {
         if (!getMaster()
@@ -9391,10 +9121,6 @@ public final class Services {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasAction()) {
-        hash = (37 * hash) + ACTION_FIELD_NUMBER;
-        hash = (53 * hash) + getAction().hashCode();
-      }
       if (hasMaster()) {
         hash = (37 * hash) + MASTER_FIELD_NUMBER;
         hash = (53 * hash) + getMaster().hashCode();
@@ -9533,14 +9259,12 @@ public final class Services {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        action_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         if (masterBuilder_ == null) {
           master_ = null;
         } else {
           masterBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -9570,16 +9294,12 @@ public final class Services {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.action_ = action_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
           if (masterBuilder_ == null) {
             result.master_ = master_;
           } else {
             result.master_ = masterBuilder_.build();
           }
-          to_bitField0_ |= 0x00000002;
+          to_bitField0_ |= 0x00000001;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -9630,11 +9350,6 @@ public final class Services {
 
       public Builder mergeFrom(grpc.Services.ElectedMessage other) {
         if (other == grpc.Services.ElectedMessage.getDefaultInstance()) return this;
-        if (other.hasAction()) {
-          bitField0_ |= 0x00000001;
-          action_ = other.action_;
-          onChanged();
-        }
         if (other.hasMaster()) {
           mergeMaster(other.getMaster());
         }
@@ -9645,9 +9360,6 @@ public final class Services {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasAction()) {
-          return false;
-        }
         if (!hasMaster()) {
           return false;
         }
@@ -9677,90 +9389,6 @@ public final class Services {
       }
       private int bitField0_;
 
-      private java.lang.Object action_ = "";
-      /**
-       * <code>required string action = 1;</code>
-       * @return Whether the action field is set.
-       */
-      public boolean hasAction() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return The action.
-       */
-      public java.lang.String getAction() {
-        java.lang.Object ref = action_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            action_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return The bytes for action.
-       */
-      public com.google.protobuf.ByteString
-          getActionBytes() {
-        java.lang.Object ref = action_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          action_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @param value The action to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAction(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        action_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAction() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        action_ = getDefaultInstance().getAction();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string action = 1;</code>
-       * @param value The bytes for action to set.
-       * @return This builder for chaining.
-       */
-      public Builder setActionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        action_ = value;
-        onChanged();
-        return this;
-      }
-
       private grpc.Services.Drone master_;
       private com.google.protobuf.SingleFieldBuilderV3<
           grpc.Services.Drone, grpc.Services.Drone.Builder, grpc.Services.DroneOrBuilder> masterBuilder_;
@@ -9769,7 +9397,7 @@ public final class Services {
        * @return Whether the master field is set.
        */
       public boolean hasMaster() {
-        return ((bitField0_ & 0x00000002) != 0);
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>required .grpc.Drone master = 2;</code>
@@ -9795,7 +9423,7 @@ public final class Services {
         } else {
           masterBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -9809,7 +9437,7 @@ public final class Services {
         } else {
           masterBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -9817,7 +9445,7 @@ public final class Services {
        */
       public Builder mergeMaster(grpc.Services.Drone value) {
         if (masterBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0) &&
+          if (((bitField0_ & 0x00000001) != 0) &&
               master_ != null &&
               master_ != grpc.Services.Drone.getDefaultInstance()) {
             master_ =
@@ -9829,7 +9457,7 @@ public final class Services {
         } else {
           masterBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
@@ -9842,14 +9470,14 @@ public final class Services {
         } else {
           masterBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
        * <code>required .grpc.Drone master = 2;</code>
        */
       public grpc.Services.Drone.Builder getMasterBuilder() {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         onChanged();
         return getMasterFieldBuilder().getBuilder();
       }
@@ -10019,21 +9647,20 @@ public final class Services {
       "sponse\022\020\n\010response\030\001 \002(\010\"\007\n\005Empty\"T\n\005Dro" +
       "ne\022\n\n\002id\030\001 \002(\t\022\014\n\004port\030\002 \002(\005\022 \n\010position" +
       "\030\003 \002(\0132\016.grpc.Position\022\017\n\007battery\030\004 \002(\005\"" +
-      "a\n\017ElectionMessage\022\016\n\006action\030\001 \002(\t\022\033\n\006ma" +
-      "ster\030\002 \002(\0132\013.grpc.Drone\022!\n\014listOfDrones\030" +
-      "\003 \003(\0132\013.grpc.Drone\"=\n\016ElectedMessage\022\016\n\006" +
-      "action\030\001 \002(\t\022\033\n\006master\030\002 \002(\0132\013.grpc.Dron" +
-      "e2\231\003\n\010Chatting\022M\n\016SimpleGreeting\022\033.grpc." +
-      "SimpleGreetingRequest\032\034.grpc.SimpleGreet" +
-      "ingResponse\"\000\022c\n\032DeliveryAssignationServ" +
-      "ice\022 .grpc.DeliveryAssignationMessage\032!." +
-      "grpc.DeliveryAssignationResponse\"\000\022S\n\027De" +
-      "liveryCompleteService\022\026.grpc.DeliveryCom" +
-      "plete\032\036.grpc.DeliveryCompleteResponse\"\000\022" +
-      "\"\n\004Ping\022\013.grpc.Empty\032\013.grpc.Empty\"\000\0220\n\010E" +
-      "lection\022\025.grpc.ElectionMessage\032\013.grpc.Em" +
-      "pty\"\000\022.\n\007Elected\022\024.grpc.ElectedMessage\032\013" +
-      ".grpc.Empty\"\000"
+      "Q\n\017ElectionMessage\022\033\n\006master\030\002 \002(\0132\013.grp" +
+      "c.Drone\022!\n\014listOfDrones\030\003 \003(\0132\013.grpc.Dro" +
+      "ne\"-\n\016ElectedMessage\022\033\n\006master\030\002 \002(\0132\013.g" +
+      "rpc.Drone2\231\003\n\010Chatting\022M\n\016SimpleGreeting" +
+      "\022\033.grpc.SimpleGreetingRequest\032\034.grpc.Sim" +
+      "pleGreetingResponse\"\000\022c\n\032DeliveryAssigna" +
+      "tionService\022 .grpc.DeliveryAssignationMe" +
+      "ssage\032!.grpc.DeliveryAssignationResponse" +
+      "\"\000\022S\n\027DeliveryCompleteService\022\026.grpc.Del" +
+      "iveryComplete\032\036.grpc.DeliveryCompleteRes" +
+      "ponse\"\000\022\"\n\004Ping\022\013.grpc.Empty\032\013.grpc.Empt" +
+      "y\"\000\0220\n\010Election\022\025.grpc.ElectionMessage\032\013" +
+      ".grpc.Empty\"\000\022.\n\007Elected\022\024.grpc.ElectedM" +
+      "essage\032\013.grpc.Empty\"\000"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -10104,13 +9731,13 @@ public final class Services {
     internal_static_grpc_ElectionMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_ElectionMessage_descriptor,
-        new java.lang.String[] { "Action", "Master", "ListOfDrones", });
+        new java.lang.String[] { "Master", "ListOfDrones", });
     internal_static_grpc_ElectedMessage_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_grpc_ElectedMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_ElectedMessage_descriptor,
-        new java.lang.String[] { "Action", "Master", });
+        new java.lang.String[] { "Master", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

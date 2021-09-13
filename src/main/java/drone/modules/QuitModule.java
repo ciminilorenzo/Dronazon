@@ -127,7 +127,6 @@ public class QuitModule extends Thread
             response = webResource.type("application/json").delete(ClientResponse.class, input);
             System.out.println("[QUIT MODULE]   QUIT PROCESS RESULT: " + response);
             System.out.println("[QUIT MODULE]   Quitting . . .");
-            System.out.println("[QUIT MODULE]   " + Drone.getTime());
             System.exit(0);
         }
         catch (ClientHandlerException exception){

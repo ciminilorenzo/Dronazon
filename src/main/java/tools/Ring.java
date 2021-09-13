@@ -23,13 +23,15 @@ public class Ring
     @XmlElement(name="drones")
     private ArrayList<Drone> droneArrayList = new ArrayList<>();
 
+    private Drone drone;
+
     public Ring(ArrayList<Drone> drones) {
         this.droneArrayList = drones;
     }
 
     public Ring(){}
 
-    public ArrayList<Drone> getDroneArrayList() {
+    public  ArrayList<Drone> getDroneArrayList() {
         return droneArrayList;
     }
 
@@ -46,7 +48,7 @@ public class Ring
      * 	at tools.Ring.insertDrone(Ring.java:50)
      * @param drone that is entering into the drone smartcity's representation.
      */
-    public synchronized void insertDrone(Drone drone) {
+    public void insertDrone(Drone drone) {
         System.out.println("\n\n[RING] INSERTING NEW DRONE");
         droneArrayList.add(drone);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));
@@ -54,35 +56,30 @@ public class Ring
         System.out.println(this);
     }
 
-    public synchronized void insertListOfDrones(ArrayList<Drone> list){
+    public void insertListOfDrones(ArrayList<Drone> list){
         System.out.println("\n\n[RING] INSERTING BUNCH OF DRONES");
         droneArrayList.addAll(list);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));;
         System.out.println(this);
     }
 
-    public synchronized void removeDrone(Drone droneToDelete){
+    public void removeDrone(Drone droneToDelete){
         System.out.println("[RING] Updating . . .");
         droneArrayList.remove(droneToDelete);
         droneArrayList.sort(Comparator.comparing(Drone::getPort));
         System.out.println(this);
     }
 
-    public boolean isAlone(){
+    public synchronized boolean isAlone(){
         return (getDroneArrayList().size() == 1);
     }
 
 
-    //  TODO: getNext() is currently returning next drone in the ring representation. This method must implement
-    //      a gRPC 'ping' call in order to detect if the next drone is available or not. In the case it isn't the ring must be
-    //      rebuild and getNext() must be recalled.
-
     /**
      *
-     * @param drone is the drone for which we want to get his next
-     * @return null if the drone sent as parameter
+     * @return null if the drone sent as parameter hasn't a 'next' drone
      */
-    public Drone getNext(Drone drone){
+    public Drone getNext(){
         if(droneArrayList.size() == 1){
             return null;
         }
@@ -91,7 +88,7 @@ public class Ring
             if(i == droneArrayList.size() - 1){
                 return droneArrayList.get(0);
             }
-            else if(drone.getID() == droneArrayList.get(i).getID()){
+            else if(this.drone.getID() == droneArrayList.get(i).getID()){
                 return droneArrayList.get(i+1);
             }
         }
@@ -107,7 +104,6 @@ public class Ring
                 current.setPosition(position);
                 current.setBattery(battery);
                 current.isBusy = busy; // This procedure is called both in the master and drone view.
-                System.out.println("[MASTER RING]   DRONE WITH ID: " + id + "HAS JUST UPDATED HIS DATA WITH: position -> " + position + "; battery -> " + battery + "; busy -> " + busy);
                 return;
             }
         }
@@ -147,6 +143,11 @@ public class Ring
             else result.append("____________");
         }
         return result.toString();
+    }
+
+    public void setCurrentDrone(Drone drone){
+        this.drone = drone;
+        this.droneArrayList.add(drone);
     }
 
 }

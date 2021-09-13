@@ -253,7 +253,6 @@ public class Drone implements EventListener
             }
             this.getSmartcity().removeDrone(this.masterDrone);
             this.masterDrone = null;
-            System.out.println("ME NE SONO ACCORTO");
             sendElectionMessage(this);
         }
 
@@ -321,7 +320,6 @@ public class Drone implements EventListener
         drone.measurements = new PM10Queue(drone);
         drone.simulator = new PM10Simulator(drone.measurements);
         drone.simulator.start();
-
     }
 
 
@@ -361,7 +359,7 @@ public class Drone implements EventListener
                         "\tNEW POSITION ACQUIRED: " + serverResponse.getPosition() + "\n" +
                         "\tCURRENTLY THIS DRONE IS THE ONLY ONE INTO THE SMARTCITY");
                 drone.setMasterFlag(true);
-                drone.smartcity.insertDrone(drone);
+                drone.smartcity.setCurrentDrone(drone);
             }
             else
             {
@@ -371,10 +369,10 @@ public class Drone implements EventListener
                         "\tDRONES ALREADY IN OVER THIS ONE: "   + serverResponse.getDrones().toString());
 
 
-                //    Se here I'm receiving the list from the ServerAdministration and creating my own representation of the
+                //    Here I'm receiving the list from the ServerAdministration and then creating my own representation of the
                 //    smartcity.
 
-                dronesAlreadyIn.add(drone);
+                drone.smartcity.setCurrentDrone(drone);
                 drone.smartcity.insertListOfDrones(dronesAlreadyIn);
             }
 
@@ -418,23 +416,21 @@ public class Drone implements EventListener
 
             while(cycle)
             {
-                Drone next = current.getSmartcity().getNext(current);
+                Drone next = current.getSmartcity().getNext();
 
                 if(next != null){
                     if(!CommunicationModule.sendElectionMessageToTheNextInTheRing(current, next)){
                         // This means that the next drone isn't into the smartcity anymore.
                         // Thus, we will make another election message which will be sent to the new next drone
-                        System.out.println(java.time.LocalDateTime.now());
                         System.out.println("[ELECTION]    Actual next drone into the smartcity is not available. Updating the smartcity . . .");
                         current.getSmartcity().removeDrone(next);
                     }
-                    else {
+                    else
                         cycle = false;
-                    }
+
                 }
                 else{
                     // This drone is the only one into the smartcity then stop cycling. Election process is finished
-                    System.out.println(java.time.LocalDateTime.now());
                     cycle = false;
                     current.setMasterFlag(true);
                     System.out.println("[ELECTION]    This drone is the only one into the smartcity. Setting as master . . .");
@@ -451,13 +447,6 @@ public class Drone implements EventListener
                 .setY(drone.getPosition().getY())
                 .build();
 
-        Services.Drone current = Services.Drone.newBuilder()
-                .setId(drone.getID().toString())
-                .setPort(drone.getPort())
-                .setPosition(position)
-                .setBattery(drone.getBattery())
-                .build();
-
         return Services.Drone.newBuilder()
                 .setId(drone.getID().toString())
                 .setPosition(position)
@@ -466,8 +455,15 @@ public class Drone implements EventListener
                 .build();
     }
 
+    public static Drone convertServicesDroneToDrone(Services.Drone droneToConvert){
+        Position position = new Position(droneToConvert.getPosition().getX(), droneToConvert.getPosition().getY());
 
-    public static String getTime(){
-        return java.time.LocalDateTime.now().toString();
+        return new Drone
+                (
+                UUID.fromString(droneToConvert.getId()),
+                droneToConvert.getPort(),
+                position
+                );
     }
+
 }

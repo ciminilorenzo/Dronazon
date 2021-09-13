@@ -53,13 +53,11 @@ public class Dronazon
         final int        qos = 2;
 
         while (true) {
-            System.out.println("[ DRONAZON ] preparing delivery");
             String payload = Delivery.createRandomDelivery();
             MqttMessage message = new MqttMessage(payload.getBytes());
             message.setQos(qos);
             client.publish(topic, message);
-            System.out.println("[ DRONAZON ] Has just published a new delivery:\n" +
-                    message);
+            System.out.println("[ DRONAZON ] Has just published a new delivery: " + message);
             Thread.sleep(5000);
         }
     }

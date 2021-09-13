@@ -69,14 +69,12 @@ message Drone
 
 message ElectionMessage
 {
-  required string action = 1;
   required Drone master = 2;
   repeated Drone listOfDrones = 3;
 }
 
 message ElectedMessage
 {
-  required string action = 1;
   required Drone master = 2;
 }
 

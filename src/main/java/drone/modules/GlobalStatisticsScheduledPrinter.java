@@ -27,12 +27,10 @@ public class GlobalStatisticsScheduledPrinter extends Thread
     public void run(){
         if(!this.drone.getMasterDroneStatistics().isEmpty()) {
             GlobalStatistic     globalStatistic = new GlobalStatistic(this.drone.getMasterDroneStatistics());
-            System.out.println(this.drone.getMasterDroneStatistics());
 
             // Each time master drone calculates global statistics it has to clear the data structure.
             this.drone.getMasterDroneStatistics().clear();
 
-            System.out.println("[GLOBAL STATISTICS SCHEDULED MODULE] Global statistic has just been calculated");
             Client              client = new Client();
             ClientResponse      clientResponse = postRequest(client, StatisticsService.INSERT, globalStatistic);
         }
