@@ -15,9 +15,6 @@ import com.sun.jersey.api.client.WebResource;
 
 
 import javax.xml.bind.annotation.*;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -247,11 +244,8 @@ public class Drone implements EventListener
         }
 
         else {
-            if(!this.pingModule.isShutdown()){
-                this.pingModule.shutdown();
-                this.pingModule = null;
-            }
-            this.getSmartcity().removeDrone(this.masterDrone);
+            this.getPingModule().shutdown();
+            this.getSmartcity().removeDrone(this.getMasterDrone());
             this.masterDrone = null;
             sendElectionMessage(this);
         }
@@ -408,9 +402,9 @@ public class Drone implements EventListener
     }
 
     private void sendElectionMessage(Drone current) {
-        System.out.println("[ELECTION] Starting . . .");
         if(!this.isParticipantToElection())
         {
+            System.out.println("[ELECTION]   Starting . . .");
             this.setParticipantToElection(true);
             boolean cycle = true;
 
@@ -433,6 +427,7 @@ public class Drone implements EventListener
                     // This drone is the only one into the smartcity then stop cycling. Election process is finished
                     cycle = false;
                     current.setMasterFlag(true);
+                    current.setParticipantToElection(false);
                     System.out.println("[ELECTION]    This drone is the only one into the smartcity. Setting as master . . .");
                 }
             }

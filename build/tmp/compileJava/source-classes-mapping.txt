@@ -96,6 +96,8 @@ administration/resources/statistics/GlobalStatistic.java
  administration.resources.statistics.GlobalStatistic
 PM10/Simulator.java
  PM10.Simulator
+administration/ClientAdministrator.java
+ administration.ClientAdministrator
 drone/modules/DeliveryModule.java
  drone.modules.DeliveryModule
 PM10/PM10Queue.java
@@ -105,10 +107,10 @@ tools/Ring.java
 drone/modules/MasterModule.java
  drone.modules.MasterModule
  drone.modules.MasterModule$1
-drone/GreetingServiceImplementation.java
- drone.GreetingServiceImplementation
-drone/modules/CommunicationModule.java
- drone.modules.CommunicationModule
+drone/modules/CommunicationThread.java
+ drone.modules.CommunicationThread
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
 drone/modules/DataPrinterModule.java
  drone.modules.DataPrinterModule
 drone/modules/GlobalStatisticsScheduledPrinter.java
@@ -121,9 +123,7 @@ administration/services/SmartCityService.java
  administration.services.SmartCityService
 drone/modules/PingModule.java
  drone.modules.PingModule
-administration/resources/SmartCity.java
- administration.resources.SmartCity
-drone/modules/CommunicationThread.java
- drone.modules.CommunicationThread
-administration/ClientAdministrator.java
- administration.ClientAdministrator
+drone/GreetingServiceImplementation.java
+ drone.GreetingServiceImplementation
+drone/modules/CommunicationModule.java
+ drone.modules.CommunicationModule

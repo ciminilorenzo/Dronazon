@@ -39,6 +39,10 @@ public class Ring
         this.droneArrayList = droneArrayList;
     }
 
+    public void cleanList(){
+        this.droneArrayList.clear();
+    }
+
 
 
 

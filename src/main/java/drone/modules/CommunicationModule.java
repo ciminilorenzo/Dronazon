@@ -171,6 +171,7 @@ public class CommunicationModule extends Thread
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
             Services.DeliveryCompleteResponse response = chattingStub.deliveryCompleteService(deliveryComplete);
             System.out.println("[DRONE COMMUNICATION MODULE]    Delivery's data has been sent");
+            managedChannel.shutdown();
             return true;
         }
         catch (StatusRuntimeException exception){
@@ -180,6 +181,15 @@ public class CommunicationModule extends Thread
         }
     }
 
+
+    /**
+     * This method is used from the drone starting the election process. In this method the first ElectionMessage is built
+     * in order to forward it into the ring.
+     *
+     * @param drone that is trying to send the election message
+     * @param nextInTheRing that will receive the message
+     * @return true if the communication was successful else it returns false
+     */
     public static boolean sendElectionMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing){
         try
         {
@@ -206,6 +216,7 @@ public class CommunicationModule extends Thread
 
             System.out.println("[ELECTION]  Election message has been sent to the next drone into the ring (with port: " + nextInTheRing.getPort() + ")");
             Services.Empty response = chattingStub.election(electionMessage);
+            managedChannel.shutdown();
             return true;
         }
         catch (StatusRuntimeException exception) {
@@ -213,36 +224,53 @@ public class CommunicationModule extends Thread
         }
     }
 
+    /**
+     * This method is used to forward the ElectionMessage into the net. This message is going to be updated everytime a drone
+     * receives it.
+     *
+     * @param drone drone that is trying to forward the election message
+     * @param nextInTheRing drone that will receive the message
+     * @param message ElectionMessage message that is circulating through the ring
+     * @return true if the communication was successful else it returns false
+     */
     public static boolean sendElectionMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing, Services.ElectionMessage message){
         try
         {
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + nextInTheRing.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
-            System.out.println("[ELECTION]  Election message has been sent to the next drone into the ring (with port: " + nextInTheRing.getPort() + ")");
-            Services.Empty response = chattingStub.election(message);
+            System.out.println("[ELECTION]   Election message has been sent to the next drone into the ring (with port: " + nextInTheRing.getPort() + ")");
+            chattingStub.election(message);
+            managedChannel.shutdown();
             return true;
         }
         catch (StatusRuntimeException exception) {
-            System.out.println("[ELECTION] Drone with id: " + nextInTheRing.getID() + " and port: " + nextInTheRing.getPort() + "is not reachable");
+            System.out.println("[ELECTION]   Drone with id: " + nextInTheRing.getID() + " and port: " + nextInTheRing.getPort() + " is not reachable");
             drone.getSmartcity().removeDrone(nextInTheRing);
             return false;
         }
     }
 
-    public static boolean sendElectedMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing, Services.ElectedMessage message){
-        try
-        {
+    public static boolean sendElectedMessageToTheNextInTheRing(Drone drone, Drone nextInTheRing, Services.ElectedMessage message) {
+        try {
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + nextInTheRing.getPort()).usePlaintext().build();
             ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
-            System.out.println("[ELECTED]  Elected message has been sent to the next drone into the ring (with port: " + nextInTheRing.getPort() + ")");
-            Services.Empty response = chattingStub.elected(message);
+            System.out.println("[ELECTED]   Elected message has been sent to the next drone into the ring (with port: " + nextInTheRing.getPort() + ")");
+            chattingStub.elected(message);
+            managedChannel.shutdown();
             return true;
         }
         catch (StatusRuntimeException exception) {
-            System.out.println("[ELECTED] Drone with id: " + nextInTheRing.getID() + " and port: " + nextInTheRing.getPort() + "is not reachable");
+            System.out.println("[ELECTED]   Drone with id: " + nextInTheRing.getID() + " and port: " + nextInTheRing.getPort() + " is not reachable");
             drone.getSmartcity().removeDrone(nextInTheRing);
             return false;
         }
     }
+
+
+
+
+
+
+
 
 }

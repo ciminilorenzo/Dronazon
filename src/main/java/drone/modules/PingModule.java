@@ -14,11 +14,12 @@ import io.grpc.StatusRuntimeException;
 public class PingModule extends Thread
 {
     private final Drone drone;
-    private Drone masterDrone;
+    private final Drone masterDrone;
 
     public PingModule(Drone drone, Drone masterDrone){
         this.drone = drone;
         this.masterDrone = masterDrone;
+        System.out.println("[PING MODULE] Started");
     }
 
     public void run(){
@@ -33,10 +34,10 @@ public class PingModule extends Thread
             ChattingGrpc.ChattingBlockingStub chattingBlockingStub = ChattingGrpc.newBlockingStub(managedChannel);
             Services.Empty response =  Services.Empty.newBuilder().build();
             chattingBlockingStub.ping(response);
+            managedChannel.shutdown();
         }
         catch (StatusRuntimeException exception){
             System.out.println("[PING MODULE] Master drone has fallen.");
-            // That's done in order to stop this module
             drone.setMasterDrone(null);
         }
     }
