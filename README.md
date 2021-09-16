@@ -50,9 +50,45 @@ ELEZIONE:
 2. Potremmo far passare un messaggio contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni 
 3. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
 
-CASI GESTITI:
-1. Caso in cui il drone è da solo dentro la smartcity durante l'elezione -> *GESTITO*
-2. Caso in cui il prossimo drone nella rete è caduto
+CARATTERISTICHE:
+    - Se sta consegnando nel momento in cui arriva il messaggio di elezione allora sarà considerata batteria attuale - 10%
+    - Viene fatto passare nell'anello un messaggio di elezione contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni
+
+
+
+**CASI GESTITI:**
+*Caso in cui il drone è da solo dentro la smartcity durante l'elezione*:
+    Se il metodo smartcity.next() restituisce false allora significa che non c'è nessun'altro nella smartcity. Di conseguenza
+    l'elezione termina e il drone diventa master.
+    
+*Caso in cui il prossimo drone nella rete è caduto*
+    I droni sono in grado di gestirsi autononamente in questa situazione
+
+*Caso in cui cade un drone durante un elezione*
+    Il metodo smartcity.next() restituirà null per quel dato drone e, a seguito della presenza di un while(true) nel metodo
+    forward() la chiamata verrà tentata nuovamente con il nuovo drone successivo.
+    Tutto questo finchè il metodo smartcity.next() restituirà false dal momento che in cui caso il metodo forward() restituirà
+    a sua volta false in modo tale da settare il drone corrente come master visto che è da solo all'interno della smartcity.
+
+*Nuovo drone entra durante l'elezione:*
+    I droni quando ricevono un messaggio di greeting controllano il valore del flag relativo all'attuale partecipazione 
+    ad una elezione. Nel caso il flag fosse true allora il thread si mette in attesa fino al momento in cui il flag viene 
+    settato a false
+
+*Drone vincitore cade durante l'elezione*
+    In questo caso se il drone ha inviato ALMENO un messaggio di elected non c'è problema dal momento che il drone successivo
+    inoltrerà il messaggio nell'anello e, di conseguenza, i PingModule verranno inizializzati con la porta del master drone appena
+    caduto. Questo genererà ovviamente dopo 10 secondi da questo momento un eccezione che farà capire ai droni che il drone master è caduto
+    e, di conseguenza, una nuova lezione ricomincerà.
+
+    Per evitare la situazione nelle quale il vincitore non sia riuscito ad inviare nell'anello ALMENO un messaggio di ELECTED, è stato inserito
+    un flag che non permette l'uscita (attraverso classico meccanismo con wait() e notify()) dell'uscita dell'attuale drone master fino al momento in cui
+    non ha inviato ALMENO un messaggio.
+
+*Drone attualmente contenuto nel messaggio di elezione come master cade*
+    Per lo stesso flag appena descritto, un drone attualmente reputato come master non può uscire finchè:
+    - Ha inviato almeno un messaggio di ELECTED nell'anello
+    - Perde il primato di importanza
 
 
 
@@ -95,3 +131,8 @@ ESAME:
   3) chiedono di lanciare 4 droni, amministratore e dronazon, Killare il master e vedere come viene gestita l’elezione
   4) chiedono di vedere come hai gestito la concorrenza in un determinato punto, per esempio nel server
   5) una o due domande di teoria (es. qos, synchronized, testament)
+
+
+
+
+Unico consiglio: non preparate schemi sul progetto in generale, tenetevi appuntato quali casi limite trovate o studiate e fate uno schema su come si generano e su come li avete risolti. Risparmiate tempo a loro ed è più chiaro a voi da spiegare (e ricordare)

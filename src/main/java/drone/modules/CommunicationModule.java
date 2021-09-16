@@ -67,16 +67,13 @@ public class CommunicationModule extends Thread
             for (Drone currentDrone : drones){
                 // Receiving drone must be different from the sender
                 if(currentDrone.getID() != drone.getID()){
-                    System.out.println("[DRONE COMMUNICATION MODULE]    Starting the process for communicating to drone: " + currentDrone.getID()
-                            + " on port: " + currentDrone.getPort());
-
-                    CommunicationThread communicationThread = new CommunicationThread(drone, currentDrone);
+                    CommunicationThread communicationThread = new CommunicationThread(drone, currentDrone, "GREETING");
                     threadArrayList.add(communicationThread);
                     communicationThread.start();
                 }
             }
 
-            System.out.println("[DRONE COMMUNICATION MODULE]    All threads have been started");
+            System.out.println("[DRONE COMMUNICATION MODULE]    All greeting have been sent");
             for(CommunicationThread thread: threadArrayList){
                 thread.join();
 
@@ -91,7 +88,7 @@ public class CommunicationModule extends Thread
                             master pointer.
                  */
                 if(response != null && response.getMaster()){
-                    drone.setMasterDrone(thread.receivingDrone);
+                    drone.setMasterDrone(thread.getReceivingDrone());
                     System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is: " + drone.getMasterDrone().getID());
                 }
             }
@@ -112,9 +109,12 @@ public class CommunicationModule extends Thread
      *
      * @param receivingDrone elected drone to delivery
      * @param delivery delivery that must be delivered
+     * @throws IllegalArgumentException This method throws this exception if the drone calling this method isn't the master one.
      */
     public static boolean askToMakeADelivery(Drone masterDrone, Drone receivingDrone, Delivery delivery) {
-        assert masterDrone.isMasterFlag();
+        if(!masterDrone.isMasterFlag()) throw new IllegalArgumentException("Drone that calls this method must be the master drone");
+
+
         try
         {
             System.out.println("[DRONE COMMUNICATION MODULE]    Asking if drone with id: " + receivingDrone.getID() + " can deliver delivery with id: " + delivery.getID() + " on port: " + receivingDrone.getPort());
@@ -146,9 +146,18 @@ public class CommunicationModule extends Thread
                     .build();
 
             Services.DeliveryAssignationResponse response = chattingStub.deliveryAssignationService(deliveryAssignationMessage);
-            System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " has just accepted to handle delivery with id: " + delivery.getID());
-            managedChannel.shutdown();
-            return true;
+
+            if(response.getResponse()){
+                System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " has just accepted to handle delivery with id: " + delivery.getID());
+                managedChannel.shutdown();
+                return true;
+            }
+            else
+            {
+                System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " isn't available now");
+                masterDrone.getSmartcity().setBusy(receivingDrone.getID(), true);
+                return false;
+            }
         }
         catch (StatusRuntimeException exception){
             System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " is not reachable");
@@ -174,9 +183,8 @@ public class CommunicationModule extends Thread
             managedChannel.shutdown();
             return true;
         }
-        catch (StatusRuntimeException exception){
+        catch (StatusRuntimeException | NullPointerException exception){
             System.out.println("[DRONE COMMUNICATION MODULE]    Master drone is not reachable");
-            //TODO: ELEZIONE
             return false;
         }
     }
@@ -208,9 +216,12 @@ public class CommunicationModule extends Thread
                     .setBattery(drone.getBattery())
                     .build();
 
+            ArrayList<Services.Drone> currentList = new ArrayList<>();
+            currentList.add(current);
+
             Services.ElectionMessage electionMessage = Services.ElectionMessage.newBuilder()
                     .setMaster(current)
-                    .addListOfDrones(current)
+                    .addAllListOfDrones(currentList)
                     .build();
 
 
@@ -267,10 +278,19 @@ public class CommunicationModule extends Thread
     }
 
 
-
-
-
-
-
+    public static void sendDataAfterRechargeToTheMaster(Drone drone) {
+        try {
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:" + drone.getMasterDrone().getPort()).usePlaintext().build();
+            ChattingGrpc.ChattingBlockingStub chattingStub = ChattingGrpc.newBlockingStub(managedChannel);
+            System.out.println("[RECHARGE MODULE]   Drone is trying to update the master about new data after recharge");
+            chattingStub.getDataAfterRecharge(Drone.convertDroneToServicesDrone(drone));
+            managedChannel.shutdown();
+        }
+        catch (StatusRuntimeException exception) {
+            System.out.println("[RECHARGE MODULE]   Master drone has fallen");
+            drone.getSmartcity().removeDrone(drone.getMasterDrone());
+            drone.setMasterDrone(null);
+        }
+    }
 
 }

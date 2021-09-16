@@ -74,11 +74,20 @@ public class Drone implements EventListener
 
     private transient PM10Simulator simulator;
 
-    private transient boolean participantToElection;
+    private transient boolean participantToElection = false;
+
+    private transient RechargeModule rechargeModule;
 
 
 
 
+    public RechargeModule getRechargeModule() {
+        return rechargeModule;
+    }
+
+    public void setRechargeModule(RechargeModule rechargeModule) {
+        this.rechargeModule = rechargeModule;
+    }
 
     public QuitModule getQuitModule() {
         return quitModule;
@@ -204,8 +213,17 @@ public class Drone implements EventListener
         return participantToElection;
     }
 
-    public void setParticipantToElection(boolean participantToElection) {
-        this.participantToElection = participantToElection;
+    public void setParticipantToElection(boolean value) {
+        if(value){
+            participantToElection = true;
+        }
+        else
+        {
+            synchronized (GreetingServiceImplementation.getDummy()){
+                this.participantToElection = false;
+                GreetingServiceImplementation.getDummy().notify();
+            }
+        }
     }
 
 
@@ -236,21 +254,23 @@ public class Drone implements EventListener
     }
 
     public void setMasterDrone(Drone masterDrone) {
-        if(masterDrone != null){
+        if (masterDrone != null) {
             this.masterDrone = masterDrone;
             ScheduledExecutorService pingScheduler = Executors.newScheduledThreadPool(1);
-            pingScheduler.scheduleAtFixedRate(new PingModule(this, masterDrone), 10,10, TimeUnit.SECONDS);
+            pingScheduler.scheduleAtFixedRate(new PingModule(this, masterDrone), 10, 10, TimeUnit.SECONDS);
             this.pingModule = pingScheduler;
-        }
+        } else {
+            if (this.getPingModule() != null) {
+                this.getPingModule().shutdown();
+                this.getSmartcity().removeDrone(this.getMasterDrone());
+                this.masterDrone = null;
+                sendElectionMessage(this);
+            }
 
-        else {
-            this.getPingModule().shutdown();
-            this.getSmartcity().removeDrone(this.getMasterDrone());
-            this.masterDrone = null;
-            sendElectionMessage(this);
         }
-
     }
+
+
 
     public ArrayList<Statistic> getMasterDroneStatistics() {
         return masterDroneStatistics;
@@ -298,6 +318,35 @@ public class Drone implements EventListener
         // Setting quit thread to allow the user to quit.
         drone.quitModule = new QuitModule(drone);
         drone.quitModule.start();
+
+
+        RechargeModule rechargeModule = new RechargeModule(drone);
+        rechargeModule.start();
+        drone.setRechargeModule(rechargeModule);
+
+        // This thread is made in order to let the drone know as soon as it finishes recharging to reply to any
+        // pending 'recharging request'
+        new Thread(
+                new Runnable() {
+
+                    public void run() {
+                        try
+                        {
+                            rechargeModule.join();
+                            synchronized (GreetingServiceImplementation.getDummyObjectToRecharge())
+                            {
+                                GreetingServiceImplementation.dummyObjectToRecharge.notify();
+                            }
+                        }
+                        catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+
+        System.out.println("RECHARGE : " + rechargeModule.isAlive());
 
         System.out.println("*************** STARTING NEW DRONE ***************" + drone + "\n\n\n");
 
@@ -406,6 +455,7 @@ public class Drone implements EventListener
         {
             System.out.println("[ELECTION]   Starting . . .");
             this.setParticipantToElection(true);
+            GreetingServiceImplementation.setNextMaster(true);
             boolean cycle = true;
 
             while(cycle)
@@ -462,3 +512,4 @@ public class Drone implements EventListener
     }
 
 }
+

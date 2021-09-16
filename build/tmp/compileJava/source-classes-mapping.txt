@@ -2,8 +2,8 @@ drone/EventListener.java
  drone.EventListener
 tools/Delivery.java
  tools.Delivery
-tools/MasterNotDeliveredDeliveryQueue.java
- tools.MasterNotDeliveredDeliveryQueue
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
 administration/ServerAdministrator.java
  administration.ServerAdministrator
 PM10/Measurement.java
@@ -21,8 +21,8 @@ grpc/ChattingGrpc.java
  grpc.ChattingGrpc$MethodHandlers
 tools/StatisticsServerResponse.java
  tools.StatisticsServerResponse
-PM10/PM10Simulator.java
- PM10.PM10Simulator
+PM10/Buffer.java
+ PM10.Buffer
 grpc/Services.java
  grpc.Services
  grpc.Services$1
@@ -66,6 +66,14 @@ grpc/Services.java
  grpc.Services$Position$1
  grpc.Services$Position$Builder
  grpc.Services$PositionOrBuilder
+ grpc.Services$RechargePermission
+ grpc.Services$RechargePermission$1
+ grpc.Services$RechargePermission$Builder
+ grpc.Services$RechargePermissionOrBuilder
+ grpc.Services$RechargePermissionResponse
+ grpc.Services$RechargePermissionResponse$1
+ grpc.Services$RechargePermissionResponse$Builder
+ grpc.Services$RechargePermissionResponseOrBuilder
  grpc.Services$SimpleGreetingRequest
  grpc.Services$SimpleGreetingRequest$1
  grpc.Services$SimpleGreetingRequest$Builder
@@ -76,30 +84,32 @@ grpc/Services.java
  grpc.Services$SimpleGreetingResponseOrBuilder
 tools/Position.java
  tools.Position
-tools/CityMap.java
- tools.CityMap
-PM10/Buffer.java
- PM10.Buffer
+PM10/PM10Simulator.java
+ PM10.PM10Simulator
+tools/MasterNotDeliveredDeliveryQueue.java
+ tools.MasterNotDeliveredDeliveryQueue
 mqtt/Dronazon.java
  mqtt.Dronazon
 administration/resources/statistics/Statistic.java
  administration.resources.statistics.Statistic
 tools/ServerResponse.java
  tools.ServerResponse
-administration/services/StatisticsService.java
- administration.services.StatisticsService
 administration/resources/statistics/StatisticsContainer.java
  administration.resources.statistics.StatisticsContainer
-tools/DronesServerResponse.java
- tools.DronesServerResponse
 administration/resources/statistics/GlobalStatistic.java
  administration.resources.statistics.GlobalStatistic
-PM10/Simulator.java
- PM10.Simulator
+tools/DronesServerResponse.java
+ tools.DronesServerResponse
 administration/ClientAdministrator.java
  administration.ClientAdministrator
+PM10/Simulator.java
+ PM10.Simulator
+tools/CityMap.java
+ tools.CityMap
 drone/modules/DeliveryModule.java
  drone.modules.DeliveryModule
+drone/modules/RechargeModule.java
+ drone.modules.RechargeModule
 PM10/PM10Queue.java
  PM10.PM10Queue
 tools/Ring.java
@@ -107,10 +117,11 @@ tools/Ring.java
 drone/modules/MasterModule.java
  drone.modules.MasterModule
  drone.modules.MasterModule$1
-drone/modules/CommunicationThread.java
- drone.modules.CommunicationThread
-administration/resources/SmartCity.java
- administration.resources.SmartCity
+drone/GreetingServiceImplementation.java
+ drone.GreetingServiceImplementation
+ drone.GreetingServiceImplementation$1
+drone/modules/CommunicationModule.java
+ drone.modules.CommunicationModule
 drone/modules/DataPrinterModule.java
  drone.modules.DataPrinterModule
 drone/modules/GlobalStatisticsScheduledPrinter.java
@@ -119,11 +130,12 @@ drone/modules/QuitModule.java
  drone.modules.QuitModule
 drone/Drone.java
  drone.Drone
+ drone.Drone$1
 administration/services/SmartCityService.java
  administration.services.SmartCityService
 drone/modules/PingModule.java
  drone.modules.PingModule
-drone/GreetingServiceImplementation.java
- drone.GreetingServiceImplementation
-drone/modules/CommunicationModule.java
- drone.modules.CommunicationModule
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
+drone/modules/CommunicationThread.java
+ drone.modules.CommunicationThread

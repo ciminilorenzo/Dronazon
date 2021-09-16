@@ -192,10 +192,11 @@ public class MasterModule extends Thread {
             if(availability){
                 System.out.println("[MASTER MODULE]   Delivery assignation successfully done");
                 // Setting deliverer drone as busy in master's view
-                this.drone.getSmartcity().setBusy(drone.getID());
+                this.drone.getSmartcity().setBusy(drone.getID(), true);
                 return true;
             }
             // This happens then when we watch a StatusRuntimeException into the CommunicationModule during the assignation.
+            // or a drone is not available to receive a new delivery
             else return false;
         }
 

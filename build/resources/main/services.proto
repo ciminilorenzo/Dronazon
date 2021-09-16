@@ -79,6 +79,20 @@ message ElectedMessage
 }
 
 
+message RechargePermission
+{
+  required string resource = 1;
+  required string id = 2;
+  required string timestamp = 3;
+  required int32 port = 4;
+}
+
+message RechargePermissionResponse
+{
+  required bool response = 1;
+}
+
+
 service Chatting{
   rpc SimpleGreeting(SimpleGreetingRequest) returns (SimpleGreetingResponse) {}
 
@@ -91,4 +105,8 @@ service Chatting{
   rpc Election(ElectionMessage) returns (Empty) {}
 
   rpc Elected(ElectedMessage) returns (Empty) {}
+
+  rpc RequireRechargePermission(RechargePermission) returns (RechargePermissionResponse) {}
+
+  rpc getDataAfterRecharge(Drone) returns (Empty) {}
 }

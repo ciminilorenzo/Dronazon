@@ -1,13 +1,12 @@
 package drone.modules;
 
-import administration.resources.SmartCity;
-import administration.services.SmartCityService;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import drone.Drone;
+import drone.GreetingServiceImplementation;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.Scanner;
@@ -93,6 +92,7 @@ public class QuitModule extends Thread
                 System.out.println(exception.getMessage());
             }
         }
+        // If it isn't the master drone:
         else
         {
             try
@@ -102,6 +102,14 @@ public class QuitModule extends Thread
                     System.out.println("[QUIT MODULE]   Drone is delivering now ... must wait");
                     // Waits until the delivery is finished.
                     drone.getDeliveryModule().join(5010);
+                }
+
+                // Flag used to know if this drone is most likely to become the next master
+                while(GreetingServiceImplementation.getNextMaster()){
+                    System.out.println("[QUIT MODULE]   Drone is most likely to be the next drone ... must wait");
+                    synchronized (GreetingServiceImplementation.getDummyObjectElection()){
+                        GreetingServiceImplementation.getDummyObjectElection().wait();
+                    }
                 }
 
                 quitFromTheSmartCity(drone);

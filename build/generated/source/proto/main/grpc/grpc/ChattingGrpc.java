@@ -213,6 +213,68 @@ public final class ChattingGrpc {
     return getElectedMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.RechargePermission,
+      grpc.Services.RechargePermissionResponse> getRequireRechargePermissionMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "RequireRechargePermission",
+      requestType = grpc.Services.RechargePermission.class,
+      responseType = grpc.Services.RechargePermissionResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.RechargePermission,
+      grpc.Services.RechargePermissionResponse> getRequireRechargePermissionMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.RechargePermission, grpc.Services.RechargePermissionResponse> getRequireRechargePermissionMethod;
+    if ((getRequireRechargePermissionMethod = ChattingGrpc.getRequireRechargePermissionMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getRequireRechargePermissionMethod = ChattingGrpc.getRequireRechargePermissionMethod) == null) {
+          ChattingGrpc.getRequireRechargePermissionMethod = getRequireRechargePermissionMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.RechargePermission, grpc.Services.RechargePermissionResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RequireRechargePermission"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.RechargePermission.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.RechargePermissionResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("RequireRechargePermission"))
+              .build();
+        }
+      }
+    }
+    return getRequireRechargePermissionMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<grpc.Services.Drone,
+      grpc.Services.Empty> getGetDataAfterRechargeMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getDataAfterRecharge",
+      requestType = grpc.Services.Drone.class,
+      responseType = grpc.Services.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.Services.Drone,
+      grpc.Services.Empty> getGetDataAfterRechargeMethod() {
+    io.grpc.MethodDescriptor<grpc.Services.Drone, grpc.Services.Empty> getGetDataAfterRechargeMethod;
+    if ((getGetDataAfterRechargeMethod = ChattingGrpc.getGetDataAfterRechargeMethod) == null) {
+      synchronized (ChattingGrpc.class) {
+        if ((getGetDataAfterRechargeMethod = ChattingGrpc.getGetDataAfterRechargeMethod) == null) {
+          ChattingGrpc.getGetDataAfterRechargeMethod = getGetDataAfterRechargeMethod =
+              io.grpc.MethodDescriptor.<grpc.Services.Drone, grpc.Services.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getDataAfterRecharge"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.Drone.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.Services.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new ChattingMethodDescriptorSupplier("getDataAfterRecharge"))
+              .build();
+        }
+      }
+    }
+    return getGetDataAfterRechargeMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -282,6 +344,20 @@ public final class ChattingGrpc {
       asyncUnimplementedUnaryCall(getElectedMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void requireRechargePermission(grpc.Services.RechargePermission request,
+        io.grpc.stub.StreamObserver<grpc.Services.RechargePermissionResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getRequireRechargePermissionMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void getDataAfterRecharge(grpc.Services.Drone request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetDataAfterRechargeMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -326,6 +402,20 @@ public final class ChattingGrpc {
                 grpc.Services.ElectedMessage,
                 grpc.Services.Empty>(
                   this, METHODID_ELECTED)))
+          .addMethod(
+            getRequireRechargePermissionMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.RechargePermission,
+                grpc.Services.RechargePermissionResponse>(
+                  this, METHODID_REQUIRE_RECHARGE_PERMISSION)))
+          .addMethod(
+            getGetDataAfterRechargeMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.Services.Drone,
+                grpc.Services.Empty>(
+                  this, METHODID_GET_DATA_AFTER_RECHARGE)))
           .build();
     }
   }
@@ -395,6 +485,22 @@ public final class ChattingGrpc {
       asyncUnaryCall(
           getChannel().newCall(getElectedMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void requireRechargePermission(grpc.Services.RechargePermission request,
+        io.grpc.stub.StreamObserver<grpc.Services.RechargePermissionResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getRequireRechargePermissionMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getDataAfterRecharge(grpc.Services.Drone request,
+        io.grpc.stub.StreamObserver<grpc.Services.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetDataAfterRechargeMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -455,6 +561,20 @@ public final class ChattingGrpc {
     public grpc.Services.Empty elected(grpc.Services.ElectedMessage request) {
       return blockingUnaryCall(
           getChannel(), getElectedMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.RechargePermissionResponse requireRechargePermission(grpc.Services.RechargePermission request) {
+      return blockingUnaryCall(
+          getChannel(), getRequireRechargePermissionMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.Services.Empty getDataAfterRecharge(grpc.Services.Drone request) {
+      return blockingUnaryCall(
+          getChannel(), getGetDataAfterRechargeMethod(), getCallOptions(), request);
     }
   }
 
@@ -523,6 +643,22 @@ public final class ChattingGrpc {
       return futureUnaryCall(
           getChannel().newCall(getElectedMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.RechargePermissionResponse> requireRechargePermission(
+        grpc.Services.RechargePermission request) {
+      return futureUnaryCall(
+          getChannel().newCall(getRequireRechargePermissionMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.Services.Empty> getDataAfterRecharge(
+        grpc.Services.Drone request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetDataAfterRechargeMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SIMPLE_GREETING = 0;
@@ -531,6 +667,8 @@ public final class ChattingGrpc {
   private static final int METHODID_PING = 3;
   private static final int METHODID_ELECTION = 4;
   private static final int METHODID_ELECTED = 5;
+  private static final int METHODID_REQUIRE_RECHARGE_PERMISSION = 6;
+  private static final int METHODID_GET_DATA_AFTER_RECHARGE = 7;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -571,6 +709,14 @@ public final class ChattingGrpc {
           break;
         case METHODID_ELECTED:
           serviceImpl.elected((grpc.Services.ElectedMessage) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.Empty>) responseObserver);
+          break;
+        case METHODID_REQUIRE_RECHARGE_PERMISSION:
+          serviceImpl.requireRechargePermission((grpc.Services.RechargePermission) request,
+              (io.grpc.stub.StreamObserver<grpc.Services.RechargePermissionResponse>) responseObserver);
+          break;
+        case METHODID_GET_DATA_AFTER_RECHARGE:
+          serviceImpl.getDataAfterRecharge((grpc.Services.Drone) request,
               (io.grpc.stub.StreamObserver<grpc.Services.Empty>) responseObserver);
           break;
         default:
@@ -640,6 +786,8 @@ public final class ChattingGrpc {
               .addMethod(getPingMethod())
               .addMethod(getElectionMethod())
               .addMethod(getElectedMethod())
+              .addMethod(getRequireRechargePermissionMethod())
+              .addMethod(getGetDataAfterRechargeMethod())
               .build();
         }
       }

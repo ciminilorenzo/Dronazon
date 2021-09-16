@@ -113,17 +113,30 @@ public class Ring
         }
     }
 
-    public void setBusy(UUID id){
-        System.out.println("[MASTER RING] DRONE WITH ID: " + id + " HAS JUST UPDATED HIS BUSY STATE AS TRUE");
+    public void setBusy(UUID id, boolean value){
+        System.out.println("[MASTER RING] Drone with id: " + id + " has just updated his busy state as: " + value);
         for(Drone current: droneArrayList){
             if(current.getID().compareTo(id) == 0){
-                current.isBusy = true;
+                current.isBusy = value;
             }
         }
     }
 
     public int getNumberOfDrones(){
         return this.droneArrayList.size();
+    }
+
+
+    //TODO: CONTROLLARE SE RITORNA LISTA GIUSTA
+    /**
+     * Method used to get the list of drones except the one got as parameter.
+     * @param drone that we don't want in the list that the method is going to return
+     * @return the list with the whole list of drones except the one received as parameter.
+     */
+    public ArrayList<Drone> getListOfDronesWithoutOne(Drone drone){
+        ArrayList<Drone> drones = getDroneArrayList();
+        drones.remove(drone);
+        return drones;
     }
 
 
