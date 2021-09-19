@@ -63,10 +63,16 @@ public class QuitModule extends Thread
                     System.out.println("[QUIT MODULE]   Deliveries are all assigned now");
                 }
 
+                synchronized (RechargeModule.dummyObjectInterested){
+                    if(drone.getRechargeModule().isInterestedInRecharging){
+                        System.out.println("[QUIT MODULE]   Drone is recharging now . . . must wait");
+                        RechargeModule.dummyObjectInterested.wait();
+                    }
+                }
+
                 // If the drone is still delivering this makes the process wait until the delivery is successful complete
                 if(drone.getDeliveryModule() != null && drone.getDeliveryModule().isAlive()){
                     System.out.println("[QUIT MODULE]   Drone is delivering now . . . must wait");
-
                     // Waits until the delivery is finished.
                     //
                     // 1.   This timeout is set in order to be sure that the quit procedure goes ahead since last setBusy() inside
@@ -81,7 +87,7 @@ public class QuitModule extends Thread
                     //      the delivery currently ongoing is finished.
 
                     drone.getDeliveryModule().join(5010);
-                    drone.isBusy = true;
+                    drone.setBusy(true);
                     System.out.println("[QUIT MODULE]   Delivery has finished. Proceeding quit procedure . . .");
                 }
                 quitFromTheSmartCity(drone);
@@ -109,6 +115,13 @@ public class QuitModule extends Thread
                     System.out.println("[QUIT MODULE]   Drone is most likely to be the next drone ... must wait");
                     synchronized (GreetingServiceImplementation.getDummyObjectElection()){
                         GreetingServiceImplementation.getDummyObjectElection().wait();
+                    }
+                }
+
+                synchronized (RechargeModule.dummyObjectInterested){
+                    if(drone.getRechargeModule().isInterestedInRecharging){
+                        System.out.println("[QUIT MODULE]   Drone is recharging now . . . must wait");
+                        RechargeModule.dummyObjectInterested.wait();
                     }
                 }
 

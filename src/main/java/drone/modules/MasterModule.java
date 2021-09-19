@@ -13,11 +13,10 @@ public class MasterModule extends Thread {
     private final Drone drone;
     private final String clientId = MqttClient.generateClientId();
     private final MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-    public volatile ArrayList<Delivery> deliveryNotAssigned = new ArrayList<>();
+
+    private final Object dummyArray = new Object();
+    public ArrayList<Delivery> deliveryNotAssigned = new ArrayList<>();
     private MqttClient client;
-    private final String topic = "dronazon/smartcity/orders/";
-
-
 
 
     public MasterModule(Drone drone) {
@@ -38,7 +37,7 @@ public class MasterModule extends Thread {
                 }
 
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws MqttException {
+                public void messageArrived(String topic, MqttMessage message){
 
                     // This is the new order arriving from Dronazon.
                     Delivery arrivedDelivery = new Gson().fromJson(new String(message.getPayload()), Delivery.class);
@@ -49,7 +48,9 @@ public class MasterModule extends Thread {
                     boolean outcome = assignDelivery(arrivedDelivery);
                     if(!outcome) {
                         System.out.println("[MASTER MODULE]   No one is available to deliver. Adding this delivery to queue");
-                        deliveryNotAssigned.add(arrivedDelivery);
+                        synchronized (dummyArray) {
+                            deliveryNotAssigned.add(arrivedDelivery);
+                        }
                     }
 
                 }
@@ -60,6 +61,7 @@ public class MasterModule extends Thread {
 
             });
 
+            String topic = "dronazon/smartcity/orders/";
             client.subscribe(topic);
 
         } catch (MqttException e) {
@@ -86,12 +88,8 @@ public class MasterModule extends Thread {
     }
 
 
-    /**
-     * TODO: L'HO MESSO SINCRONIZZATO PERCHE' ACCADEVA CHE POTEVO AVERE DUE ELEZIONI IN CONTEMPORANEA
-     * @param delivery
-     * @return
-     */
-    private synchronized boolean assignDelivery(Delivery delivery) {
+
+    private boolean assignDelivery(Delivery delivery) {
         System.out.println("\n\n[MASTER MODULE]   Starting deliverer election process . . .");
         // Deep copy
         ArrayList<Drone> copyList = new ArrayList<>(drone.getSmartcity().getDroneArrayList());
@@ -208,14 +206,14 @@ public class MasterModule extends Thread {
     /**
      * Each time one drone enters into the smartcity/one drone sets his busy flag as 'false': has to check if there is any delivery that is waiting to be assigned.
      * If the assignation process returns 'true' then the delivery is successfully assigned and we can delete it from the undelivered ones.
-     * TODO: INVECE IMPLEMENTARE UNA CODA CON WAIT E NOTIFY() però comunque notify dovrebbe essere fatto ogni qualvolta entra un drone
-     * TODO: VOLATILE???
      */
-    public synchronized void checkIfDelivery(){
+    public void checkIfDelivery(){
         if(!deliveryNotAssigned.isEmpty()){
             if(assignDelivery(deliveryNotAssigned.get(0))){
                 System.out.println("[DRONE MODULE]    One that can delivered has been found ");
-                deliveryNotAssigned.remove(0);
+                synchronized (dummyArray){
+                    deliveryNotAssigned.remove(0);
+                }
 
                 synchronized (drone.getQuitModule().dummyObject){
                     drone.getQuitModule().dummyObject.notify();

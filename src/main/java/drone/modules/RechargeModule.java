@@ -13,9 +13,13 @@ public class RechargeModule extends Thread
     private final Scanner scanner = new Scanner(System.in);
 
     // Used to know if the drone is recharging in a specific moment or not.
-    public boolean currentlyRecharging = false;
+    public volatile boolean currentlyRecharging = false;
+
+
     // Used to know if the drone is interested or not to recharge.
-    public boolean isInterestedInRecharging = false;
+    public volatile boolean isInterestedInRecharging = false;
+    public static final Object dummyObjectInterested = new Object();
+
     // Used to compare different timestamps
     private String timestamp;
 
@@ -52,18 +56,28 @@ public class RechargeModule extends Thread
         try
         {
             System.out.println("[RECHARGE MODULE]   Starting recharge process . . .");
-            //TODO: QUESTA VARIABILE DOVRA' ESSERE SINCRONIZZATA PERCHE' PIU' THREAD VI ACCEDONO
-            //TODO: IL METODO ISBUSY DOVRA' ESSERLO?
             drone.setBusy(true);
 
             if(drone.getSmartcity().isAlone()){
                 // It means that the drone is alone into the smartcity thus it hasn't to wait any permission.
-                System.out.println("[RECHARGE MODULE]   Drone is alone . . . starting recharging ");
+
+                if(drone.getDeliveryModule() != null && drone.getDeliveryModule().isAlive()){
+                    System.out.println("[RECHARGE MODULE]   Waiting that the delivery is finished to recharge");
+                    drone.getDeliveryModule().join();
+                    System.out.println("[RECHARGE MODULE]   Ok now is finished");
+                }
+
+                System.out.println("[RECHARGE MODULE]   Starting to recharge . . .");
+                currentlyRecharging = true;
                 Thread.sleep(10000);
+                System.out.println("[RECHARGE MODULE]   Finished to recharge . . .");
+                isInterestedInRecharging = false;
                 drone.setPosition(new Position(0,0));
                 drone.setBattery(100);
                 drone.getSmartcity().modifyDroneAfterDelivery(drone.getID(), drone.getPosition(), drone.getBattery(), false);
                 drone.setBusy(false);
+                currentlyRecharging = false;
+
             }
             else
             {
@@ -103,15 +117,22 @@ public class RechargeModule extends Thread
                 }
 
                 System.out.println("[RECHARGE MODULE]   All of the permissions have been acquired ");
-                System.out.println("[RECHARGE MODULE]   Starting to recharge the drone ");
-                //TODO QUI PRIMA DI INIZIARE A CARICARE DOVREI ASPETTARE DI FINIRE LA SPEDIZIONE
                 currentlyRecharging = true;
-                Thread.sleep(20000);
+
+                if(drone.getDeliveryModule() != null && drone.getDeliveryModule().isAlive()){
+                    System.out.println("[RECHARGE MODULE]   Waiting that the delivery is finished to recharge");
+                    drone.getDeliveryModule().join();
+                }
+                System.out.println("[RECHARGE MODULE]   Starting to recharge the drone ");
+
+
+                Thread.sleep(10000);
+                System.out.println("[RECHARGE MODULE]   Finished to recharge . . .");
                 drone.setPosition(new Position(0,0));
                 drone.setBattery(100);
+                isInterestedInRecharging = false;
                 drone.setBusy(false);
                 currentlyRecharging = false;
-                isInterestedInRecharging = false;
 
                 if(!drone.isMasterFlag())
                     // We have to communicate to the master drone's new information

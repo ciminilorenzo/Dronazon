@@ -9,7 +9,6 @@ import grpc.Services;
 import tools.*;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -31,33 +30,34 @@ public class Drone implements EventListener
     private UUID ID = UUID.randomUUID();
 
     @XmlElement
-    private int port = getUniquePort();
+    private volatile int port = getUniquePort();
 
     @XmlElement
-    private Position position;
+    private volatile Position position;
 
     @XmlElement
-    private int battery = 100;
+    private volatile int battery = 100;
 
     private transient final static String serverAddress = "http://localhost:1337/";
 
-    private transient Ring smartcity;
+    private volatile transient Ring smartcity;
 
-    private transient int numberOfDeliveryDone = 0;
+    private volatile transient int numberOfDeliveryDone = 0;
 
-    private transient double distanceMade = 0.0;
+    private volatile transient double distanceMade = 0.0;
 
     // Flag used to set if the current drone is the master or not.
     private transient volatile boolean masterFlag = false;
 
     // Pointer to the master drone.
-    public transient Drone masterDrone;
+    public transient volatile Drone masterDrone;
 
     // Flag used by master drone for understanding if a specific drone is already doing a delivery or not.
     public transient volatile boolean isBusy = false;
 
     // Data structure used by master drone for saving drones' statistics.
-    private transient ArrayList<Statistic> masterDroneStatistics;
+    // This field is set as final in order to make possibile the synchronization directly on it
+    private final transient ArrayList<Statistic> masterDroneStatistics = new ArrayList<>();
 
     private transient MasterModule masterThread;
 
@@ -67,14 +67,13 @@ public class Drone implements EventListener
 
     private transient ScheduledExecutorService pingModule;
 
-    public  transient  ArrayList<Double> measurementsDataStructure = new ArrayList<>();
-    private static transient final Object measurementArrayDummyLock = new Object();
+    public  volatile transient  ArrayList<Double> measurementsDataStructure = new ArrayList<>();
 
     private transient PM10Queue measurements;
 
     private transient PM10Simulator simulator;
 
-    private transient boolean participantToElection = false;
+    private transient volatile boolean participantToElection = false;
 
     private transient RechargeModule rechargeModule;
 
@@ -106,9 +105,11 @@ public class Drone implements EventListener
     }
 
     public ArrayList<Double> getMeasurementsDataStructure(){
-        synchronized (measurementArrayDummyLock){
-            return measurementsDataStructure;
-        }
+        return measurementsDataStructure;
+    }
+
+    public void addMeasurementsToTheDataStructure(Double value){
+        measurementsDataStructure.add(value);
     }
 
     public boolean isBusy() {
@@ -116,20 +117,29 @@ public class Drone implements EventListener
     }
 
     public void setBusy(boolean busy) {
-        if(battery < 20 && !busy){
-            System.out.println("[DRONE MODULE]    Drone's battery is low. Starting quitting process");
-            // Drone can't deliver any delivery anymore
-            isBusy = true;
-            this.quitModule.exit();
+        if(rechargeModule.isInterestedInRecharging){
+            if(busy)
+                isBusy = true;
+            else
+                System.out.println("[DRONE MODULE]    Now is not possible to set 'busy' state as false. Drone wants to recharge");
         }
-        else{
-            System.out.println("[DRONE MODULE]    Setting busy flag of this drone as " + busy);
-            isBusy = busy;
-        }
+        else
+        {
+            if(battery < 20 && !busy){
+                System.out.println("[DRONE MODULE]    Drone's battery is low. Starting quitting process");
+                // Drone can't deliver any delivery anymore
+                isBusy = true;
+                this.quitModule.exit();
+            }
+            else{
+                System.out.println("[DRONE MODULE]    Setting busy flag of this drone as " + busy);
+                isBusy = busy;
+            }
 
-        // Each time master drone finishes his delivery checks if there is an undelivered delivery
-        if(this.isMasterFlag() && !busy){
-            communicateAvailability();
+            // Each time master drone finishes his delivery checks if there is an undelivered delivery
+            if(this.isMasterFlag() && !busy){
+                communicateAvailability();
+            }
         }
     }
 
@@ -197,7 +207,7 @@ public class Drone implements EventListener
         this.battery = battery;
     }
 
-    public boolean isMasterFlag() {
+    public boolean isMasterFlag(){
         return masterFlag;
     }
 
@@ -241,7 +251,6 @@ public class Drone implements EventListener
         if(masterFlag){
             masterThread = new MasterModule(this);
             masterThread.start();
-            this.masterDroneStatistics = new ArrayList<>();
 
             ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
             scheduledExecutorService.scheduleAtFixedRate(new GlobalStatisticsScheduledPrinter(this), 10,10, TimeUnit.SECONDS);
@@ -277,11 +286,14 @@ public class Drone implements EventListener
     }
 
     public void setMasterDroneStatistics(ArrayList<Statistic> masterDroneStatistics) {
-        this.masterDroneStatistics = masterDroneStatistics;
+        synchronized (this.masterDroneStatistics){
+            this.masterDroneStatistics.clear();
+            this.masterDroneStatistics.addAll(masterDroneStatistics);
+        }
     }
 
     public void addStatisticToMasterDroneDataStructure(Statistic statistic){
-        if(getMasterDroneStatistics() != null){
+        synchronized (masterDroneStatistics){
             System.out.println("[DRONE MODULE]  New statistic has just been received and inserted into the master drone data structure");
             this.masterDroneStatistics.add(statistic);
         }
@@ -289,10 +301,10 @@ public class Drone implements EventListener
 
     public String toString(){
         return "\n" +
-                "\t ID: "       + this.ID + "\n" +
-                "\t PORT: "     + this.port + "\n" +
-                "\t POSITION: " + this.position + "\n" +
-                "\t BATTERY: "  + this.battery + "\n";
+                "\t ID: "       + ID + "\n" +
+                "\t PORT: "     + port + "\n" +
+                "\t POSITION: " + position + "\n" +
+                "\t BATTERY: "  + battery + "\n";
     }
 
 
@@ -315,6 +327,7 @@ public class Drone implements EventListener
 
     public static void main(String[] argv) {
         Drone       drone = new Drone();
+
         // Setting quit thread to allow the user to quit.
         drone.quitModule = new QuitModule(drone);
         drone.quitModule.start();
@@ -336,6 +349,15 @@ public class Drone implements EventListener
                             synchronized (GreetingServiceImplementation.getDummyObjectToRecharge())
                             {
                                 GreetingServiceImplementation.dummyObjectToRecharge.notify();
+                                Thread.sleep(1000);
+                                RechargeModule rechargeModule = new RechargeModule(drone);
+                                rechargeModule.start();
+                                drone.setRechargeModule(rechargeModule);
+
+                                // If quit module is waiting the recharge to finish this notify() will unlock the QuitModule state.
+                                synchronized (RechargeModule.dummyObjectInterested){
+                                    RechargeModule.dummyObjectInterested.notify();
+                                }
                             }
                         }
                         catch (InterruptedException e)
@@ -344,9 +366,6 @@ public class Drone implements EventListener
                         }
                     }
                 }).start();
-
-
-        System.out.println("RECHARGE : " + rechargeModule.isAlive());
 
         System.out.println("*************** STARTING NEW DRONE ***************" + drone + "\n\n\n");
 
@@ -393,6 +412,12 @@ public class Drone implements EventListener
         {
             response = webResource.type("application/json").post(ClientResponse.class, input);
             ServerResponse serverResponse = response.getEntity(ServerResponse.class);
+
+            if(serverResponse.isErrorFlag()){
+                System.out.println("[DRONE MODULE] This drone cannot enter into the smartcity. It has an id or a port number already present");
+                System.exit(0);
+            }
+
             ArrayList<Drone> dronesAlreadyIn = serverResponse.getDrones();
 
             if(dronesAlreadyIn == null)
@@ -402,7 +427,7 @@ public class Drone implements EventListener
                         "\tNEW POSITION ACQUIRED: " + serverResponse.getPosition() + "\n" +
                         "\tCURRENTLY THIS DRONE IS THE ONLY ONE INTO THE SMARTCITY");
                 drone.setMasterFlag(true);
-                drone.smartcity.setCurrentDrone(drone);
+                drone.getSmartcity().setCurrentDrone(drone);
             }
             else
             {
@@ -415,15 +440,15 @@ public class Drone implements EventListener
                 //    Here I'm receiving the list from the ServerAdministration and then creating my own representation of the
                 //    smartcity.
 
-                drone.smartcity.setCurrentDrone(drone);
-                drone.smartcity.insertListOfDrones(dronesAlreadyIn);
+                drone.getSmartcity().setCurrentDrone(drone);
+                drone.getSmartcity().insertListOfDrones(dronesAlreadyIn);
             }
 
             drone.position = serverResponse.getPosition();
             CityMap.printPositionIntoTheSmartCity(drone.position);
             System.out.println(" ----- DRONE HAS SUCCESSFULLY ENTERED INTO THE SMARTCITY \n\n");
         }
-        catch (ClientHandlerException exception){
+        catch (Exception exception){
             System.out.println("[ERROR DURING INSERTION PHASE] \n" +
                     "\n\t" + exception              +
                     "\n\t" + exception.getMessage() +
@@ -447,7 +472,7 @@ public class Drone implements EventListener
     @Override
     public void takeEightMeasurements() {
         List<Measurement> measurements = this.measurements.readAllAndClean();
-        this.measurementsDataStructure.add(measurements.stream().mapToDouble(Measurement::getValue).sum() / measurements.size());
+        addMeasurementsToTheDataStructure(measurements.stream().mapToDouble(Measurement::getValue).sum() / measurements.size());
     }
 
     private void sendElectionMessage(Drone current) {

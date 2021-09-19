@@ -4,7 +4,6 @@ import drone.Drone;
 import administration.resources.SmartCity;
 import tools.ServerResponse;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,7 +25,7 @@ public class SmartCityService
 
         if(response.isErrorFlag())  {
             System.out.println("[SMARTCITY SERVICE INFO] Drone with ID: " + drone.getID() + " cannot enter into the city!");
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response.ok(response).build();
         }
         else {
             System.out.println("[SMARTCITY SERVICE INFO] Drone with ID: " + drone.getID() + " has just entered into the city");

@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -40,13 +39,6 @@ public class StatisticsContainer
         this.statistics.clear();
     }
 
-    /*
-        THIS CLASS OFFERS:
-            -> Last smartcity's n global statistics (with timestamps);
-            -> Average completed delivery made by drones in the smartcity between two timestamps;
-            -> Average distance (km) made by drones in the smartcity between two timestamps.
-     */
-
 
     /**
      *
@@ -55,12 +47,13 @@ public class StatisticsContainer
      *
      * Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
      */
+    public List<GlobalStatistic> getLastGlobalStatistics(int numberOfStatisticsToRetrieve){
+        ArrayList<GlobalStatistic> copy = getStatistics();
 
-    public synchronized List<GlobalStatistic> getLastGlobalStatistics(int numberOfStatisticsToRetrieve){
-        if(numberOfStatisticsToRetrieve <= statistics.size()){
-            return statistics.subList((statistics.size())-numberOfStatisticsToRetrieve, statistics.size());
-        }
-        else return null;
+        if(numberOfStatisticsToRetrieve <= copy.size())
+            return copy.subList((copy.size())- numberOfStatisticsToRetrieve, copy.size());
+        else
+            return null;
 
     }
 
@@ -79,6 +72,7 @@ public class StatisticsContainer
             sum = sum + current.getDeliveryAvg();
         }
 
+        System.out.println(sum);
         if(sum == 0) return "NO DATA BETWEEN THESE TWO BOUNDS";
         return String.valueOf(sum / copy.size());
     }
@@ -107,14 +101,10 @@ public class StatisticsContainer
      * @return new arraylist which contains global statistics between bounds.
      */
     private ArrayList<GlobalStatistic> getBetweenBounds(Date firstBound, Date secondBound) {
-        ArrayList<GlobalStatistic>  copy        = this.getStatistics();
+        ArrayList<GlobalStatistic>  copy = getStatistics();
 
-        for (GlobalStatistic current: statistics){
+        for (GlobalStatistic current: copy){
             Date currentDate = new Date(current.getTimeStamp());
-            System.out.println("DATA STATISTICA CORRENTE: " + currentDate);
-            System.out.println("PRIMO LIMITE: " + firstBound);
-            System.out.println("PRIMO LIMITE: " + secondBound);
-
             if (currentDate.before(firstBound) || currentDate.after(secondBound)){
                 copy.remove(current);
             }

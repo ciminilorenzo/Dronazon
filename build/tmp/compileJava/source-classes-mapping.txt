@@ -1,9 +1,9 @@
 drone/EventListener.java
  drone.EventListener
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
 tools/Delivery.java
  tools.Delivery
-administration/services/StatisticsService.java
- administration.services.StatisticsService
 administration/ServerAdministrator.java
  administration.ServerAdministrator
 PM10/Measurement.java
@@ -19,10 +19,10 @@ grpc/ChattingGrpc.java
  grpc.ChattingGrpc$ChattingMethodDescriptorSupplier
  grpc.ChattingGrpc$ChattingStub
  grpc.ChattingGrpc$MethodHandlers
-tools/StatisticsServerResponse.java
- tools.StatisticsServerResponse
 PM10/Buffer.java
  PM10.Buffer
+tools/CityMap.java
+ tools.CityMap
 grpc/Services.java
  grpc.Services
  grpc.Services$1
@@ -86,26 +86,24 @@ tools/Position.java
  tools.Position
 PM10/PM10Simulator.java
  PM10.PM10Simulator
-tools/MasterNotDeliveredDeliveryQueue.java
- tools.MasterNotDeliveredDeliveryQueue
+tools/StatisticsServerResponse.java
+ tools.StatisticsServerResponse
 mqtt/Dronazon.java
  mqtt.Dronazon
 administration/resources/statistics/Statistic.java
  administration.resources.statistics.Statistic
 tools/ServerResponse.java
  tools.ServerResponse
-administration/resources/statistics/StatisticsContainer.java
- administration.resources.statistics.StatisticsContainer
 administration/resources/statistics/GlobalStatistic.java
  administration.resources.statistics.GlobalStatistic
+drone/modules/CommunicationThread.java
+ drone.modules.CommunicationThread
 tools/DronesServerResponse.java
  tools.DronesServerResponse
-administration/ClientAdministrator.java
- administration.ClientAdministrator
+drone/modules/PingModule.java
+ drone.modules.PingModule
 PM10/Simulator.java
  PM10.Simulator
-tools/CityMap.java
- tools.CityMap
 drone/modules/DeliveryModule.java
  drone.modules.DeliveryModule
 drone/modules/RechargeModule.java
@@ -133,9 +131,9 @@ drone/Drone.java
  drone.Drone$1
 administration/services/SmartCityService.java
  administration.services.SmartCityService
-drone/modules/PingModule.java
- drone.modules.PingModule
-administration/resources/SmartCity.java
- administration.resources.SmartCity
-drone/modules/CommunicationThread.java
- drone.modules.CommunicationThread
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
+administration/resources/statistics/StatisticsContainer.java
+ administration.resources.statistics.StatisticsContainer
+administration/ClientAdministrator.java
+ administration.ClientAdministrator

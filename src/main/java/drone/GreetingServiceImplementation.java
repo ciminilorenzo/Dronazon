@@ -24,10 +24,14 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
     private static final Object dummyObject = new Object();
     private static final Object dummyObjectElection = new Object();
     private static volatile boolean nextMaster = false;
+
+    // This dummy object is used to synchronize the state in which the drone is recharging. In fact the drone, using
+    // this dummy, waits until the recharge is finished in order to make the broadcast.
     public static final Object dummyObjectToRecharge = new Object();
 
     // We're going to save drones' port in order to reply when this drone finishes consuming the resource
     private ArrayList<StreamObserver<Services.RechargePermissionResponse>> dronesToNotify = new ArrayList<>();
+
     public static final Object dummyObjectToNotify = new Object();
 
     public GreetingServiceImplementation(Drone drone){
@@ -130,15 +134,10 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
 
     }
 
-    /**
-     * Assertion: This gRPC call is made by the master drone when he has to perform a delivery assignment.
-     *
-     * @param request DeliveryAssignationMessage used for communicating delivery information to the specified drone.
-     * @param responseObserver stream observer
-     */
+
     @Override
     public void deliveryAssignationService(Services.DeliveryAssignationMessage request, StreamObserver<Services.DeliveryAssignationResponse> responseObserver) {
-        if(drone.isBusy)
+        if(drone.isBusy())
         {
             System.out.println("\n\n[DRONE COMMUNICATION MODULE]    Drone is busy. Can't delivery: preparing negative availability");
             Services.DeliveryAssignationResponse deliveryAssignationResponse = Services.DeliveryAssignationResponse.newBuilder()
@@ -193,13 +192,14 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
         // Updating master's view
         this.drone.addStatisticToMasterDroneDataStructure(statistic);   // Adding statistic to master's data structure.
         this.drone.getSmartcity().modifyDroneAfterDelivery(UUID.fromString(request.getDroneId()), newPosition, battery, false);  // Modifying deliverer's data inside master drone data structure
-        this.drone.communicateAvailability();       // This is another situation where if there are any undelivered deliveries this drone, due he is just been assigned as 'not busy', could deliverer it
+
 
 
         System.out.println("[DRONE COMMUNICATION MODULE]    Received statistic successfully saved");
         Services.DeliveryCompleteResponse response = Services.DeliveryCompleteResponse.newBuilder().setResponse(true).build();
         responseObserver.onNext(response);
         System.out.println("[DRONE COMMUNICATION MODULE]    Sending receipt confirmation message");
+        this.drone.communicateAvailability();       // This is another situation where if there are any undelivered deliveries this drone, due he is just been assigned as 'not busy', could deliverer it
         responseObserver.onCompleted();
     }
 
@@ -511,7 +511,25 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
                     }
                     broadcast();
                 }
-                // Else we do have to give the permission and wait
+                // If the timestamps are equal we have to distinguish over tre cases:
+                // 1: If the ids are equal:
+                else if (LocalDateTime.parse(myTimeStamp).isEqual(LocalDateTime.parse(receivedTimeStamp))){
+                        // The current drone's ID is bigger than the one which has sent the request
+                        // then here we have the priority
+                        if(drone.getID().compareTo(UUID.fromString(request.getId())) > 0)
+                        {
+                            synchronized (dummyObjectToRecharge){
+                                System.out.println("[RECHARGE MODULE]   The drone has just received a request with a lower timestamp. As soon as it finishes it will reply to the request");
+                                addDroneToNotify(responseObserver);
+                                dummyObjectToRecharge.wait();
+                            }
+                            broadcast();
+                        }
+                        // The current drone's ID is smaller than the one which has sent the request
+                        else
+                            givePermission(rechargePermissionResponse, responseObserver);
+                    }
+                // Else if the current drone's timestamp is newer then we do have to give the permission and wait
                 else
                 {
                     givePermission(rechargePermissionResponse, responseObserver);

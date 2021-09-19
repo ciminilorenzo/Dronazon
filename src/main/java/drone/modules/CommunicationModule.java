@@ -10,11 +10,7 @@ import tools.Delivery;
 import java.util.ArrayList;
 
 
-/**
- * If current drone is alone into the smartcity then he mustn't do anything. Whereas it's not the master drone it has to
- * understand which is the master between the ones already in. This is done by making a broadcast using
- * a greeting message.
- */
+
 public class CommunicationModule extends Thread
 {
     private final Drone drone;
@@ -156,6 +152,7 @@ public class CommunicationModule extends Thread
             {
                 System.out.println("[DRONE COMMUNICATION MODULE]    Drone with id: " + receivingDrone.getID() + " isn't available now");
                 masterDrone.getSmartcity().setBusy(receivingDrone.getID(), true);
+                managedChannel.shutdown();
                 return false;
             }
         }
@@ -167,11 +164,8 @@ public class CommunicationModule extends Thread
     }
 
 
-    /**
-     * Assertion: Drone which is calling this method is not master drone. Master drone has his private data structure.
-     *
-     * @return true if master has received drone's data.
-     */
+
+
     public static boolean sendCompletedDeliveryData(Drone masterDrone, Services.DeliveryComplete deliveryComplete){
 
         try

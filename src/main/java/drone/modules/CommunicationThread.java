@@ -12,8 +12,10 @@ public class CommunicationThread extends Thread{
     private final Drone sendingDrone;
     private final Drone receivingDrone;
     private final String action;
-    private volatile Services.SimpleGreetingResponse greetingResponse;
-    private volatile Services.RechargePermissionResponse rechargePermissionResponse;
+
+    private Services.SimpleGreetingResponse greetingResponse;
+    private Services.RechargePermissionResponse rechargePermissionResponse;
+
     private static final String GREETING = "GREETING";
     private static final String RECHARGE = "RECHARGE";
 

@@ -23,6 +23,8 @@ public class Ring
     @XmlElement(name="drones")
     private ArrayList<Drone> droneArrayList = new ArrayList<>();
 
+    private final transient Object dummyObject = new Object();
+
     private Drone drone;
 
     public Ring(ArrayList<Drone> drones) {
@@ -32,49 +34,53 @@ public class Ring
     public Ring(){}
 
     public  ArrayList<Drone> getDroneArrayList() {
-        return droneArrayList;
+        synchronized (dummyObject){
+            return droneArrayList;
+        }
     }
 
-    public void setDroneArrayList(ArrayList<Drone> droneArrayList) {
-        this.droneArrayList = droneArrayList;
-    }
 
     public void cleanList(){
-        this.droneArrayList.clear();
+        synchronized (dummyObject) {
+            this.droneArrayList.clear();
+        }
+
     }
 
 
 
-
-    /**
-     *  //TODO: QUESTI TUTTI MESSI COME SYNCHRONIZED PERCHE' RICEVUTO ERRORE:   java.util.ConcurrentModificationException
-     * 	at java.util.ArrayList.sort(ArrayList.java:1466)
-     * 	at tools.Ring.insertDrone(Ring.java:50)
-     * @param drone that is entering into the drone smartcity's representation.
-     */
     public void insertDrone(Drone drone) {
         System.out.println("\n\n[RING] INSERTING NEW DRONE");
-        droneArrayList.add(drone);
-        droneArrayList.sort(Comparator.comparing(Drone::getPort));
+        synchronized (dummyObject)
+        {
+            droneArrayList.add(drone);
+            droneArrayList.sort(Comparator.comparing(Drone::getPort));
+        }
         System.out.println("[RING] JUST ORDERED");
         System.out.println(this);
     }
 
     public void insertListOfDrones(ArrayList<Drone> list){
         System.out.println("\n\n[RING] INSERTING BUNCH OF DRONES");
-        droneArrayList.addAll(list);
-        droneArrayList.sort(Comparator.comparing(Drone::getPort));;
+        synchronized (dummyObject)
+        {
+            droneArrayList.addAll(list);
+            droneArrayList.sort(Comparator.comparing(Drone::getPort));;
+        }
         System.out.println(this);
     }
 
     public void removeDrone(Drone droneToDelete){
         System.out.println("[RING] Updating . . .");
-        droneArrayList.remove(droneToDelete);
-        droneArrayList.sort(Comparator.comparing(Drone::getPort));
+
+        synchronized (dummyObject){
+            droneArrayList.remove(droneToDelete);
+            droneArrayList.sort(Comparator.comparing(Drone::getPort));
+        }
         System.out.println(this);
     }
 
-    public synchronized boolean isAlone(){
+    public boolean isAlone(){
         return (getDroneArrayList().size() == 1);
     }
 
@@ -84,16 +90,19 @@ public class Ring
      * @return null if the drone sent as parameter hasn't a 'next' drone
      */
     public Drone getNext(){
-        if(droneArrayList.size() == 1){
-            return null;
-        }
-
-        for(int i = 0; i < droneArrayList.size(); i++){
-            if(i == droneArrayList.size() - 1){
-                return droneArrayList.get(0);
+        synchronized (dummyObject)
+        {
+            if(droneArrayList.size() == 1){
+                return null;
             }
-            else if(this.drone.getID() == droneArrayList.get(i).getID()){
-                return droneArrayList.get(i+1);
+
+            for(int i = 0; i < droneArrayList.size(); i++){
+                if(i == droneArrayList.size() - 1){
+                    return droneArrayList.get(0);
+                }
+                else if(this.drone.getID() == droneArrayList.get(i).getID()){
+                    return droneArrayList.get(i+1);
+                }
             }
         }
         return null;
@@ -103,21 +112,26 @@ public class Ring
 
     // Assertion: This method is called by master drone after receiving delivery's data from deliverer drone for updating his view.
     public void modifyDroneAfterDelivery(UUID id, Position position, int battery, boolean busy){
-        for (Drone current: droneArrayList) {
-            if(current.getID().compareTo(id) == 0){
-                current.setPosition(position);
-                current.setBattery(battery);
-                current.isBusy = busy; // This procedure is called both in the master and drone view.
-                return;
+        synchronized (dummyObject)
+        {
+            for (Drone current: droneArrayList) {
+                if(current.getID().compareTo(id) == 0){
+                    current.setPosition(position);
+                    current.setBattery(battery);
+                    current.isBusy = busy; // This procedure is called both in the master and drone view.
+                    return;
+                }
             }
         }
     }
 
     public void setBusy(UUID id, boolean value){
         System.out.println("[MASTER RING] Drone with id: " + id + " has just updated his busy state as: " + value);
-        for(Drone current: droneArrayList){
-            if(current.getID().compareTo(id) == 0){
-                current.isBusy = value;
+        synchronized (dummyObject){
+            for(Drone current: droneArrayList){
+                if(current.getID().compareTo(id) == 0){
+                    current.isBusy = value;
+                }
             }
         }
     }
@@ -127,7 +141,6 @@ public class Ring
     }
 
 
-    //TODO: CONTROLLARE SE RITORNA LISTA GIUSTA
     /**
      * Method used to get the list of drones except the one got as parameter.
      * @param drone that we don't want in the list that the method is going to return
@@ -146,17 +159,18 @@ public class Ring
     @Override
     public String toString(){
         StringBuilder result = new StringBuilder();
+        ArrayList<Drone> copy = getDroneArrayList();
 
-        for(int i = 0; i < droneArrayList.size(); i++)
+        for(int i = 0; i < copy.size(); i++)
         {
-            if(i == 0) result.append("\t").append(droneArrayList.get(i).getPort());
-            else result.append("\t --->\t").append(droneArrayList.get(i).getPort());
+            if(i == 0) result.append("\t").append(copy.get(i).getPort());
+            else result.append("\t --->\t").append(copy.get(i).getPort());
         }
 
-        for(int i = 0; i < droneArrayList.size(); i++)
+        for(int i = 0; i < copy.size(); i++)
         {
             if(i == 0) result.append("\n\t|______");
-            else if(i == droneArrayList.size() -1) result.append("___________________|");
+            else if(i == copy.size() -1) result.append("___________________|");
             else result.append("____________");
         }
         return result.toString();

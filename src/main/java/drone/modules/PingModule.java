@@ -34,7 +34,7 @@ public class PingModule extends Thread
             ChattingGrpc.ChattingBlockingStub chattingBlockingStub = ChattingGrpc.newBlockingStub(managedChannel);
             Services.Empty response =  Services.Empty.newBuilder().build();
             chattingBlockingStub.ping(response);
-            managedChannel.shutdown();
+            managedChannel.shutdownNow();
         }
         catch (StatusRuntimeException exception){
             System.out.println("[PING MODULE] Master drone has fallen.");

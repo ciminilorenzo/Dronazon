@@ -92,6 +92,18 @@ CARATTERISTICHE:
 
 
 
+RICARICA:
+    - CARATTERISTICHE: 
+            1. Quando un drone ha iniziato il processo di ricarica non può uscire
+            2. Quando si trova in una situazione di concorrenza controlla la richiesta ricevuta e in base al timestamp()
+                    Se timestamp viene prima allora ha priorità e mette in wait la risposta
+                    Se timestamp viene dopo da il consenso e verrà salvato nella coda del ricevente
+                    Se timestamp è uguale:
+                        Se id maggiore allora ha precedenza
+                        Se id minore da il consenso
+            3. Se non si trova in una situazione di concorrenza da il permesso
+            4. Se si è trovato in una situazione concorrenziale, alla fine della ricarica, farà un broadcast parallelo dei permessi ai vari droni
+
 
 **_TEST DI USCITA DI UN DRONE:_**
     **MASTER**

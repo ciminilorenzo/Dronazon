@@ -35,7 +35,7 @@ public class SmartCity
     }
 
     public synchronized ArrayList<Drone> getDrones(){
-        return this.drones;
+        return drones;
     }
 
     public synchronized void setDrones(ArrayList<Drone> drones) {
@@ -43,27 +43,25 @@ public class SmartCity
     }
 
     private synchronized void addDrone(Drone drone){
-        this.drones.add(drone);
+        drones.add(drone);
     }
 
 
 
 
     /**
-     *  Simply checking that the drone who wants to enter has unique ID and unique PORT number.
+     *  Checking that the drone who wants to enter has unique ID and unique PORT number.
      *  If the assumptions are true method is going to return a ServerResponse object composed by: drones already in
      *  - without himself -, acquired position and a flag used to understand if the insertion has been successful.
      *
-        @param drone who wants to enter into the smartcity.
-        TODO: CONCURRENCY CHECK HERE MUST BE DONE
-
+        @param drone which wants to enter into the smartcity.
      */
     public ServerResponse insertDrone(Drone drone) {
 
         ArrayList<Drone> listOfDronesAlreadyIn = new ArrayList<>(getDrones());
 
         for (Drone current: listOfDronesAlreadyIn) {
-            if(current.getID() == drone.getID() || current.getPort() == drone.getPort()){
+            if(current.getID().compareTo(drone.getID()) == 0 || current.getPort() == drone.getPort()){
                 return new ServerResponse(null, null, true);
             }
         }
@@ -87,8 +85,10 @@ public class SmartCity
 
     public String toString(){
         StringBuilder result = new StringBuilder();
+        ArrayList<Drone> copy = getDrones();
+
         result.append("[PRINTING SMART CITY POPULATION]");
-        for (Drone current:getDrones()) {
+        for (Drone current:copy) {
             result.append("\n\t ID:\t").append(current.getID()).append("\n\t PORT:\t").append(current.getPort()).append("\n\t POSITION:\t").append(current.getPosition()).append("\n\t BATTERY:\t").append(current.getBattery());
         }
         return result.toString();

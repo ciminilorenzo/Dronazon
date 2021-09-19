@@ -15,7 +15,6 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class ClientAdministrator
@@ -60,13 +59,19 @@ public class ClientAdministrator
 
                 case "2":
                 {
-                    System.out.println("How many statistics you want to retrieve? ");
-                    int number = scanner.nextInt();
+                    try {
+                        System.out.println("How many statistics you want to retrieve? ");
+                        int number = scanner.nextInt();
 
-                    clientResponse = getRequest(client, StatisticsService.GET_LAST_STATISTICS + number);
-                    StatisticsServerResponse result = clientResponse.getEntity(StatisticsServerResponse.class);
-                    System.out.println(result);
-                    break;
+                        clientResponse = getRequest(client, StatisticsService.GET_LAST_STATISTICS + number);
+                        StatisticsServerResponse result = clientResponse.getEntity(StatisticsServerResponse.class);
+                        System.out.println(result);
+                        break;
+                    }
+                    catch (Exception exception) {
+                        System.out.println("Number isn't valid");
+                        break;
+                    }
                 }
 
                 case "3": case "4":
@@ -122,7 +127,7 @@ public class ClientAdministrator
             return webResource.type("application/json").get(ClientResponse.class);
         }
         catch (ClientHandlerException e){
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
     }
