@@ -1,7 +1,7 @@
 drone/EventListener.java
  drone.EventListener
-administration/resources/SmartCity.java
- administration.resources.SmartCity
+administration/services/StatisticsService.java
+ administration.services.StatisticsService
 tools/Delivery.java
  tools.Delivery
 administration/ServerAdministrator.java
@@ -96,12 +96,12 @@ tools/ServerResponse.java
  tools.ServerResponse
 administration/resources/statistics/GlobalStatistic.java
  administration.resources.statistics.GlobalStatistic
-drone/modules/CommunicationThread.java
- drone.modules.CommunicationThread
+administration/resources/statistics/StatisticsContainer.java
+ administration.resources.statistics.StatisticsContainer
 tools/DronesServerResponse.java
  tools.DronesServerResponse
-drone/modules/PingModule.java
- drone.modules.PingModule
+administration/ClientAdministrator.java
+ administration.ClientAdministrator
 PM10/Simulator.java
  PM10.Simulator
 drone/modules/DeliveryModule.java
@@ -131,9 +131,9 @@ drone/Drone.java
  drone.Drone$1
 administration/services/SmartCityService.java
  administration.services.SmartCityService
-administration/services/StatisticsService.java
- administration.services.StatisticsService
-administration/resources/statistics/StatisticsContainer.java
- administration.resources.statistics.StatisticsContainer
-administration/ClientAdministrator.java
- administration.ClientAdministrator
+drone/modules/PingModule.java
+ drone.modules.PingModule
+administration/resources/SmartCity.java
+ administration.resources.SmartCity
+drone/modules/CommunicationThread.java
+ drone.modules.CommunicationThread

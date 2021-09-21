@@ -247,7 +247,6 @@ public class GreetingServiceImplementation extends ChattingGrpc.ChattingImplBase
                     // If the current drone's battery level is equal to the one than we have in the message
                     // and the current drone's ID is bigger than the master's one then we have to update the master
                     nextMaster = true;
-                    System.out.println("SETTO A TRUE");
                     buildAndForward(request);
                 }
                 else {

@@ -1,12 +1,5 @@
 # Distributed and pervasive systems project
 
-**KEEP IN MIND:**
-1. CERCARE DI REALIZZARE UNA SINCRONIZZAZIONE A GRANA PIU' FINE POSSIBILE IN MODO TALE DA NON BLOCCARE IL SERVER.
-        PER ESEMPIO, MENTRE PER OPERAZIONI DI INGRESSO/USCITA DAL SERVER OCCORRE SINCRONIZZARE L'INTERA ISTANZA DELLA SMARTCITY
-        PER TUTTA LA DURATA DELL'OPERAZIONE, NEL CASO DEL CALCOLO DELLE STATISTICHE DOBBIAMO SOLO SINCRONIZZARE LA LETTURA DELL'ARRAY DELLE STATISTICHE
-2. Attenti che se il drone si presenta al master ma non ha ancora il server grpc attivo, se il master prova ad assegnare una consegna fallisce e lo elimina, ma in realtà sarebbe appena entrato
-   Controllate con sleep varie
-   --> Questo dovrebbe essere gestito dal momento che prima il drone starta il server grpc e, solo dopo, comincia il processo di chattingp per comunicare la sua presenza.
 
 
 **MOMENTI IN CUI VIENE CONTROLLATA PRESENZA DI SPEDIZIONI NON ANCORA GESTITE:**
@@ -47,8 +40,7 @@
 
 ELEZIONE:
 1. Parte quando, durante il ping(), il master non risponde.
-2. Potremmo far passare un messaggio contenente la lista dei droni presenti nella rete in modo tale che il nuovo master sappia quali sono i droni presenti e le loro informazioni 
-3. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
+2. Nella situazione in cui un drone si accorge che il master è caduto deve interrompere il ping. Allo stesso modo quando lo setta nuovamente deve farlo partire -> *GESTITO*
 
 CARATTERISTICHE:
     - Se sta consegnando nel momento in cui arriva il messaggio di elezione allora sarà considerata batteria attuale - 10%
@@ -129,22 +121,3 @@ RICARICA:
 
 
 
-
-
-
-
-
-
-ESAME:
-- Chi ha superato la prova scritta a Maggio non deve iscriversi all'appello ma solo consegnare il progetto in quella settimana e poi presentarsi il giorno dell'appello
-- Ecco come è strutturato l’esame:
-  1) Si espone lo schema preparato (non serve nulla di particolare)
-  2) Ti chiedono come hai gestito un particolare caso limite
-  3) chiedono di lanciare 4 droni, amministratore e dronazon, Killare il master e vedere come viene gestita l’elezione
-  4) chiedono di vedere come hai gestito la concorrenza in un determinato punto, per esempio nel server
-  5) una o due domande di teoria (es. qos, synchronized, testament)
-
-
-
-
-Unico consiglio: non preparate schemi sul progetto in generale, tenetevi appuntato quali casi limite trovate o studiate e fate uno schema su come si generano e su come li avete risolti. Risparmiate tempo a loro ed è più chiaro a voi da spiegare (e ricordare)

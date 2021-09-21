@@ -11,10 +11,6 @@ import java.util.Comparator;
 import java.util.UUID;
 
 
-/**
- * This class gives instances of 'RING'. A Ring is a representation of each drone's view of the smartcity.
- * TODO: Shall we synchronize this data structure? Calls are received only from updateView() in GreetingServiceImplementation for now.
- */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -25,7 +21,7 @@ public class Ring
 
     private final transient Object dummyObject = new Object();
 
-    private Drone drone;
+    private transient Drone drone;
 
     public Ring(ArrayList<Drone> drones) {
         this.droneArrayList = drones;
