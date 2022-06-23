@@ -349,7 +349,6 @@ public class Drone implements EventListener
                             synchronized (GreetingServiceImplementation.getDummyObjectToRecharge())
                             {
                                 GreetingServiceImplementation.dummyObjectToRecharge.notify();
-                                Thread.sleep(1000);
                                 RechargeModule rechargeModule = new RechargeModule(drone);
                                 rechargeModule.start();
                                 drone.setRechargeModule(rechargeModule);

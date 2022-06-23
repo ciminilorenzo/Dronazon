@@ -100,8 +100,6 @@ administration/resources/statistics/StatisticsContainer.java
  administration.resources.statistics.StatisticsContainer
 tools/DronesServerResponse.java
  tools.DronesServerResponse
-administration/ClientAdministrator.java
- administration.ClientAdministrator
 PM10/Simulator.java
  PM10.Simulator
 drone/modules/DeliveryModule.java
@@ -137,3 +135,5 @@ administration/resources/SmartCity.java
  administration.resources.SmartCity
 drone/modules/CommunicationThread.java
  drone.modules.CommunicationThread
+administration/ClientAdministrator.java
+ administration.ClientAdministrator
